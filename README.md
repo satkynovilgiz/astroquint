@@ -37,8 +37,8 @@ Everything, including ranked Daily Orbit and multiplayer Party Mode, works local
 | `npm run build` / `npm start` | Production build / serve (needs `SESSION_SECRET`) |
 | `npm run lint` | ESLint (Next.js + React Compiler rules) |
 | `npm run typecheck` | Route typegen + `tsc --noEmit` (strict) |
-| `npm test` | Vitest: 156 unit/component tests |
-| `npm run test:e2e` | Playwright: 98 browser tests against the production build (`npm run build` first; first run: `npx playwright install chromium`) |
+| `npm test` | Vitest: 166 unit/component tests |
+| `npm run test:e2e` | Playwright: 127 browser tests against the production build (`npm run build` first; first run: `npx playwright install chromium`) |
 | `npm run check` | lint → typecheck → test → build |
 | `npm run build:map` | Regenerate GeoTap map paths from Natural Earth data |
 
@@ -51,6 +51,20 @@ Everything, including ranked Daily Orbit and multiplayer Party Mode, works local
 | `NEXT_PUBLIC_SUPABASE_URL` | Optional | Turns on the Supabase store and Realtime |
 | `SUPABASE_SERVICE_ROLE_KEY` | With Supabase | **Server-only**. Never prefix it with `NEXT_PUBLIC_` and never commit it. |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | With Supabase | Lets browsers subscribe to Realtime *broadcast* channels (it gives no table access) |
+
+## Production status check
+
+`GET /api/health` reports which modes this deployment can serve and why. It never includes secret values:
+
+```json
+{ "ok": false, "modes": { "solo": true, "daily": false, "party": false },
+  "checks": { "sessionSecret": "set", "storage": "not_configured", "database": "not_configured", "realtime": "sse" } }
+```
+
+- `sessionSecret: "missing"`: Solo, Daily and Party all return HTTP 503 `session_secret_missing`. Players see "Games are temporarily unavailable".
+- `storage: "not_configured"`: Daily and Party return 503 `storage_not_configured`. Players see an honest "Online play isn't connected yet" message with a link to Solo.
+
+Every API error includes a `code` and the Vercel request id. The UI shows them as a small "Ref", so a player's report can be matched to a line in Vercel's runtime logs.
 
 ## Deploying (Vercel + Supabase)
 
@@ -93,11 +107,19 @@ The **same pure engine** runs every mode. React components only see a `GameView`
 - **Database:** RLS is enabled on every table with no grants to `anon` or `authenticated`. The service role is used only on the server. Solutions sit in a separate private table.
 - **Headers:** nosniff, `X-Frame-Options: DENY` plus `frame-ancestors 'none'`, Referrer-Policy, Permissions-Policy and HSTS. *A full script CSP is not enabled yet:* it needs per-request nonces, which conflicts with the static prerendering used here.
 
+## Themes
+
+- **Dark is the default:** deep charcoal (`#12141D`) with a purple-blue undertone. **Light** is soft pearl (`#F1F1F6`). Players switch with the sun/moon button in the header or the switch in the menu, and the choice is saved per device.
+- **Tokens:** the theme's raw values live in `src/app/globals.css` (`:root[data-theme=…]`). Tailwind utilities read them through `@theme inline`, so switching themes needs no rebuild.
+- **No flash:** an inline head script applies the saved theme before first paint.
+- **Contrast is tested:** `tests/unit/worlds.test.ts` parses the token values and asserts WCAG AA for text and accents on every surface, in both themes. Light mode deepens the lime, violet, gold and teal accents so they stay readable.
+
 ## Motion and accessibility
 
 - **Motion tokens** (`src/lib/motion/tokens.ts`, mirrored as CSS variables) cover durations, easing curves and springs.
 - **Hover feedback** uses scale rather than translation, which avoids hover-jitter loops.
-- **Continuous animation** (canvas starfield, orbit system) uses one rAF loop, pauses when the tab is hidden, and scales star count with the device.
+- **Continuous animation** (canvas starfield with shooting stars and sprite-cached dust, orbit system with moon) uses one rAF loop, pauses when the tab is hidden, and scales particle counts with the device.
+- **Compositor-friendly effects:** the aurora border on key buttons rotates a pre-rasterised gradient with `transform`. Animating a CSS custom property instead cost about 18% of the main thread in measurements.
 - **Reduced motion:** the OS setting *or* the in-game switch freezes loops and turns off view-transition and CSS animation.
 - **Accessibility:**
   - Keyboard play everywhere: A–D or 1–4 to answer, Alt+↑/↓ in Timeline, arrow keys on the map.

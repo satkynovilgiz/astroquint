@@ -88,6 +88,23 @@ test.describe("motion", () => {
     await expect(header).toHaveAttribute("data-scrolled", "true");
   });
 
+  test("reduced motion freezes the new ambient effects too", async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.goto("/");
+    await page.waitForTimeout(500);
+    const durations = await page.evaluate(() => {
+      const ring = document.querySelector(".aurora-ring");
+      const breathe = document.querySelector("[class*='core-breathe']");
+      return {
+        aurora: ring ? getComputedStyle(ring, "::before").animationDuration : "missing",
+        breathe: breathe ? getComputedStyle(breathe).animationName : "missing",
+      };
+    });
+    // Global reduced-motion rule collapses CSS animations; the breathing glow is motion-safe only.
+    expect(["0.001ms", "1e-06s", "0s"]).toContain(durations.aurora);
+    expect(durations.breathe).toBe("none");
+  });
+
   test("Start Playing launches into mode select", async ({ page }) => {
     await page.goto("/");
     await page.getByRole("link", { name: "Start Playing" }).click();
