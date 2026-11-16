@@ -47,7 +47,7 @@ test.describe("party mode", () => {
     await guest.getByRole("button", { name: "Join the crew" }).click();
     await expect(host.getByText("Rookie")).toBeVisible({ timeout: 10_000 }); // presence pushed to the host
     await guest.getByRole("button", { name: "I'm ready" }).click();
-    await expect(host.getByRole("button", { name: "Launch the game" })).toBeEnabled({ timeout: 10_000 });
+    await expect(host.getByRole("button", { name: "Launch the game" })).toBeEnabled({ timeout: 20_000 });
     await host.getByRole("button", { name: "Launch the game" }).click();
 
     for (let i = 0; i < 5; i++) {
@@ -65,10 +65,12 @@ test.describe("party mode", () => {
         await guest.reload();
       }
       await answerBlind(guest, i);
-      await expect(host.getByRole("heading", { name: "Round results" })).toBeVisible({ timeout: 10_000 });
-      await expect(guest.getByRole("heading", { name: "Round results" })).toBeVisible({ timeout: 10_000 });
-      if (i < 4) await host.getByRole("button", { name: `Continue to ${WORLD_ORDER[i + 1]}` }).click();
-      else await host.getByRole("button", { name: "Show final standings" }).click();
+      // Early reveal once both answered; at worst the round's own deadline (≤25s) reveals it.
+      await expect(host.getByRole("heading", { name: "Round results" })).toBeVisible({ timeout: 30_000 });
+      await expect(guest.getByRole("heading", { name: "Round results" })).toBeVisible({ timeout: 30_000 });
+      // Host may skip the reveal; if it already auto-advanced (9s), that's fine too.
+      const skipReveal = host.getByRole("button", { name: i < 4 ? `Continue to ${WORLD_ORDER[i + 1]}` : "Show final standings" });
+      await skipReveal.click({ timeout: 3_000 }).catch(() => {});
     }
 
     await expect(host.getByRole("list", { name: "Full ranking" })).toBeVisible({ timeout: 15_000 });

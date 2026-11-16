@@ -11,7 +11,7 @@ import { requestWarp } from "@/components/animations/warp-bus";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { playSound } from "@/features/audio/synth";
-import { riseIn, staggerChildren } from "@/lib/motion/tokens";
+import { riseIn, riseInVisible, staggerChildren } from "@/lib/motion/tokens";
 import { GameScreen } from "./game-screen";
 
 export function SoloGameRoot() {
@@ -29,17 +29,17 @@ export function SoloGameRoot() {
 }
 
 function SoloGame() {
-  const { game, view, actions, start, quit } = useSoloGame();
+  const { view, actions, start, quit, busy, error, relaxed: runRelaxed } = useSoloGame();
   const [relaxed, setRelaxed] = useState(false);
 
   const launch = (r: boolean) => {
     playSound("launch");
     requestWarp({ durationMs: 900, intensity: 0.7 });
-    start(r);
+    void start(r);
   };
 
-  if (!game || !view) {
-    return <SoloLobby relaxed={relaxed} setRelaxed={setRelaxed} onLaunch={() => launch(relaxed)} />;
+  if (!view) {
+    return <SoloLobby relaxed={relaxed} setRelaxed={setRelaxed} onLaunch={() => launch(relaxed)} busy={busy} error={error} />;
   }
 
   // A run saved mid-flight on this device: offer resume (only shown at an intro).
@@ -48,8 +48,8 @@ function SoloGame() {
       <GameScreen
         view={view}
         actions={actions}
-        resultsTitle={game.relaxed ? "Solo Orbit · Relaxed" : "Solo Orbit"}
-        onPlayAgain={() => launch(game.relaxed)}
+        resultsTitle={runRelaxed ? "Solo Orbit · Relaxed" : "Solo Orbit"}
+        onPlayAgain={() => launch(runRelaxed)}
       />
       {view.phase !== "complete" && (
         <div className="mx-auto mt-2 flex max-w-3xl justify-end pb-6">
@@ -66,14 +66,14 @@ function SoloGame() {
   );
 }
 
-function SoloLobby({ relaxed, setRelaxed, onLaunch }: { relaxed: boolean; setRelaxed: (v: boolean) => void; onLaunch: () => void }) {
+function SoloLobby({ relaxed, setRelaxed, onLaunch, busy, error }: { relaxed: boolean; setRelaxed: (v: boolean) => void; onLaunch: () => void; busy: boolean; error: string | null }) {
   return (
     <div className="mx-auto max-w-3xl px-4 pt-4 sm:px-6 sm:pt-8">
       <motion.div variants={staggerChildren(0.05)} initial="hidden" animate="visible">
         <motion.p variants={riseIn} className="hud-label text-action">
           Solo Orbit
         </motion.p>
-        <motion.h1 variants={riseIn} className="mt-2 font-display text-[clamp(2.25rem,7vw,3.5rem)] font-bold leading-none tracking-[-0.03em]">
+        <motion.h1 variants={riseInVisible} className="mt-2 font-display text-[clamp(2.25rem,7vw,3.5rem)] font-bold leading-none tracking-[-0.03em]">
           Five worlds. One run.
         </motion.h1>
         <motion.p variants={riseIn} className="mt-4 max-w-xl text-[1.05rem] leading-relaxed text-fg-muted">
@@ -111,9 +111,14 @@ function SoloLobby({ relaxed, setRelaxed, onLaunch }: { relaxed: boolean; setRel
         </motion.div>
 
         <motion.div variants={riseIn} className="mt-6">
-          <Button size="lg" onClick={onLaunch} className="w-full sm:w-auto" icon={<Rocket className="h-5 w-5" aria-hidden="true" />}>
+          <Button size="lg" onClick={onLaunch} disabled={busy} className="w-full sm:w-auto" icon={busy ? <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" /> : <Rocket className="h-5 w-5" aria-hidden="true" />}>
             Launch solo run
           </Button>
+          {error && (
+            <p role="alert" className="mt-3 text-sm text-danger">
+              {error}
+            </p>
+          )}
         </motion.div>
       </motion.div>
     </div>

@@ -5,6 +5,9 @@ const PORT = Number(process.env.E2E_PORT ?? 3100);
 export default defineConfig({
   testDir: "tests/e2e",
   fullyParallel: true,
+  // Games are real-time (20s rounds): too many parallel browsers starve the CPU
+  // and turn timing into flakiness, so cap concurrency.
+  workers: process.env.CI ? 2 : 4,
   retries: process.env.CI ? 1 : 0,
   reporter: [["list"]],
   use: {

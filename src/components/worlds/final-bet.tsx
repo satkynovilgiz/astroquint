@@ -119,7 +119,7 @@ export function WagerPicker({ score, onLock, busy }: { score: number; onLock: (w
                 }}
                 icon={<Lock className="h-4 w-4" aria-hidden="true" />}
               >
-                Lock wager &amp; reveal question
+                Lock wager &amp; start
               </Button>
               <Button size="lg" variant="ghost" disabled={busy} onClick={() => setConfirming(false)}>
                 Change amount

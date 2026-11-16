@@ -3,7 +3,7 @@
 import { motion } from "motion/react";
 import { Users } from "lucide-react";
 import { siteConfig } from "@/lib/config/site";
-import { riseIn, staggerChildren } from "@/lib/motion/tokens";
+import { riseIn, riseInVisible, staggerChildren } from "@/lib/motion/tokens";
 import { ButtonLink } from "@/components/ui/button";
 import { OrbitSystem } from "@/components/animations/orbit-system";
 import { Asteroids } from "@/components/animations/asteroids";
@@ -28,7 +28,7 @@ export function Hero() {
           </motion.p>
           <motion.h1
             id="hero-title"
-            variants={riseIn}
+            variants={riseInVisible}
             className="font-display text-[clamp(2.5rem,9vw,4.75rem)] font-bold leading-[0.98] tracking-[-0.035em] text-balance"
           >
             Five Worlds.

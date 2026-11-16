@@ -66,7 +66,8 @@ test.describe("solo orbit", () => {
     const saved = await readSoloGame(page);
     await answerRound(page, question(saved.rounds[0].questionId), saved.seed, "right");
     await expect(page.getByRole("heading", { name: "Correct!" })).toBeVisible();
-    const after = await page.evaluate(() => JSON.parse(localStorage.getItem("astroquint:solo:v1")!).rounds[0].points as number);
+    await page.waitForTimeout(200);
+    const after = (await readSoloGame(page)).rounds[0].points;
     expect(after).toBeGreaterThan(100);
     expect(after).toBeLessThanOrEqual(200);
   });
@@ -84,13 +85,12 @@ test.describe("solo orbit", () => {
     await expect(page.getByRole("list", { name: "Answer options" }).getByRole("button").first()).toBeDisabled();
   });
 
-  test("the timer runs out and scores zero", async ({ page }) => {
-    await page.clock.install();
+  test("the timer runs out and scores zero (server clock)", async ({ page }) => {
+    // Real time: the server, not the browser, decides when the round has expired.
     await page.goto("/play/solo");
     await page.getByRole("button", { name: "Launch solo run" }).click();
     await page.getByRole("button", { name: "Start Pattern Break" }).click();
-    await page.clock.runFor(21_000);
-    await expect(page.getByRole("heading", { name: "Time's up" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Time's up" })).toBeVisible({ timeout: 30_000 });
     await expect(page.getByText("+0 pts")).toBeVisible();
   });
 

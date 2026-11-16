@@ -78,8 +78,11 @@ export async function answerRound(page: Page, q: Question, seed: string, plan: P
   }
 }
 
-export async function readSoloGame(page: Page): Promise<{ seed: string; rounds: { questionId: string }[] }> {
-  return page.evaluate(() => JSON.parse(window.localStorage.getItem("astroquint:solo:v1") ?? "null"));
+/** Decode the (signed, not encrypted) solo state token saved on the device. */
+export async function readSoloGame(page: Page): Promise<{ seed: string; rounds: { questionId: string; points: number; outcome: string | null }[] }> {
+  await page.waitForFunction(() => !!window.localStorage.getItem("astroquint:solo:v2"));
+  const token = await page.evaluate(() => (JSON.parse(window.localStorage.getItem("astroquint:solo:v2")!) as { token: string }).token);
+  return JSON.parse(Buffer.from(token.split(".")[0], "base64url").toString("utf8"));
 }
 
 export function question(id: string): Question {
@@ -98,7 +101,7 @@ export async function answerBlind(page: Page, worldIndex: number) {
       await page.getByRole("list", { name: "Answer options" }).getByRole("button").first().click();
       return;
     case 1:
-      await page.getByRole("button", { name: /^1\b|.+/ }).filter({ has: page.locator("span", { hasText: /^1$/ }) }).first().click();
+      await page.locator('button[aria-keyshortcuts="1"]').click();
       return;
     case 2:
       await page.getByRole("button", { name: "Lock in order" }).click();

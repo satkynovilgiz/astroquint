@@ -23,6 +23,12 @@ export function SiteFooter() {
           <Link href="/how-to-play" transitionTypes={["nav-forward"]} className="min-h-11 content-center hover:text-fg">
             How to Play
           </Link>
+          <Link href="/privacy" transitionTypes={["nav-forward"]} className="min-h-11 content-center hover:text-fg">
+            Privacy
+          </Link>
+          <Link href="/terms" transitionTypes={["nav-forward"]} className="min-h-11 content-center hover:text-fg">
+            Terms
+          </Link>
           <button
             type="button"
             role="switch"

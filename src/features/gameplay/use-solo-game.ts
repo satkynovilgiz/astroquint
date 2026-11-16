@@ -1,16 +1,20 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { getQuestion } from "@/features/questions/bank";
-import { selectQuestions } from "@/features/questions/select";
-import { mulberry32, randomId } from "@/lib/utils/random";
-import { createGame, gameReducer, type GameAction, type GameState } from "./engine";
-import { toView } from "./view";
-import type { GameActions } from "./controller";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { api, ApiRequestError } from "@/lib/api/client";
+import type { Answer } from "@/features/questions/types";
+import type { GameActions, GameView } from "./controller";
 
-const SAVE_KEY = "astroquint:solo:v1";
+const SAVE_KEY = "astroquint:solo:v2";
 const RECENT_KEY = "astroquint:recent:v1";
 const RECENT_LIMIT = 30;
+
+interface SoloPayload {
+  token: string;
+  view: GameView;
+  serverNow: number;
+  playedIds: string[] | null;
+}
 
 function load<T>(key: string): T | null {
   try {
@@ -25,52 +29,103 @@ function save(key: string, value: unknown) {
     if (value === null) window.localStorage.removeItem(key);
     else window.localStorage.setItem(key, JSON.stringify(value));
   } catch {
-    /* storage unavailable — game still works for this session */
+    /* storage unavailable: the run still works for this session */
   }
 }
 
-function loadSavedGame(): GameState | null {
-  const g = load<GameState>(SAVE_KEY);
-  if (!g || g.version !== 1 || !Array.isArray(g.rounds) || g.rounds.some((r) => !getQuestion(r.questionId))) return null;
-  return g;
-}
+type ActionBody = { type: "begin" } | { type: "lockWager"; wager: number } | { type: "submit"; answer: Answer } | { type: "timeout" } | { type: "continue" } | { type: "arrive" };
 
 /**
- * Solo Orbit controller: runs the engine locally and saves progress to this
- * device so a refresh resumes the run. Solo is unranked practice; ranked
- * modes run the same engine on the server.
+ * Solo Orbit controller. The server runs the rules and holds the answers; the
+ * browser keeps only a signed state token (saved on this device so a refresh
+ * resumes the run).
  */
 export function useSoloGame() {
-  const [game, setGame] = useState<GameState | null>(() => loadSavedGame());
+  const [run, setRun] = useState<{ token: string; view: GameView; offset: number } | null>(() => load<{ token: string; view: GameView; offset: number }>(SAVE_KEY));
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const inflight = useRef(false);
+  const [retryTick, setRetryTick] = useState(0);
+  const retries = useRef(0);
 
   useEffect(() => {
-    save(SAVE_KEY, game && game.phase !== "complete" ? game : null);
-  }, [game]);
+    save(SAVE_KEY, run && run.view.phase !== "complete" ? run : null);
+  }, [run]);
 
-  const dispatch = useCallback((action: GameAction) => setGame((g) => (g ? gameReducer(g, action) : g)), []);
-
-  const start = useCallback((relaxed: boolean) => {
-    const recent = new Set(load<string[]>(RECENT_KEY) ?? []);
-    const id = randomId();
-    const questionIds = selectQuestions(mulberry32(parseInt(id.slice(0, 8), 16)), recent);
-    save(RECENT_KEY, [...questionIds, ...recent].slice(0, RECENT_LIMIT));
-    setGame(createGame({ id, questionIds, relaxed, now: Date.now() }));
+  const accept = useCallback((p: SoloPayload, sentAt: number) => {
+    const offset = p.serverNow - (sentAt + Date.now()) / 2;
+    if (p.playedIds) save(RECENT_KEY, [...p.playedIds, ...(load<string[]>(RECENT_KEY) ?? [])].slice(0, RECENT_LIMIT));
+    setRun({ token: p.token, view: p.view, offset });
   }, []);
 
-  const quit = useCallback(() => setGame(null), []);
+  const start = useCallback(
+    async (relaxed: boolean) => {
+      if (inflight.current) return;
+      inflight.current = true;
+      setBusy(true);
+      setError(null);
+      const sentAt = Date.now();
+      try {
+        accept(await api<SoloPayload>("/api/solo/start", { body: { relaxed, recent: load<string[]>(RECENT_KEY) ?? [] } }), sentAt);
+      } catch (err) {
+        setError(err instanceof ApiRequestError ? err.message : "Couldn't start a run.");
+      } finally {
+        inflight.current = false;
+        setBusy(false);
+      }
+    },
+    [accept],
+  );
+
+  const send = useCallback(
+    async (action: ActionBody) => {
+      if (inflight.current || !run) return;
+      inflight.current = true;
+      setBusy(true);
+      setError(null);
+      const sentAt = Date.now();
+      try {
+        const p = await api<SoloPayload>("/api/solo/action", { body: { token: run.token, action } });
+        accept(p, sentAt);
+        if (action.type === "timeout" && p.view.phase === "playing" && retries.current < 8) {
+          retries.current++;
+          setRetryTick((n) => n + 1);
+        } else if (action.type !== "timeout") retries.current = 0;
+      } catch (err) {
+        if (err instanceof ApiRequestError && (err.code === "expired" || err.code === "bad_token")) setRun(null);
+        setError(err instanceof ApiRequestError ? err.message : "Something went wrong. Please try again.");
+      } finally {
+        inflight.current = false;
+        setBusy(false);
+      }
+    },
+    [run, accept],
+  );
+
+  useEffect(() => {
+    if (retryTick === 0) return;
+    const t = setTimeout(() => void send({ type: "timeout" }), 400);
+    return () => clearTimeout(t);
+  }, [retryTick, send]);
+
+  const quit = useCallback(() => setRun(null), []);
 
   const actions: GameActions = useMemo(
     () => ({
-      begin: () => dispatch({ type: "begin", now: Date.now() }),
-      lockWager: (wager) => dispatch({ type: "lockWager", wager, now: Date.now() }),
-      submit: (answer) => dispatch({ type: "submit", answer, now: Date.now() }),
-      expire: () => dispatch({ type: "timeout", now: Date.now() }),
-      next: () => dispatch({ type: "continue" }),
-      arrive: () => dispatch({ type: "arrive" }),
+      begin: () => void send({ type: "begin" }),
+      lockWager: (wager) => void send({ type: "lockWager", wager }),
+      submit: (answer) => void send({ type: "submit", answer }),
+      expire: () => void send({ type: "timeout" }),
+      next: () => void send({ type: "continue" }),
+      arrive: () => void send({ type: "arrive" }),
     }),
-    [dispatch],
+    [send],
   );
 
-  const view = useMemo(() => (game ? toView(game) : null), [game]);
-  return { game, view, actions, start, quit };
+  const view: GameView | null = useMemo(
+    () => (run ? { ...run.view, deadline: run.view.deadline === null ? null : run.view.deadline - run.offset, busy, error } : null),
+    [run, busy, error],
+  );
+
+  return { view, actions, start, quit, busy, error, relaxed: run?.view.relaxed ?? false };
 }

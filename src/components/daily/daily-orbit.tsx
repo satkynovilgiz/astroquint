@@ -84,6 +84,7 @@ export function DailyOrbit() {
         number={status?.number ?? 0}
         onExit={() => {
           setActive(null);
+          window.scrollTo({ top: 0 });
           void refresh();
         }}
         onPractice={() => {
@@ -139,7 +140,7 @@ export function DailyOrbit() {
                   {status.result.correct}/5 correct
                   {status.result.rank ? ` · Rank #${status.result.rank.rank} of ${status.result.rank.total}` : ""}
                 </p>
-                <div className="mt-4 flex flex-col gap-2 sm:flex-row">
+                <div className="mt-4 flex flex-col flex-wrap gap-2 sm:flex-row">
                   <ButtonLink href={`/results/${status.result.matchId}`} transitionTypes={["nav-forward"]} variant="secondary" icon={<Trophy className="h-4 w-4" aria-hidden="true" />}>
                     View result card
                   </ButtonLink>

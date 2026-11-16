@@ -2,156 +2,140 @@
 
 **Five Worlds. One Brilliant Mind.**
 
-Astroquint is a browser puzzle and knowledge game. Each game is a short trip through five worlds, and each world tests a different kind of thinking:
+Astroquint is a browser puzzle and knowledge game. Each 2–4 minute game travels through five worlds, and each one tests a different kind of thinking:
 
-| # | World | Skill | Timer |
-|---|-------|-------|-------|
-| 01 | Pattern Break | Logic & patterns | 20 s |
-| 02 | Truth Trap | Spot the one false fact | 20 s |
-| 03 | Timeline | Put events in chronological order | 20 s |
-| 04 | GeoTap | Find the country on a map | 25 s |
-| 05 | Final Bet | Wager up to 300 points on a final question | 20 s |
+| # | World | Mechanic | Timer |
+|---|-------|----------|-------|
+| 01 | **Pattern Break** | Find the rule in a sequence and pick what comes next (4 options) | 20 s |
+| 02 | **Truth Trap** | Three statements, one false: find the lie | 20 s |
+| 03 | **Timeline** | Drag (or use the arrow buttons) to put events in chronological order | 20 s |
+| 04 | **GeoTap** | Tap the right country on an interactive world map | 25 s |
+| 05 | **Final Bet** | Wager up to 300 points, then answer the toughest question | 20 s |
 
-Modes: **Solo Orbit** (no account), **Daily Orbit** (the same questions for everyone, one ranked attempt per UTC day) and **Party Mode** (private rooms for 2–8 players with synchronized rounds).
+**Modes:**
+- **Solo Orbit:** no account needed, with an optional relaxed mode that has no timer.
+- **Daily Orbit:** everyone gets the same questions, with one ranked attempt per UTC day, a leaderboard, and practice replays.
+- **Party Mode:** a private real-time room for 2–8 players.
 
-## Status
-
-| Milestone | Scope | State |
-|-----------|-------|-------|
-| 1 | Foundation, design system, motion system, homepage, mode select | ✅ Done |
-| 2 | Full five-world solo game, question bank, planet travel, results | ✅ Done |
-| 3 | Server-side scoring, Daily Orbit, leaderboards, profiles, achievements, share cards | ✅ Done (memory store; Supabase adapter ready) |
-| 4 | Real-time Party Mode | ✅ Done (SSE locally; Supabase Realtime adapter ready) |
-| 5 | Polish, audio, accessibility review, production readiness | — |
-
-
-## Question bank
-
-Questions live in `content/questions/*.json`, one file per world. There are 73 approved questions (18 Pattern Break, 11 Truth Trap, 10 Timeline, 23 GeoTap, 11 Final Bet).
-
-- **Schema:** each question is validated against `src/features/questions/schema.ts` by `tests/unit/question-bank.test.ts`. The checks cover IDs, option counts, exactly one false statement, distinct event years, GeoTap countries that exist on the map, and https sources.
-- **Adding questions:** append to the JSON file and run `npm test`. No UI code changes are needed.
-- **Review status:** only questions with `review.status = "approved"` are ever served. Every factual statement, event and answer cites a reference. Pattern questions are pure arithmetic or logic.
-- **What "approved" means:** the facts were chosen to be well established and checked editorially against the cited reference. They have **not** been through a separate human fact-check. That's recommended before a public launch.
-- **No answer leaks:** the public question shown to a player never contains the answer (enforced by a test). Option and event order is shuffled deterministically per game seed.
-- **Map data:** GeoTap uses Natural Earth 1:110m country boundaries, which are public domain (via `world-atlas`). They are projected at build time into `src/features/geo/world-map.json` with `npm run build:map`.
-
-## Server-authoritative play (Daily Orbit)
-
-- **Identity:** guests get a random id in a signed, HttpOnly cookie. No account is needed. Clearing cookies creates a new guest, so anonymous play can't be made fully abuse-proof. The one-attempt rule is enforced per guest identity, and starting a game is rate-limited per IP.
-- **Server-run rules:** the server runs the same pure engine as Solo and records start times, deadlines and answers with its own clock. Clients only send intents (begin / lock wager / submit / timeout / continue). Speed bonuses come from server timestamps, with a 400 ms grace for network delay.
-- **No double scoring:** concurrent requests are serialised with compare-and-swap versions. Each round's answer is stored once in an audit table keyed by (match, round, player).
-- **Daily questions:** they're chosen deterministically per UTC day and frozen in `daily_challenges` on first use. Everyone gets the same questions in the same order. The ranked match id is deterministic per player and day, so there's exactly one ranked attempt (resumable). Practice runs are separate and never ranked.
-- **No leaks:** solutions are never sent before a round is locked. Public result pages (`/results/[id]`) show only scores and outcomes, not question content, so sharing can't spoil the day's Daily Orbit.
-
-## Party Mode
-
-- **Rooms:** 2–8 players. Codes are 6 characters from an alphabet without look-alikes (no I, O, 0 or 1), generated with a cryptographic RNG, and rooms expire after 2 hours of inactivity. Players join by link or code. The host controls start, skip, kick and rematch, and everyone else marks themselves ready.
-- **Server-authoritative:** the room is a pure, time-driven state machine (`src/features/party/engine.ts`). Every phase boundary comes from the schedule, not from whoever polls first, and any request advances the room identically. So no background timers are needed, even on serverless. Answers are scored with server timestamps and stored once per player per round. Writes use compare-and-swap with jittered retries, sized so a burst of 8 simultaneous answers always lands.
-- **Live updates:** server-sent events (`/api/party/[code]/events`) locally and on single-server hosting. When Supabase is configured, the server publishes Realtime *broadcast* messages and clients subscribe with the anon key. Messages only say "the room changed", so clients always re-fetch the authoritative state. Clients also poll every 2.5 s, which doubles as presence and covers missed pushes.
-- **Presence and reconnecting:** a player counts as offline after 15 s without contact. Rounds don't wait for offline players, and if the host is gone for 30 s the longest-standing connected player becomes host. Reloading or reconnecting keeps your seat, because the seat is tied to the signed session cookie.
-- **Early phases:** a round reveals as soon as everyone connected has answered, and the final question starts as soon as everyone has locked a wager.
-- **Limitations:** SSE plus the memory store need a single server process. For multi-instance production, configure Supabase (database and Realtime). Party games aren't added to profiles or leaderboards.
-
-## Tech stack
-
-- **Next.js 16** (App Router, Cache Components, React 19.3 `<ViewTransition>`), **TypeScript** (strict)
-- **Tailwind CSS v4**: design tokens live in `src/app/globals.css` under `@theme`
-- **Motion for React** (`motion/react`) for UI motion; CSS keyframes and SVG for ambient motion; **Canvas** only for the starfield
-- **Lucide** icons, **Zod** (validation, used from Milestone 2)
-- **Vitest** + Testing Library for unit/component tests, **Playwright** for end-to-end tests
-- Planned: **Supabase** (Postgres, Auth, Realtime, RLS), hosted on **Vercel**
-
-## Getting started
+## Quick start
 
 ```bash
 npm install
-cp .env.example .env.local   # then set SESSION_SECRET (see below)
-npm run dev                  # http://localhost:3000
+cp .env.example .env.local
+# put a random 32+ char value in SESSION_SECRET, e.g.:
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+npm run dev            # → http://localhost:3000
 ```
 
-`SESSION_SECRET` (32+ random characters) signs guest-session cookies. It's **required** for `npm start` and in production. `npm run dev` falls back to a random per-process secret. To generate one: `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`.
-
-### Storage: memory by default, Supabase when configured
-
-Ranked play, leaderboards and profiles go through a storage interface (`src/server/store`):
-
-- **No Supabase variables set:** an **in-memory store** is used. Everything works locally, but data resets when the server restarts, and it can't be shared across serverless instances. The Daily page shows a note when this mode is active.
-- **`NEXT_PUBLIC_SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` set:** the **Supabase store** is used. Apply `supabase/migrations/0001_init.sql` first. That migration enables RLS on every table and grants nothing to `anon` or `authenticated`. Browsers never touch the database directly; all access goes through the server API.
-
-⚠️ The Supabase adapter matches the migration's schema, but it hasn't been run against a live project in this repo because no credentials were available. Test it against a staging project before launch.
+Everything, including ranked Daily Orbit and multiplayer Party Mode, works locally **without any external service**. Without Supabase variables, data lives in server memory and resets when the server restarts.
 
 ### Scripts
 
-| Script | What it does |
-|--------|--------------|
+| Script | |
+|--------|---|
 | `npm run dev` | Development server |
-| `npm run build` / `npm start` | Production build / serve |
-| `npm run lint` | ESLint |
-| `npm run typecheck` | `tsc --noEmit` |
-| `npm run test` | Vitest unit + component tests |
-| `npm run test:e2e` | Playwright tests against the production build (run `npm run build` first; first time: `npx playwright install chromium`) |
+| `npm run build` / `npm start` | Production build / serve (needs `SESSION_SECRET`) |
+| `npm run lint` | ESLint (Next.js + React Compiler rules) |
+| `npm run typecheck` | Route typegen + `tsc --noEmit` (strict) |
+| `npm test` | Vitest: 156 unit/component tests |
+| `npm run test:e2e` | Playwright: 98 browser tests against the production build (`npm run build` first; first run: `npx playwright install chromium`) |
 | `npm run check` | lint → typecheck → test → build |
+| `npm run build:map` | Regenerate GeoTap map paths from Natural Earth data |
 
-## Project structure
+## Environment variables
+
+| Variable | Required | Purpose |
+|----------|----------|---------|
+| `SESSION_SECRET` | **Production: yes** | HMAC key for guest-session cookies and Solo state tokens (32+ chars). Dev falls back to a random per-process key. |
+| `NEXT_PUBLIC_SITE_URL` | Recommended | Absolute URL for metadata, Open Graph and the sitemap |
+| `NEXT_PUBLIC_SUPABASE_URL` | Optional | Turns on the Supabase store and Realtime |
+| `SUPABASE_SERVICE_ROLE_KEY` | With Supabase | **Server-only**. Never prefix it with `NEXT_PUBLIC_` and never commit it. |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | With Supabase | Lets browsers subscribe to Realtime *broadcast* channels (it gives no table access) |
+
+## Deploying (Vercel + Supabase)
+
+1. **Supabase:** create a project, then run `supabase/migrations/0001_init.sql` (SQL editor or `supabase db push`). If you have pg_cron, schedule the cleanup with `select cron.schedule('astroquint-cleanup', '17 * * * *', 'select public.astroquint_cleanup()');`.
+2. **Vercel:** import the GitHub repository (Next.js preset) and set the environment variables above for Production and Preview. Use a different `SESSION_SECRET` per environment.
+3. **Deploy**, then smoke-test: play a Solo run, play a ranked Daily Orbit, check it appears on `/leaderboard`, and run a two-device Party match.
+4. **Before going public:** complete and legally review `/privacy` and `/terms`. Both are clearly marked templates.
+
+> ⚠️ **Not verified against a live Supabase project.** No credentials were available while building, so the Supabase store and the Realtime broadcast adapter (`src/server/store/supabase.ts`, `src/server/realtime.ts`) were written against the migration's schema and the documented APIs, but never run. All automated tests use the memory store. Test against a staging project first.
+>
+> **Without Supabase on Vercel**, Solo still works because its state travels in a signed token. Daily and Party need shared storage: the memory store isn't shared between serverless instances. Use Supabase, or a single long-running Node server (`npm start`).
+
+## Architecture
 
 ```
 src/
-  app/                    routes (/, /play, /how-to-play, /play/solo, /daily, /party, /leaderboard, /profile), metadata, OG image
-  components/
-    animations/           starfield (canvas), planet (SVG), orbit system, ship, asteroids, warp bus
-    brand/                logo + brand palette
-    home/                 hero, launch sequence, worlds preview
-    layout/               header, footer, providers, page transitions, status screens
-    play/                 game-mode selection + mode illustrations
-    ui/                   Button/ButtonLink, Card, Dialog (native <dialog>), Switch
-  features/
-    worlds/               the five world definitions (single source of truth)
-    scoring/              deterministic scoring + Final Bet rules (pure functions)
-    daily/                UTC day keys and countdowns
-    preferences/          per-device sound / motion preferences
-    audio/                original Web Audio synth sounds (no audio files)
-  hooks/                  media queries, reduced motion, page visibility, clock, scroll
-  lib/                    site config, motion tokens, utilities
-tests/
-  unit/                   Vitest
-  e2e/                    Playwright
+  app/                 routes + API route handlers (/api/solo, /api/daily, /api/matches, /api/party, /api/profile, /api/leaderboard)
+  components/          UI: animations/, game/, worlds/, party/, daily/, leaderboard/, profile/, layout/, ui/
+  features/            framework-free domain logic
+    gameplay/          engine.ts (pure state machine), view.ts, summary.ts, client controllers
+    party/             engine.ts (pure, time-driven room machine), client hook
+    questions/         types, Zod schema, bank loader, deterministic presentation/evaluation, selection
+    scoring/ achievements/ worlds/ daily/ share/ audio/ preferences/
+  server/              server-only: sessions, store (memory | supabase), games, daily, party, solo tokens, realtime, rate limits
+content/questions/     73 approved questions (JSON, one file per world)
+supabase/migrations/   schema, constraints, RLS
+tests/unit, tests/e2e
 ```
 
-Game rules (`features/`) don't depend on React. The server will run the same scoring functions in Milestone 3, so the client never decides competitive scores.
+The **same pure engine** runs every mode. React components only see a `GameView` view model, which never contains unrevealed answers, and send *intents* such as begin, submit or lock wager. The server decides everything else.
 
-## Motion system
+## Security model
 
-All timing comes from `src/lib/motion/tokens.ts`, mirrored as CSS variables in `globals.css`:
+- **Answers never reach the browser before reveal.** The question bank is imported only by server code. A build check confirmed that explanations and answer keys are absent from `.next/static`. Solo also runs on the server, with its state carried in an HMAC-signed token.
+- **Server time and server scoring.** Deadlines and speed bonuses come from server timestamps, with a 400 ms network grace. Early timeouts are refused and late answers count as timeouts.
+- **No double scoring.** All writes use compare-and-swap versions. A unique `(match, round, player)` audit row and engine phase checks make duplicate or concurrent submissions no-ops.
+- **One ranked attempt per day.** The ranked match id is deterministic per player and day (plus a partial unique index in Postgres). Practice is separate.
+- **Identity:** an anonymous guest id lives in a signed, HttpOnly, SameSite=Lax cookie. Clearing cookies creates a new guest, so anonymous play can't be made fully abuse-proof. Rate limits are per IP and per instance.
+- **Input validation:** Zod at every API boundary, a body-size cap, validated display names (rendered as text, never HTML), and room codes without look-alike characters from a crypto RNG.
+- **Database:** RLS is enabled on every table with no grants to `anon` or `authenticated`. The service role is used only on the server. Solutions sit in a separate private table.
+- **Headers:** nosniff, `X-Frame-Options: DENY` plus `frame-ancestors 'none'`, Referrer-Policy, Permissions-Policy and HSTS. *A full script CSP is not enabled yet:* it needs per-request nonces, which conflicts with the static prerendering used here.
 
-- **Durations:** instant 100 ms · fast 150 ms · base 250 ms · slow 450 ms · scene 700 ms
-- **Easing:** `arrive` (entrances), `depart` (exits, always faster than entrances), `move` (on-screen moves)
-- **Springs:** `press` (buttons), `settle` (cards), `float` (pointer parallax)
+## Motion and accessibility
 
-What runs today:
+- **Motion tokens** (`src/lib/motion/tokens.ts`, mirrored as CSS variables) cover durations, easing curves and springs.
+- **Hover feedback** uses scale rather than translation, which avoids hover-jitter loops.
+- **Continuous animation** (canvas starfield, orbit system) uses one rAF loop, pauses when the tab is hidden, and scales star count with the device.
+- **Reduced motion:** the OS setting *or* the in-game switch freezes loops and turns off view-transition and CSS animation.
+- **Accessibility:**
+  - Keyboard play everywhere: A–D or 1–4 to answer, Alt+↑/↓ in Timeline, arrow keys on the map.
+  - Every drag action has a button alternative.
+  - Visible focus states, a skip link and live regions for timers and scores.
+  - Native `<dialog>` menus.
+  - Relaxed (untimed) mode.
+- **Automated a11y checks:** axe-core runs in e2e over every page plus in-game, reveal and menu states, with zero WCAG 2.2 AA violations at the time of writing.
 
-- **Starfield:** a canvas with depth layers, pointer and scroll parallax, and a warp mode where stars stream past (`requestWarp()`). Planet travel will reuse it in Milestone 2.
-- **Orbit system:** a lit, ringed home planet with the five worlds on a tilted orbit. Worlds are depth-sorted every frame so they pass behind and in front of the core. One rAF loop writes transforms directly, with no React re-renders.
-- **Launch:** "Start Playing" triggers warp, a bloom and a `warp` view transition into mode select. It takes about 0.65 s and any click skips it.
-- **Page transitions:** React `<ViewTransition>` with `nav-forward`, `nav-back` and `warp` types. The header stays anchored.
-- **Micro-interactions:** spring press/hover on buttons and cards, an animated nav indicator, a sound toggle and switches.
+### Measured performance
 
-Performance and accessibility:
+Measured with the production build at 390px width, 4× CPU throttle, locally served (no network throttling):
 
-- Animations use transform and opacity only.
-- The starfield's star count scales with screen size and device capability.
-- Loops pause when the tab is hidden, and listeners and frames are cleaned up on unmount.
-- **Reduced motion** follows the OS setting *or* the in-game "Reduce motion" switch (menu and footer). It freezes loops, draws one static starfield frame, and turns off CSS and view-transition animation.
+| Page | FCP | LCP | CLS | Animation |
+|------|-----|-----|-----|-----------|
+| `/` | 172 ms | **252 ms** | 0 | 61 fps |
+| `/play` | 124 ms | 124 ms | 0 | 61 fps |
+| `/play/solo` | 124 ms | 1352 ms | 0.013 | 61 fps |
 
-## Testing
+These are lab numbers from one machine. Measure field data after deploying, for example with Vercel Speed Insights.
 
-- **Unit (31):** scoring (speed bonus, timeouts, wager limits, the no-negative rule), world config including WCAG contrast of world label colours, UTC rollover, starfield and orbit maths, the preferences store, header/menu/mode-select/world-preview components.
-- **E2E (73):** every page at 320, 375, 390, 414, 768, 1024 and 1440 px with no horizontal scrolling; touch targets ≥ 44 px; orbit animates normally and stays still under reduced motion; launch navigation; mobile menu, Escape and saved preferences; skip link; keyboard activation of mode cards; 404.
+## Question bank
 
-## Deployment (planned)
+There are 73 approved questions in `content/questions/*.json`, and each one is validated by `tests/unit/question-bank.test.ts`. To add questions, append to the JSON and run `npm test`; no UI changes are needed. Every factual statement or event cites an https source. Pattern questions are pure arithmetic or logic.
 
-The app targets Vercel and has no environment requirements until Milestone 3. Supabase setup, migrations and RLS policies will be documented when Milestone 3 lands.
+**Review status:** "approved" means the questions were chosen to be well established and checked editorially against the cited reference. They have *not* had an independent human fact-check yet, which is recommended before launch.
 
-## Content & legal
+GeoTap uses public-domain Natural Earth 1:110m boundaries (via `world-atlas`), pre-projected at build time.
 
-All artwork is original SVG/CSS, and all sounds are synthesised at runtime. Privacy and terms pages will be added as clearly marked templates in Milestone 5 for legal review. They are not final policies.
+## Known limitations
+
+- Supabase and Realtime adapters are untested against a live project (see Deploying).
+- Rate limits are per server instance.
+- Party games and Solo runs don't appear on profiles; only Daily games do.
+- Guest identity is device-bound. Accounts with Supabase Auth would be a natural next step.
+- No full script CSP yet (needs nonces).
+- Sounds are synthesised in code, so there are no audio files and nothing to license.
+
+## Licence and assets
+
+All artwork is original SVG, CSS or Canvas. Map data is from Natural Earth (public domain). Fonts are Space Grotesk and Inter (SIL Open Font License), served through `next/font`.

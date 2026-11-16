@@ -134,7 +134,7 @@ export function ProfileView() {
         </h2>
         <ul className="mt-3 grid gap-3 sm:grid-cols-2">
           {data.achievements.map((a) => (
-            <li key={a.id} className={cn("panel flex items-center gap-3 rounded-2xl p-3.5", a.unlockedAt ? "border-reward/50" : "opacity-55")}>
+            <li key={a.id} className={cn("panel flex items-center gap-3 rounded-2xl p-3.5", a.unlockedAt ? "border-reward/50" : "border-dashed")}>
               <span className={cn("grid h-11 w-11 shrink-0 place-items-center rounded-xl text-2xl", a.unlockedAt ? "bg-reward/20" : "bg-white/5")} aria-hidden="true">
                 {a.unlockedAt ? a.glyph : <Lock className="h-4 w-4 text-fg-muted" />}
               </span>
@@ -155,7 +155,7 @@ export function ProfileView() {
         {data.history.length === 0 ? (
           <p className="panel mt-3 rounded-2xl p-5 text-fg-muted">
             No server-recorded games yet.{" "}
-            <Link href="/daily" className="text-action hover:underline">
+            <Link href="/daily" className="text-action underline underline-offset-2">
               Play today&apos;s Daily Orbit
             </Link>{" "}
             to start your logbook.

@@ -78,7 +78,6 @@ export function ChoiceGrid({
               whileTap={locked ? undefined : { scale: 0.97 }}
               transition={spring.press}
               aria-keyshortcuts={`${LETTERS[i]} ${i + 1}`}
-              aria-label={`${LETTERS[i]}: ${opt}${isCorrect ? " — correct answer" : ""}${isWrongChoice ? " — your answer, incorrect" : ""}`}
               className={cn(
                 "panel relative flex min-h-16 w-full items-center gap-4 rounded-2xl px-4 py-3 text-left transition-[border-color,background-color,opacity] duration-[var(--dur-base)]",
                 !locked && "hover:border-line-strong",
@@ -95,11 +94,11 @@ export function ChoiceGrid({
                   isCorrect ? "bg-action text-action-fg" : isWrongChoice ? "bg-danger text-space" : "bg-white/8 text-fg-muted",
                 )}
                 style={isChosen && !showOutcome ? { background: accent, color: "#0B1020" } : undefined}
-                aria-hidden="true"
               >
-                {isCorrect ? <Check className="h-4 w-4" strokeWidth={3} /> : isWrongChoice ? <X className="h-4 w-4" strokeWidth={3} /> : LETTERS[i]}
+                {isCorrect ? <Check className="h-4 w-4" strokeWidth={3} aria-hidden="true" /> : isWrongChoice ? <X className="h-4 w-4" strokeWidth={3} aria-hidden="true" /> : LETTERS[i]}
               </span>
               <span className="tabular font-display text-xl font-semibold">{opt}</span>
+              {(isCorrect || isWrongChoice) && <span className="sr-only">{isCorrect ? ", correct answer" : ", your answer, incorrect"}</span>}
               {isCorrect && isChosen && <Burst />}
             </motion.button>
           </motion.li>

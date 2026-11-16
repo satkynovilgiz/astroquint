@@ -29,9 +29,9 @@ export function LeaderboardTable({ rows, empty }: { rows: LeaderRow[]; empty: st
           >
             {r.rank === 1 ? <Crown className="h-4 w-4" aria-label="1st" /> : r.rank}
           </span>
-          <span className="min-w-0 flex-1 truncate font-medium">
-            {r.displayName}
-            {r.isYou && <span className="ml-2 rounded-pill bg-action px-2 py-0.5 text-xs font-bold text-action-fg">You</span>}
+          <span className="flex min-w-0 flex-1 items-center gap-2">
+            <span className="truncate font-medium">{r.displayName}</span>
+            {r.isYou && <span className="shrink-0 rounded-pill bg-action px-2 py-0.5 text-xs font-bold text-action-fg">You</span>}
           </span>
           <span className="hidden text-sm text-fg-muted sm:inline">{r.correct}/5</span>
           <span className="tabular w-16 text-right font-display text-lg font-bold">{r.score}</span>

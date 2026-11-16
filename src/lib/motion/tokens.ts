@@ -56,6 +56,15 @@ export const riseIn = {
   },
 } as const;
 
+/**
+ * Entrance for the page's largest text (LCP element): slide only, no fade, so
+ * the browser can paint it — and count it as contentful — immediately.
+ */
+export const riseInVisible = {
+  hidden: { y: 18 },
+  visible: { y: 0, transition: { duration: duration.slow, ease: ease.arrive } },
+} as const;
+
 export const staggerChildren = (delayChildren = 0, each: number = stagger.base) => ({
   hidden: {},
   visible: { transition: { delayChildren, staggerChildren: each } },

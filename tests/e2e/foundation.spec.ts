@@ -1,7 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 
 const WIDTHS = [320, 375, 390, 414, 768, 1024, 1440];
-const PAGES = ["/", "/play", "/how-to-play", "/play/solo", "/daily", "/party", "/leaderboard", "/profile"];
+const PAGES = ["/", "/play", "/how-to-play", "/play/solo", "/daily", "/party", "/leaderboard", "/profile", "/privacy", "/terms"];
 const SHOTS = process.env.E2E_SHOTS_DIR;
 
 async function noHorizontalOverflow(page: Page) {

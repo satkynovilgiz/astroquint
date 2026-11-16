@@ -173,7 +173,7 @@ export function Results({
               <motion.li
                 key={a.id}
                 variants={{ hidden: { opacity: 0, y: 12, scale: 0.95 }, visible: { opacity: 1, y: 0, scale: 1, transition: spring.settle } }}
-                className={cn("panel relative flex items-center gap-3 overflow-hidden rounded-2xl p-3.5", got ? "border-reward/50" : "opacity-55")}
+                className={cn("panel relative flex items-center gap-3 overflow-hidden rounded-2xl p-3.5", got ? "border-reward/50" : "border-dashed")}
               >
                 {got && (
                   <motion.span
