@@ -3,6 +3,7 @@ import { displayNameSchema } from "@/lib/validation/game";
 import { ensurePlayerId } from "@/server/session";
 import { profileOverview, renameProfile } from "@/server/profiles";
 import { handle, json, limit, parseBody } from "@/server/http";
+import { limitShared } from "@/server/rate-limit-shared";
 
 export const GET = handle(async (req: Request) => {
   limit(req, "profile-read", 60);
@@ -11,7 +12,7 @@ export const GET = handle(async (req: Request) => {
 });
 
 export const PATCH = handle(async (req: Request) => {
-  limit(req, "profile-write", 10);
+  await limitShared(req, "profile-write", 10, 60);
   const { displayName } = await parseBody(req, z.object({ displayName: displayNameSchema }));
   const { playerId } = await ensurePlayerId();
   const p = await renameProfile(playerId, displayName);

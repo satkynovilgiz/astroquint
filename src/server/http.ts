@@ -68,9 +68,30 @@ function routeOf(args: unknown[]): string {
  * honest message; unexpected exceptions are logged in full server-side and
  * never leak internals to the browser.
  */
+/**
+ * Defence in depth against cross-site requests (on top of SameSite=Lax
+ * cookies): a browser-sent Origin on a state-changing request must match the
+ * host. Requests without an Origin header (same-origin GETs, server tools)
+ * are unaffected.
+ */
+function assertSameOrigin(req: Request) {
+  if (req.method === "GET" || req.method === "HEAD" || req.method === "OPTIONS") return;
+  const origin = req.headers.get("origin");
+  if (!origin) return;
+  const host = req.headers.get("x-forwarded-host") ?? req.headers.get("host");
+  let originHost: string;
+  try {
+    originHost = new URL(origin).host;
+  } catch {
+    throw new ApiError(403, "bad_origin", "Request blocked: unexpected origin.");
+  }
+  if (host && originHost !== host) throw new ApiError(403, "bad_origin", "Request blocked: unexpected origin.");
+}
+
 export function handle<A extends unknown[]>(fn: (...args: A) => Promise<Response>) {
   return async (...args: A): Promise<Response> => {
     try {
+      if (args[0] instanceof Request) assertSameOrigin(args[0]);
       return await fn(...args);
     } catch (err) {
       unstable_rethrow(err); // let Next.js internals (e.g. prerender bail-outs) through

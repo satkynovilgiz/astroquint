@@ -17,6 +17,22 @@ Astroquint is a browser puzzle and knowledge game. Each 2–4 minute game travel
 - **Daily Orbit:** everyone gets the same questions, with one ranked attempt per UTC day, a leaderboard, and practice replays.
 - **Party Mode:** a private real-time room for 2–8 players.
 
+**Live:** https://astroquint.vercel.app (Vercel, production database on Supabase). Check status at [`/api/health`](https://astroquint.vercel.app/api/health).
+
+## Environments and data safety
+
+| Environment | Where | Database |
+|---|---|---|
+| **Production** | `astroquint.vercel.app` (deploys from `main`) | Supabase `astroquint-db`, connected to the **Production** environment only |
+| **Preview** | Vercel preview deployments | None yet: Daily/Party show "not connected". Solo works. A staging database is pending (see below). |
+| **Local dev** | `npm run dev` | In-memory store (no database credentials in `.env.local`) |
+| **Automated tests** | `npm test`, `npm run test:e2e` | Always in-memory: `playwright.config.ts` blanks Supabase variables |
+| **Live checks** | `npm run test:prod` | Production. Creates real data, so name test players "QA Bot …" and remove them afterwards |
+
+Production database credentials must never be placed in `.env.local`. If a development server ever connects to a remote Supabase project, it prints a loud warning naming the host.
+
+**Staging database (pending):** Supabase's free plan allows 2 active projects per owner, and that limit is reached. To add staging, pause or delete another free project or upgrade. Then run `vercel integration add supabase --name astroquint-staging --no-connect`, connect it with `vercel integration resource connect astroquint-staging -e preview -e development --yes`, apply the migrations and run `vercel env pull`.
+
 ## Quick start
 
 ```bash
@@ -76,6 +92,18 @@ Every API error includes a `code` and the Vercel request id. The UI shows them a
 
 > ✅ **Verified on the live site (Nov 2026).** Supabase was connected through the Vercel Marketplace and the migration was applied. `npm run test:prod` then played a ranked Daily run, a practice run and a two-browser Party match on https://astroquint.vercel.app, with no server errors. Local tests always use the in-memory store: `playwright.config.ts` blanks the Supabase variables, so tests never write to the real database.
 >
+**Migrations** (`supabase/migrations/`, apply in order):
+
+| File | Status in production |
+|---|---|
+| `0001_init.sql` | ✅ applied (Nov 2026) |
+| `0002_rate_limits.sql` | ⏳ written, **awaiting approval** to apply. Until then rate limits are per instance (the app falls back automatically). |
+
+**Backups and data persistence:**
+- **Free plan:** Supabase's free plan has no automatic daily backups, and an inactive free project is paused after a period without traffic. For real players, upgrade to Pro, which adds daily backups and no pausing.
+- **Manual export:** `scripts/export-db.mjs` makes a read-only logical backup (JSON) of every table. Run it with `POSTGRES_URL_NON_POOLING` set. The output contains player data, so keep it private; `/backups/` is gitignored.
+- **Cleanup isn't scheduled yet.** `public.astroquint_cleanup()` removes expired rooms, practice matches older than 30 days and stale rate-limit rows, but it only runs once it's scheduled with pg_cron (needs approval because it deletes data). Until then, expired rooms are refused by the app and simply remain in the table.
+
 > **Without Supabase on Vercel**, Solo still works because its state travels in a signed token. Daily and Party need shared storage: the memory store isn't shared between serverless instances. Use Supabase, or a single long-running Node server (`npm start`).
 
 ## Architecture
@@ -102,10 +130,13 @@ The **same pure engine** runs every mode. React components only see a `GameView`
 - **Answers never reach the browser before reveal.** The question bank is imported only by server code. A build check confirmed that explanations and answer keys are absent from `.next/static`. Solo also runs on the server, with its state carried in an HMAC-signed token.
 - **Server time and server scoring.** Deadlines and speed bonuses come from server timestamps, with a 400 ms network grace. Early timeouts are refused and late answers count as timeouts.
 - **No double scoring.** All writes use compare-and-swap versions. A unique `(match, round, player)` audit row and engine phase checks make duplicate or concurrent submissions no-ops.
-- **One ranked attempt per day.** The ranked match id is deterministic per player and day (plus a partial unique index in Postgres). Practice is separate.
-- **Identity:** an anonymous guest id lives in a signed, HttpOnly, SameSite=Lax cookie. Clearing cookies creates a new guest, so anonymous play can't be made fully abuse-proof. Rate limits are per IP and per instance.
+- **One ranked attempt per day.** The ranked match id is a keyed hash of player and day: deterministic, but shared `/results/…` links never reveal the player's id. A partial unique index in Postgres backs it up. Practice is separate.
+- **Identity:** an anonymous guest id lives in a signed, HttpOnly, SameSite=Lax cookie. Clearing cookies creates a new guest, so anonymous play can't be made fully abuse-proof. Rotating `SESSION_SECRET` signs everyone out and ends in-progress Solo runs.
+- **Rate limits:** a per-instance limiter on every route. Expensive actions (create room, start Daily, new session, rename) also go through a database-backed limiter, keyed by a salted IP hash, once migration 0002 is applied.
+- **Cross-site requests:** state-changing API calls with a foreign `Origin` are rejected (403), on top of SameSite=Lax cookies.
 - **Input validation:** Zod at every API boundary, a body-size cap, validated display names (rendered as text, never HTML), and room codes without look-alike characters from a crypto RNG.
-- **Database:** RLS is enabled on every table with no grants to `anon` or `authenticated`. The service role is used only on the server. Solutions sit in a separate private table.
+- **Database:** RLS is enabled on every table with no grants to `anon` or `authenticated`. The service role is used only on the server. Solutions sit in a separate private table. *Verified on production:* using the public anon key from the live site's JavaScript, every table read, a fake score insert and the cleanup RPC all return `401 permission denied`.
+- **Realtime:** Party pings carry only a version number. The public anon key can send fake pings, which can't change game state; clients coalesce them into at most one re-fetch per 400 ms.
 - **Headers:** nosniff, `X-Frame-Options: DENY` plus `frame-ancestors 'none'`, Referrer-Policy, Permissions-Policy and HSTS. *A full script CSP is not enabled yet:* it needs per-request nonces, which conflicts with the static prerendering used here.
 
 ## Themes
@@ -146,13 +177,20 @@ These are lab numbers from one machine. Measure field data after deploying, for 
 
 There are 73 approved questions in `content/questions/*.json`, and each one is validated by `tests/unit/question-bank.test.ts`. To add questions, append to the JSON and run `npm test`; no UI changes are needed. Every factual statement or event cites an https source. Pattern questions are pure arithmetic or logic.
 
-**Review status:** "approved" means the questions were chosen to be well established and checked editorially against the cited reference. They have *not* had an independent human fact-check yet, which is recommended before launch.
+**Review status:** "approved" means the questions were chosen to be well established and checked editorially against the cited reference.
+
+**Content audit (Nov 2026):**
+- **Sources:** all 102 source URLs resolve, with no broken links or redirects.
+- **Spot-check:** 20 higher-risk claims were checked against the cited article's text. One wasn't supported (koala fingerprints) and was replaced with a sourced fact.
+- **Give-away fixed:** one cross-world give-away was removed. The old Final Bet question "capital of Australia" was answered by a GeoTap clue in the same game. A test now blocks Final Bet answers from appearing in other worlds.
+- **Still recommended:** an independent human fact-check before a wider launch. The remaining claims were selected as well established but weren't individually text-verified.
 
 GeoTap uses public-domain Natural Earth 1:110m boundaries (via `world-atlas`), pre-projected at build time.
 
 ## Known limitations
 
-- Rate limits are per server instance.
+- Rate limits are per server instance until migration 0002 is applied.
+- No staging database yet (free-plan project limit).
 - Party games and Solo runs don't appear on profiles; only Daily games do.
 - Guest identity is device-bound. Accounts with Supabase Auth would be a natural next step.
 - No full script CSP yet (needs nonces).

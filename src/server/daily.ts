@@ -1,4 +1,6 @@
 import "server-only";
+import { createHmac } from "node:crypto";
+import { sessionSecret } from "./env";
 import { dailySelection } from "./daily-selection";
 import { formatCountdown, msUntilNextUtcDay, utcDayKey } from "@/features/daily/time";
 import { randomId } from "@/lib/utils/random";
@@ -21,8 +23,23 @@ export async function dailyQuestions(date: string): Promise<string[]> {
   return (await store.getDailyQuestions(date)) ?? store.ensureDailyQuestions(date, dailySelection(date));
 }
 
+/**
+ * Deterministic (one ranked attempt per player per day) but not reversible:
+ * result URLs are shared publicly, so they must not reveal the player id.
+ */
 export function rankedMatchId(date: string, playerId: string): string {
+  const tag = createHmac("sha256", `${sessionSecret()}:ranked`).update(`${date}:${playerId}`).digest("hex").slice(0, 24);
+  return `d-${date}-${tag}`;
+}
+
+/** Ids used before the hashed format; still looked up so in-flight attempts resume. */
+function legacyRankedMatchId(date: string, playerId: string): string {
   return `d-${date}-${playerId}`;
+}
+
+async function findRankedMatch(date: string, playerId: string) {
+  const store = getStore();
+  return (await store.getMatch(rankedMatchId(date, playerId))) ?? (await store.getMatch(legacyRankedMatchId(date, playerId)));
 }
 
 export async function startDaily(playerId: string, practice: boolean, now = Date.now()): Promise<MatchPayload> {
@@ -37,7 +54,7 @@ export async function startDaily(playerId: string, practice: boolean, now = Date
     const done = await store.getDailyResult(date, playerId);
     if (done) throw new ApiError(409, "already_played", "You've already played today's ranked Daily Orbit. Practice runs are still available.");
     const id = rankedMatchId(date, playerId);
-    const existing = await store.getMatch(id);
+    const existing = await findRankedMatch(date, playerId);
     if (existing) return payloadFor(existing, now); // resume the single ranked attempt
     const match = newMatch({ id, mode: "daily", playerId, dailyDate: date, ranked: true, questionIds, seed, now });
     if (!(await store.createMatch(match))) {
@@ -59,7 +76,7 @@ export async function dailyStatus(playerId: string | null, now = Date.now()) {
   const [leaderboard, result, inProgress] = await Promise.all([
     store.leaderboard(date, 20),
     playerId ? store.getDailyResult(date, playerId) : Promise.resolve(null),
-    playerId ? store.getMatch(rankedMatchId(date, playerId)) : Promise.resolve(null),
+    playerId ? findRankedMatch(date, playerId) : Promise.resolve(null),
   ]);
   const rank = result ? await store.rankFor(date, result.score) : null;
   return {

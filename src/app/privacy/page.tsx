@@ -14,7 +14,7 @@ export default function PrivacyPage() {
           <li>A random guest identifier, stored in a signed, HttpOnly cookie (<code>aq_session</code>) so ranked results and profiles stay yours. No account, email or password is required.</li>
           <li>The display name you choose, which is shown to other players on leaderboards and in Party rooms.</li>
           <li>Gameplay records for Daily Orbit and Party Mode: answers, server timestamps, scores and achievements.</li>
-          <li>Your IP address, processed briefly in memory for rate limiting (not stored by the app). Your hosting provider may log it: [hosting provider and retention].</li>
+          <li>Your IP address, used for rate limiting. The app keeps it briefly in server memory and may store a salted one-way hash of it (never the address itself) to limit abuse across servers. [Retention period for these hashes: confirm once automated cleanup is scheduled.] Our hosting provider, Vercel, also processes request logs: [Vercel log retention for your plan].</li>
         </ul>
         <h2>On your device only</h2>
         <ul>
@@ -30,8 +30,12 @@ export default function PrivacyPage() {
         </ul>
         <h2>Your rights</h2>
         <p>[Describe access, correction and deletion requests, the legal basis for processing, and the supervisory authority, as applicable to your jurisdiction.]</p>
-        <h2>Processors</h2>
-        <p>[e.g. Vercel (hosting), Supabase (database and realtime), with their regions.]</p>
+        <h2>Service providers</h2>
+        <ul>
+          <li>Vercel: hosts the website and runs the game server. [Region(s)]</li>
+          <li>Supabase: stores profiles, games, Daily results and Party rooms, and relays live Party updates. [Project region]</li>
+        </ul>
+        <p>[Confirm data processing agreements with both providers and list any international transfer safeguards.]</p>
       </LegalPage>
     </PageTransition>
   );

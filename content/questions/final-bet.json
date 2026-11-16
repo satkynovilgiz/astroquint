@@ -164,20 +164,20 @@
  },
  {
   "id": "fb-008",
-  "prompt": "What is the capital city of Australia?",
+  "prompt": "Which element has the chemical symbol Na?",
   "options": [
-   "Sydney",
-   "Melbourne",
-   "Canberra",
-   "Perth"
+   "Nitrogen",
+   "Sodium",
+   "Neon",
+   "Nickel"
   ],
-  "answer": 2,
-  "explanation": "Canberra was purpose-built as the capital, as a compromise between Sydney and Melbourne.",
+  "answer": 1,
+  "explanation": "Na comes from natrium, the Latin name for sodium. Nitrogen is N, neon is Ne and nickel is Ni.",
   "sources": [
    {
-    "title": "Canberra",
+    "title": "Sodium",
     "publisher": "Wikipedia",
-    "url": "https://en.wikipedia.org/wiki/Canberra"
+    "url": "https://en.wikipedia.org/wiki/Sodium"
    }
   ],
   "world": "final-bet",

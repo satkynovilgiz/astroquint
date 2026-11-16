@@ -50,6 +50,20 @@ describe("question bank", () => {
   });
 });
 
+describe("cross-world give-aways", () => {
+  it("no Final Bet answer appears in another world's prompt, statements or explanations", () => {
+    const others = QUESTIONS.filter((q) => q.world !== "final-bet")
+      .map((q) => JSON.stringify(q).toLowerCase());
+    for (const q of questionsForWorld("final-bet")) {
+      const answer = q.options[q.answer].toLowerCase().replace(/[°]/g, "");
+      // Numbers (years, counts) coincide innocently across topics; names/places don't.
+      if (answer.length < 4 || /^[\d\s,.]+$/.test(answer)) continue;
+      const leaks = others.filter((text) => text.includes(answer));
+      expect(leaks, `${q.id} answer "${answer}" is revealed elsewhere`).toEqual([]);
+    }
+  });
+});
+
 describe("presentation & evaluation", () => {
   it("never leaks answers into the public question", () => {
     for (const q of QUESTIONS) {

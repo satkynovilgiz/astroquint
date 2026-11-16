@@ -68,7 +68,20 @@ export function usePartyRoom(code: string) {
     };
   }, [refresh]);
 
-  // Push notifications.
+  // Push notifications. Pings carry no data and anyone holding the public key
+  // could send them, so bursts are coalesced into at most one refresh / 400ms.
+  const pushTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const onPush = useCallback(() => {
+    if (pushTimer.current) return;
+    pushTimer.current = setTimeout(() => {
+      pushTimer.current = null;
+      void refresh();
+    }, 400);
+  }, [refresh]);
+  useEffect(() => () => {
+    if (pushTimer.current) clearTimeout(pushTimer.current);
+  }, []);
+
   useEffect(() => {
     const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -78,7 +91,7 @@ export function usePartyRoom(code: string) {
       void import("@supabase/supabase-js").then(({ createClient }) => {
         if (cancelled) return;
         const client = createClient(url, anon, { auth: { persistSession: false } });
-        const channel = client.channel(`room:${code}`).on("broadcast", { event: "changed" }, () => void refresh()).subscribe();
+        const channel = client.channel(`room:${code}`).on("broadcast", { event: "changed" }, onPush).subscribe();
         unsub = () => void client.removeChannel(channel);
       });
       return () => {
@@ -88,9 +101,9 @@ export function usePartyRoom(code: string) {
     }
     if (typeof EventSource === "undefined") return;
     const es = new EventSource(`/api/party/${code}/events`);
-    es.addEventListener("changed", () => void refresh());
+    es.addEventListener("changed", onPush);
     return () => es.close();
-  }, [code, refresh]);
+  }, [code, onPush]);
 
   // Fetch right when the current phase is due to end (server advances it).
   useEffect(() => {
