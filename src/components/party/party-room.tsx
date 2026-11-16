@@ -365,7 +365,7 @@ function InGame({ view, room }: { view: PartyView; room: Room }) {
               <div className="mb-5 flex items-center justify-between gap-3">
                 <p className="inline-flex items-center gap-2 rounded-pill border border-line px-3 py-1.5">
                   <span className="h-2 w-2 rounded-full" style={{ background: world.palette.glow }} aria-hidden="true" />
-                  <span className="hud-label" style={{ color: world.palette.text }}>
+                  <span className="hud-label" style={{ color: world.ink }}>
                     {world.code} · {world.name}
                   </span>
                 </p>
@@ -428,7 +428,7 @@ function RoundResults({ view, room, endsAt }: { view: PartyView; room: Room; end
         {sorted.map((p) => {
           const delta = (p.round?.points ?? 0) + (p.round?.wagerDelta ?? 0);
           return (
-            <li key={p.id} className={cn("flex items-center gap-3 rounded-xl px-3 py-2", p.isYou && "bg-white/5")}>
+            <li key={p.id} className={cn("flex items-center gap-3 rounded-xl px-3 py-2", p.isYou && "bg-fg/5")}>
               <span className={cn("grid h-6 w-6 place-items-center rounded-full text-xs font-bold", p.round?.outcome === "correct" ? "bg-action text-action-fg" : "bg-danger/80 text-space")} aria-hidden="true">
                 {p.round?.outcome === "correct" ? "✓" : "✕"}
               </span>

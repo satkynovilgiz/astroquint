@@ -91,9 +91,9 @@ export function ChoiceGrid({
               <span
                 className={cn(
                   "grid h-9 w-9 shrink-0 place-items-center rounded-xl font-display text-sm font-bold",
-                  isCorrect ? "bg-action text-action-fg" : isWrongChoice ? "bg-danger text-space" : "bg-white/8 text-fg-muted",
+                  isCorrect ? "bg-action text-action-fg" : isWrongChoice ? "bg-danger text-space" : "bg-fg/8 text-fg-muted",
                 )}
-                style={isChosen && !showOutcome ? { background: accent, color: "#0B1020" } : undefined}
+                style={isChosen && !showOutcome ? { background: accent, color: "#050505" } : undefined}
               >
                 {isCorrect ? <Check className="h-4 w-4" strokeWidth={3} aria-hidden="true" /> : isWrongChoice ? <X className="h-4 w-4" strokeWidth={3} aria-hidden="true" /> : LETTERS[i]}
               </span>

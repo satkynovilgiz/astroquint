@@ -69,7 +69,7 @@ export function Dialog({ open, onClose, title, children, variant = "center", cla
         <button
           type="button"
           onClick={onClose}
-          className="grid h-11 w-11 place-items-center rounded-full text-fg-muted transition-colors hover:bg-white/5 hover:text-fg"
+          className="grid h-11 w-11 place-items-center rounded-full text-fg-muted transition-colors hover:bg-fg/5 hover:text-fg"
           aria-label="Close"
         >
           <X className="h-5 w-5" />

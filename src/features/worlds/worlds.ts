@@ -18,7 +18,7 @@ export interface WorldPalette {
   shadow: string;
   /** Atmospheric glow. */
   glow: string;
-  /** Text-safe accent for labels on dark surfaces (≥ 4.5:1 on #0B1020). */
+  /** Text-safe accent for labels on the black theme (≥ 4.5:1 on #050505). */
   text: string;
 }
 
@@ -39,12 +39,15 @@ export interface WorldDefinition {
   shareGlyph: string;
   /** Planet surface style. */
   surface: "rings" | "bubbles" | "dunes" | "continents" | "crown";
+  /** Theme-aware text colour for labels (CSS variable; deepens in light mode). */
+  ink: string;
 }
 
 export const WORLDS: readonly WorldDefinition[] = [
   {
     id: "pattern-break",
     order: 1,
+    ink: "var(--aq-w1)",
     code: "W01",
     name: "Pattern Break",
     theme: "Logic & patterns",
@@ -59,6 +62,7 @@ export const WORLDS: readonly WorldDefinition[] = [
   {
     id: "truth-trap",
     order: 2,
+    ink: "var(--aq-w2)",
     code: "W02",
     name: "Truth Trap",
     theme: "Knowledge & surprising facts",
@@ -73,6 +77,7 @@ export const WORLDS: readonly WorldDefinition[] = [
   {
     id: "timeline",
     order: 3,
+    ink: "var(--aq-w3)",
     code: "W03",
     name: "Timeline",
     theme: "History, culture & inventions",
@@ -87,6 +92,7 @@ export const WORLDS: readonly WorldDefinition[] = [
   {
     id: "geotap",
     order: 4,
+    ink: "var(--aq-w4)",
     code: "W04",
     name: "GeoTap",
     theme: "Geography & exploration",
@@ -101,6 +107,7 @@ export const WORLDS: readonly WorldDefinition[] = [
   {
     id: "final-bet",
     order: 5,
+    ink: "var(--aq-w5)",
     code: "W05",
     name: "Final Bet",
     theme: "Risk & strategy",

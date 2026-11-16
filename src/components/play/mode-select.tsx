@@ -17,6 +17,8 @@ interface Mode {
   kicker: string;
   description: string;
   accent: string;
+  /** Theme-aware text colour for the kicker label. */
+  ink: string;
   art: ReactNode;
   meta: ReactNode;
   cta: string;
@@ -43,6 +45,7 @@ const MODES: Mode[] = [
     kicker: "Play now",
     description: "Fly all five worlds at your own pace. New questions every run, no account needed.",
     accent: "#B9F46D",
+    ink: "var(--aq-w2)",
     art: <SoloArt />,
     meta: (
       <span className="inline-flex items-center gap-1.5">
@@ -58,6 +61,7 @@ const MODES: Mode[] = [
     kicker: "Same for everyone",
     description: "One shared route per day. Everyone gets the same questions, and you get one ranked attempt.",
     accent: "#F5C451",
+    ink: "var(--aq-w5)",
     art: <DailyArt />,
     meta: <DailyCountdown />,
     cta: "Today's orbit",
@@ -69,6 +73,7 @@ const MODES: Mode[] = [
     kicker: "2–8 players",
     description: "Open a private room, share the invite code, and race your friends through the same five worlds.",
     accent: "#3DD6C4",
+    ink: "var(--aq-w4)",
     art: <PartyArt />,
     meta: (
       <span className="inline-flex items-center gap-1.5">
@@ -120,7 +125,7 @@ export function ModeSelect() {
                   {mode.art}
                 </motion.div>
                 <div className="min-w-0">
-                  <p className="hud-label" style={{ color: mode.accent }}>
+                  <p className="hud-label" style={{ color: mode.ink }}>
                     {mode.kicker}
                   </p>
                   <h2 className="mt-1 font-display text-2xl font-bold tracking-[-0.02em]">{mode.name}</h2>

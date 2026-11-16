@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { useShouldReduceMotion } from "@/hooks/use-reduced-motion";
+import { usePreferences } from "@/features/preferences/use-preferences";
 import { createStars, spawnStar, starBudget, warpEnvelope, type Star } from "./starfield-engine";
 import { onWarp } from "./warp-bus";
 
@@ -19,6 +20,8 @@ import { onWarp } from "./warp-bus";
 export function Starfield() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const reduce = useShouldReduceMotion();
+  const [prefs] = usePreferences();
+  const light = prefs.theme === "light";
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -101,20 +104,22 @@ export function Starfield() {
         const sy = cy + s.y + py * parallax * 18 - ((scroll * s.z * 0.12) % (height + 80));
         const y = sy < -40 ? sy + height + 80 : sy;
         const twinkle = reduce ? 0.85 : 0.6 + 0.4 * Math.sin(now * 0.0016 * (0.4 + s.z) + s.phase);
-        const alpha = (0.25 + s.z * 0.75) * twinkle;
+        const alpha = (0.25 + s.z * 0.75) * twinkle * (light ? 0.45 : 1);
+        // Black theme: white/tinted stars. Light theme: soft violet-grey specks.
+        const tint = light ? "86,74,160" : s.tint;
 
         if (warp > 0.02) {
           // Light streak pointing away from centre.
           const len = warp * (6 + s.z * 46);
           const mag = Math.hypot(s.x, s.y) || 1;
-          ctx.strokeStyle = `rgba(${s.tint},${Math.min(1, alpha + warp * 0.3)})`;
+          ctx.strokeStyle = `rgba(${tint},${Math.min(1, alpha + warp * 0.3)})`;
           ctx.lineWidth = s.r * (0.8 + warp * 0.6);
           ctx.beginPath();
           ctx.moveTo(sx, y);
           ctx.lineTo(sx - (s.x / mag) * len, y - (s.y / mag) * len);
           ctx.stroke();
         } else {
-          ctx.fillStyle = `rgba(${s.tint},${alpha})`;
+          ctx.fillStyle = `rgba(${tint},${alpha})`;
           ctx.beginPath();
           ctx.arc(sx, y, s.r, 0, Math.PI * 2);
           ctx.fill();
@@ -170,7 +175,7 @@ export function Starfield() {
       window.removeEventListener("pointermove", onPointer);
       document.removeEventListener("visibilitychange", onVisibility);
     };
-  }, [reduce]);
+  }, [reduce, light]);
 
   return (
     <canvas

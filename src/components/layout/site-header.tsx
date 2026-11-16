@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Suspense, useState } from "react";
 import { motion } from "motion/react";
-import { Menu, Sparkles, UserRound, Volume2, Wind } from "lucide-react";
+import { Menu, Sparkles, Sun, UserRound, Volume2, Wind } from "lucide-react";
 import { primaryNav } from "@/lib/config/site";
 import { Logo } from "@/components/brand/logo";
 import { Dialog } from "@/components/ui/dialog";
@@ -16,6 +16,7 @@ import { spring } from "@/lib/motion/tokens";
 import { cn } from "@/lib/utils/cn";
 import { useScrolled } from "@/hooks/use-scrolled";
 import { SoundToggle } from "./sound-toggle";
+import { ThemeToggle } from "./theme-toggle";
 
 function isActive(pathname: string, href: string) {
   return href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`);
@@ -50,7 +51,11 @@ export function SiteHeader() {
         </Suspense>
 
         <div className="flex items-center gap-2">
-          <SoundToggle />
+          <ThemeToggle />
+          {/* On phones, sound lives in the menu to keep the header roomy at 320px. */}
+          <span className="hidden sm:block">
+            <SoundToggle />
+          </span>
           <Link
             href="/profile"
             transitionTypes={["nav-forward"]}
@@ -90,6 +95,13 @@ export function SiteHeader() {
           label="Sound effects"
           description="Short, quiet interface sounds"
           icon={<Volume2 className="h-4 w-4" />}
+        />
+        <Switch
+          checked={prefs.theme === "light"}
+          onChange={(light) => setPrefs({ theme: light ? "light" : "dark" })}
+          label="Light theme"
+          description="Dark (black) is the default"
+          icon={<Sun className="h-4 w-4" />}
         />
         <Switch
           checked={prefs.motion === "reduced"}
@@ -137,7 +149,7 @@ function DesktopNav({ pathname }: { pathname: string }) {
                     <motion.span
                       layoutId="nav-active"
                       transition={spring.settle}
-                      className="absolute inset-0 rounded-pill bg-white/10 shadow-[inset_0_0_0_1px_rgb(145_103_244/0.5)]"
+                      className="absolute inset-0 rounded-pill bg-fg/10 shadow-[inset_0_0_0_1px_rgb(145_103_244/0.5)]"
                     />
                   )}
                   <span className="relative">{item.label}</span>
@@ -167,7 +179,7 @@ function MobileNav({ pathname, onNavigate }: { pathname: string; onNavigate: () 
                       aria-current={active ? "page" : undefined}
                       className={cn(
                         "flex min-h-12 items-center justify-between rounded-2xl px-4 font-display text-lg font-medium transition-colors",
-                        active ? "bg-white/10 text-fg" : "text-fg-muted hover:bg-white/5 hover:text-fg",
+                        active ? "bg-fg/10 text-fg" : "text-fg-muted hover:bg-fg/5 hover:text-fg",
                       )}
                     >
                       {item.label}

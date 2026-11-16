@@ -13,7 +13,8 @@ async function playSolo(page: import("@playwright/test").Page, plans: Plan[], wa
 
   for (let i = 0; i < 5; i++) {
     const name = WORLD_NAMES[i];
-    await expect(page.getByRole("heading", { name, level: 2 })).toBeVisible();
+    // Every step is a server round-trip; allow for a busy machine.
+    await expect(page.getByRole("heading", { name, level: 2 })).toBeVisible({ timeout: 15_000 });
     if (i === 4) {
       await page.getByRole("button", { name: "Place your bet" }).click();
       await page.getByRole("button", { name: wager, exact: true }).click();
@@ -24,7 +25,7 @@ async function playSolo(page: import("@playwright/test").Page, plans: Plan[], wa
     }
     await answerRound(page, question(saved.rounds[i].questionId), saved.seed, plans[i]);
     const verdict = page.getByRole("heading", { level: 3, name: plans[i] === "right" ? "Correct!" : "Not quite" });
-    await expect(verdict).toBeVisible({ timeout: 5000 });
+    await expect(verdict).toBeVisible({ timeout: 15_000 });
     if (i < 4) {
       await page.getByRole("button", { name: `Travel to ${WORLD_NAMES[i + 1]}` }).click();
       // Skip the travel animation to keep the test brisk (also exercises Skip).

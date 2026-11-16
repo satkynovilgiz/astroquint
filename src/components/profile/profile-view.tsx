@@ -147,7 +147,7 @@ export function ProfileView() {
         <ul className="mt-3 grid gap-3 sm:grid-cols-2">
           {data.achievements.map((a) => (
             <li key={a.id} className={cn("panel flex items-center gap-3 rounded-2xl p-3.5", a.unlockedAt ? "border-reward/50" : "border-dashed")}>
-              <span className={cn("grid h-11 w-11 shrink-0 place-items-center rounded-xl text-2xl", a.unlockedAt ? "bg-reward/20" : "bg-white/5")} aria-hidden="true">
+              <span className={cn("grid h-11 w-11 shrink-0 place-items-center rounded-xl text-2xl", a.unlockedAt ? "bg-reward/20" : "bg-fg/5")} aria-hidden="true">
                 {a.unlockedAt ? a.glyph : <Lock className="h-4 w-4 text-fg-muted" />}
               </span>
               <span>
@@ -176,7 +176,7 @@ export function ProfileView() {
           <ul className="panel mt-3 divide-y divide-line rounded-2xl">
             {data.history.map((h) => (
               <li key={h.matchId}>
-                <Link href={`/results/${h.matchId}`} transitionTypes={["nav-forward"]} className="flex min-h-14 items-center gap-3 px-4 py-3 hover:bg-white/5">
+                <Link href={`/results/${h.matchId}`} transitionTypes={["nav-forward"]} className="flex min-h-14 items-center gap-3 px-4 py-3 hover:bg-fg/5">
                   <span className={cn("hud-label rounded-pill px-2 py-1", h.ranked ? "bg-w5 text-space" : "border border-line text-fg-muted")}>{h.ranked ? "Ranked" : "Practice"}</span>
                   <span className="flex-1 text-sm text-fg-muted">{h.date}</span>
                   <span className="text-sm text-fg-muted">{h.correct}/5</span>

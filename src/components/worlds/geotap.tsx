@@ -11,7 +11,7 @@ import type { WorldProps } from "./types";
 const WorldMap = dynamic(() => import("./world-map").then((m) => m.WorldMap), {
   ssr: false,
   loading: () => (
-    <div className="grid aspect-[1000/470] w-full place-items-center rounded-2xl border border-line bg-[#0D1A2E] text-fg-muted">
+    <div className="grid aspect-[1000/470] w-full place-items-center rounded-2xl border border-line bg-(--aq-map-ocean) text-fg-muted">
       <span className="inline-flex items-center gap-2 text-sm">
         <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> Charting the map…
       </span>

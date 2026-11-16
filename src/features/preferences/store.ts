@@ -5,15 +5,18 @@
  */
 
 export type MotionPreference = "system" | "reduced";
+export type ThemePreference = "dark" | "light";
 
 export interface Preferences {
   sound: boolean;
   motion: MotionPreference;
+  /** Dark (black) is the default for every new visitor. */
+  theme: ThemePreference;
 }
 
-export const DEFAULT_PREFERENCES: Preferences = { sound: false, motion: "system" };
+export const DEFAULT_PREFERENCES: Preferences = { sound: false, motion: "system", theme: "dark" };
 
-const STORAGE_KEY = "astroquint:prefs:v1";
+export const STORAGE_KEY = "astroquint:prefs:v1";
 const listeners = new Set<() => void>();
 let cache: Preferences | null = null;
 
@@ -25,6 +28,7 @@ function read(): Preferences {
     return {
       sound: typeof parsed.sound === "boolean" ? parsed.sound : DEFAULT_PREFERENCES.sound,
       motion: parsed.motion === "reduced" ? "reduced" : "system",
+      theme: parsed.theme === "light" ? "light" : "dark",
     };
   } catch {
     return DEFAULT_PREFERENCES;

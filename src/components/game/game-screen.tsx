@@ -111,7 +111,7 @@ export function GameScreen({ view, actions, resultsTitle, resultsSubtitle, share
                 <div className="mb-5 flex items-center justify-between gap-3">
                   <p className="inline-flex items-center gap-2 rounded-pill border border-line px-3 py-1.5">
                     <span className="h-2 w-2 rounded-full" style={{ background: world.palette.glow }} aria-hidden="true" />
-                    <span className="hud-label" style={{ color: world.palette.text }}>
+                    <span className="hud-label" style={{ color: world.ink }}>
                       {world.code} · {world.name}
                     </span>
                   </p>

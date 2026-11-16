@@ -1,39 +1,108 @@
 @import "tailwindcss";
 
-/* ───────────────────────── Design tokens ───────────────────────── */
+/* ───────────────────────── Design tokens ─────────────────────────
+   Raw values live in theme scopes below (black is the default, light is
+   opt-in); Tailwind utilities read them through `@theme inline`, so every
+   class switches theme at runtime with no rebuild and no flash. */
+
+:root,
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --aq-bg: #050505;
+  --aq-bg-deep: #000000;
+  --aq-surface: #111114;
+  --aq-surface-2: #19191f;
+  --aq-panel: rgb(17 17 20 / 0.78);
+  --aq-line: #292930;
+  --aq-line-strong: #3b3b46;
+  --aq-fg: #f8faff;
+  --aq-fg-muted: #a4a4b2;
+  --aq-action: #b9f46d; /* Electric Lime: primary actions */
+  --aq-action-fg: #0b1406;
+  --aq-brand: #9167f4; /* Orbit Violet: identity & progression */
+  --aq-brand-soft: #bfa8ff;
+  --aq-reward: #ffb681; /* Solar Orange: rewards & energy */
+  --aq-danger: #ff7a8a;
+  --aq-w1: #bfa8ff;
+  --aq-w2: #b9f46d;
+  --aq-w3: #ffb681;
+  --aq-w4: #5fe3d3;
+  --aq-w5: #f5c451;
+  --aq-glow-strength: 1;
+  --aq-shadow: 0 20px 50px -24px rgb(0 0 0 / 0.9);
+  --aq-map-ocean: #07090f;
+  --aq-map-land: #23232c;
+  --aq-map-land-hover: #34343f;
+  --aq-map-stroke: #050505;
+  --aq-rock: #26262e;
+  --aq-rock-edge: #44444f;
+  --aq-rock-shade: #18181d;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --aq-bg: #f4f4f8;
+  --aq-bg-deep: #ffffff;
+  --aq-surface: #ffffff;
+  --aq-surface-2: #ececf2;
+  --aq-panel: rgb(255 255 255 / 0.86);
+  --aq-line: #dcdce6;
+  --aq-line-strong: #c4c4d2;
+  --aq-fg: #0b0b12;
+  --aq-fg-muted: #55556a;
+  /* Accents deepen in light mode so they stay readable as text (WCAG AA) */
+  --aq-action: #38700a;
+  --aq-action-fg: #ffffff;
+  --aq-brand: #6236d4;
+  --aq-brand-soft: #6236d4;
+  --aq-reward: #a64b12;
+  --aq-danger: #c0283f;
+  --aq-w1: #6236d4;
+  --aq-w2: #38700a;
+  --aq-w3: #a64b12;
+  --aq-w4: #0a7268;
+  --aq-w5: #855800;
+  --aq-glow-strength: 0.45;
+  --aq-shadow: 0 18px 40px -24px rgb(30 20 80 / 0.35);
+  --aq-map-ocean: #dfe7f3;
+  --aq-map-land: #b9bccb;
+  --aq-map-land-hover: #9ea2b6;
+  --aq-map-stroke: #f4f4f8;
+  --aq-rock: #c9c9d6;
+  --aq-rock-edge: #a9a9ba;
+  --aq-rock-shade: #b3b3c4;
+}
+
+@theme inline {
+  /* Semantic roles — components use these, never raw hex */
+  --color-bg: var(--aq-bg);
+  --color-space: var(--aq-bg);
+  --color-deep: var(--aq-bg-deep);
+  --color-surface: var(--aq-surface);
+  --color-surface-2: var(--aq-surface-2);
+  --color-fg: var(--aq-fg);
+  --color-fg-muted: var(--aq-fg-muted);
+  --color-action: var(--aq-action);
+  --color-action-fg: var(--aq-action-fg);
+  --color-brand: var(--aq-brand);
+  --color-brand-soft: var(--aq-brand-soft);
+  --color-reward: var(--aq-reward);
+  --color-solar: var(--aq-reward);
+  --color-line: var(--aq-line);
+  --color-line-strong: var(--aq-line-strong);
+  --color-danger: var(--aq-danger);
+  --color-w1: var(--aq-w1);
+  --color-w2: var(--aq-w2);
+  --color-w3: var(--aq-w3);
+  --color-w4: var(--aq-w4);
+  --color-w5: var(--aq-w5);
+}
 
 @theme {
-  /* Core palette */
-  --color-space: #0b1020;
-  --color-navy: #191f36;
-  --color-elevated: #232a43;
+  /* Fixed brand colours (same in both themes, for art and planets) */
   --color-lime: #b9f46d;
   --color-violet: #9167f4;
-  --color-solar: #ffb681;
   --color-star: #f8faff;
-  --color-mist: #a4aec6;
-
-  /* Semantic roles — components use these, not the raw palette */
-  --color-bg: var(--color-space);
-  --color-surface: var(--color-navy);
-  --color-surface-2: var(--color-elevated);
-  --color-fg: var(--color-star);
-  --color-fg-muted: var(--color-mist);
-  --color-action: var(--color-lime); /* primary interactive actions */
-  --color-action-fg: #10180a;
-  --color-brand: var(--color-violet); /* identity & progression */
-  --color-brand-soft: #bfa8ff; /* violet that passes contrast as text */
-  --color-reward: var(--color-solar); /* rewards, milestones, energy */
-  --color-line: rgb(248 250 255 / 0.09);
-  --color-line-strong: rgb(248 250 255 / 0.18);
-  --color-danger: #ff7a8a;
-
-  /* World accents */
-  --color-w1: #9167f4;
-  --color-w2: #b9f46d;
-  --color-w3: #ffb681;
-  --color-w4: #3dd6c4;
-  --color-w5: #f5c451;
 
   --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
@@ -44,6 +113,7 @@
   --ease-arrive: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-depart: cubic-bezier(0.7, 0, 0.84, 0);
   --ease-move: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 
   --animate-twinkle: twinkle 4s ease-in-out infinite;
   --animate-drift: drift 18s ease-in-out infinite;
@@ -62,8 +132,6 @@
   --safe-bottom: env(safe-area-inset-bottom, 0px);
   --safe-left: env(safe-area-inset-left, 0px);
   --safe-right: env(safe-area-inset-right, 0px);
-
-  color-scheme: dark;
 }
 
 /* ───────────────────────── Base ───────────────────────── */
@@ -84,7 +152,8 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Nebula glow on a fixed layer (background-attachment: fixed is unreliable on iOS) */
+/* Deep-space vignette on a fixed layer: black stays black, with only a faint
+   violet/teal haze at the edges so the colourful planets carry the scene. */
 body::before {
   content: "";
   position: fixed;
@@ -92,17 +161,24 @@ body::before {
   z-index: -20;
   pointer-events: none;
   background:
-    radial-gradient(120% 70% at 85% -10%, rgb(145 103 244 / 0.22), transparent 60%),
-    radial-gradient(90% 60% at -10% 110%, rgb(61 214 196 / 0.1), transparent 60%);
+    radial-gradient(70% 45% at 88% -8%, rgb(145 103 244 / calc(0.12 * var(--aq-glow-strength))), transparent 70%),
+    radial-gradient(60% 40% at -8% 108%, rgb(61 214 196 / calc(0.06 * var(--aq-glow-strength))), transparent 70%),
+    radial-gradient(120% 90% at 50% 50%, transparent 55%, rgb(0 0 0 / calc(0.55 * var(--aq-glow-strength))) 100%);
+}
+
+:root[data-theme="light"] body::before {
+  background:
+    radial-gradient(70% 45% at 88% -8%, rgb(145 103 244 / 0.12), transparent 70%),
+    radial-gradient(60% 40% at -8% 108%, rgb(61 214 196 / 0.1), transparent 70%);
 }
 
 ::selection {
-  background: rgb(185 244 109 / 0.35);
-  color: var(--color-star);
+  background: color-mix(in srgb, var(--color-lime) 40%, transparent);
+  color: var(--color-fg);
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-lime);
+  outline: 2px solid var(--color-action);
   outline-offset: 3px;
   border-radius: 6px;
 }
@@ -111,27 +187,24 @@ body::before {
   font-variant-numeric: tabular-nums;
 }
 
-/* Small tracked uppercase label used across HUD elements */
-
-/* Subtle glass panel */
-
 @layer components {
-.hud-label {
-  font-family: var(--font-display);
-  font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-}
-}
+  /* Small tracked uppercase label used across HUD elements */
+  .hud-label {
+    font-family: var(--font-display);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
 
-@layer components {
-.panel {
-  background-color: rgb(30 36 60 / 0.74);
-  border: 1px solid var(--color-line);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-}
+  /* Glass panel over deep space */
+  .panel {
+    background-color: var(--aq-panel);
+    border: 1px solid var(--color-line);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: var(--aq-shadow);
+  }
 }
 
 /* ───────────────────────── Keyframes ───────────────────────── */

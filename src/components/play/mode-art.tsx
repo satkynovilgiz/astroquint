@@ -20,7 +20,7 @@ function Orbiter({ radius, seconds, delay = 0, color, reverse = false, size = 18
   );
 }
 
-function Ring({ inset, dashed = false, color = "rgb(248 250 255 / 0.12)" }: { inset: string; dashed?: boolean; color?: string }) {
+function Ring({ inset, dashed = false, color = "var(--aq-line-strong)" }: { inset: string; dashed?: boolean; color?: string }) {
   return <div className="absolute rounded-full border" style={{ inset, borderColor: color, borderStyle: dashed ? "dashed" : "solid" }} />;
 }
 
@@ -48,7 +48,7 @@ export function DailyArt() {
               className="absolute left-1/2 top-0 w-[2px] -translate-x-1/2 rounded-full"
               style={{
                 height: i % 6 === 0 ? "9%" : "5%",
-                background: i % 6 === 0 ? "#F5C451" : "rgb(248 250 255 / 0.25)",
+                background: i % 6 === 0 ? "#F5C451" : "var(--aq-line-strong)",
               }}
             />
           </div>

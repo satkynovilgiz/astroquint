@@ -36,7 +36,8 @@ describe("production configuration (regression: 'Something went wrong' on Vercel
     vi.stubEnv("NODE_ENV", "production");
     vi.stubEnv("SESSION_SECRET", "");
     const spy = vi.spyOn(console, "error").mockImplementation(() => {});
-    const route = handle(async (_req: Request) => {
+    const route = handle(async (req: Request) => {
+      void req;
       sessionSecret();
       return new Response("unreachable");
     });
@@ -52,7 +53,8 @@ describe("production configuration (regression: 'Something went wrong' on Vercel
 
   it("unexpected exceptions are logged and return a specific, non-leaky 500", async () => {
     const spy = vi.spyOn(console, "error").mockImplementation(() => {});
-    const route = handle(async (_req: Request) => {
+    const route = handle(async (req: Request) => {
+      void req;
       throw new Error("db password is hunter2");
     });
     const res = await route(new Request("https://x/api/daily"));

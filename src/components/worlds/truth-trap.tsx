@@ -31,7 +31,7 @@ export function TruthTrap({ question, world, locked, submitted, reveal, onSubmit
   return (
     <div className="space-y-5">
       <div>
-        <p className="hud-label" style={{ color: world.palette.text }}>
+        <p className="hud-label" style={{ color: world.ink }}>
           {question.topic}
         </p>
         <h2 className="mt-1 font-display text-xl font-semibold sm:text-2xl">Two are true. Which one is the lie?</h2>
@@ -66,7 +66,7 @@ export function TruthTrap({ question, world, locked, submitted, reveal, onSubmit
                 style={isChosen && !reveal ? { boxShadow: `0 0 0 2px ${world.palette.glow}` } : undefined}
               >
                 <span className="flex items-start gap-3">
-                  <span className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-lg bg-white/8 font-display text-sm font-bold text-fg-muted" aria-hidden="true">
+                  <span className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-lg bg-fg/8 font-display text-sm font-bold text-fg-muted" aria-hidden="true">
                     {i + 1}
                   </span>
                   <span className="flex-1 text-[1.02rem] leading-snug">{text}</span>

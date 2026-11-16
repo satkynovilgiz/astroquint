@@ -177,16 +177,16 @@ export function WorldMap({ selected, onSelect, locked, correctId, accent }: Worl
   };
 
   const fill = (c: Country) => {
-    if (correctId && c.id === correctId) return "#B9F46D";
-    if (correctId && c.id === selected) return "#FF7A8A";
+    if (correctId && c.id === correctId) return "#8FD44A";
+    if (correctId && c.id === selected) return "#E2566A";
     if (c.id === selected) return accent;
-    if (c.id === hover && !locked) return "#46548A";
-    return "#2E3860";
+    if (c.id === hover && !locked) return "var(--aq-map-land-hover)";
+    return "var(--aq-map-land)";
   };
 
   return (
     <div>
-    <div className="relative overflow-hidden rounded-2xl border border-line bg-[#0D1A2E]">
+    <div className="relative overflow-hidden rounded-2xl border border-line bg-(--aq-map-ocean)">
       <svg
         ref={svgRef}
         viewBox={`0 0 ${W} ${H}`}
@@ -204,8 +204,8 @@ export function WorldMap({ selected, onSelect, locked, correctId, accent }: Worl
       >
         <defs>
           <radialGradient id="ocean" cx="50%" cy="40%" r="75%">
-            <stop offset="0%" stopColor="#13264A" />
-            <stop offset="100%" stopColor="#0A1426" />
+            <stop offset="0%" stopColor="var(--aq-map-ocean)" />
+            <stop offset="100%" stopColor="var(--aq-bg-deep)" />
           </radialGradient>
         </defs>
         <rect width={W} height={H} fill="url(#ocean)" />
@@ -223,7 +223,7 @@ export function WorldMap({ selected, onSelect, locked, correctId, accent }: Worl
               d={c.d}
               data-country={c.id}
               fill={fill(c)}
-              stroke="#0B1020"
+              stroke="var(--aq-map-stroke)"
               strokeWidth={0.6 / view.k}
               onPointerEnter={() => setHover(c.id)}
               style={{ transition: "fill 180ms" }}
@@ -235,7 +235,7 @@ export function WorldMap({ selected, onSelect, locked, correctId, accent }: Worl
               const c = byId.get(id!);
               if (!c) return null;
               return (
-                <path key={`ring-${id}`} d={c.d} fill="none" stroke="#F8FAFF" strokeWidth={1.4 / view.k} pointerEvents="none" />
+                <path key={`ring-${id}`} d={c.d} fill="none" stroke="var(--aq-fg)" strokeWidth={1.4 / view.k} pointerEvents="none" />
               );
             })}
         </g>

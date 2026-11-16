@@ -43,14 +43,14 @@ export function RevealPanel({
           {title}
         </h3>
         <div className="flex flex-wrap items-center gap-2">
-          <span className={cn("tabular rounded-pill px-3 py-1 font-display font-bold", round.points > 0 ? "bg-action text-action-fg" : "bg-white/10 text-fg-muted")}>
+          <span className={cn("tabular rounded-pill px-3 py-1 font-display font-bold", round.points > 0 ? "bg-action text-action-fg" : "bg-fg/10 text-fg-muted")}>
             +{round.points} pts
           </span>
           {isFinal && round.wagerDelta !== null && (
             <span
               className={cn(
                 "tabular rounded-pill px-3 py-1 font-display font-bold",
-                round.wagerDelta > 0 ? "bg-w5 text-space" : round.wagerDelta < 0 ? "bg-danger text-space" : "bg-white/10 text-fg-muted",
+                round.wagerDelta > 0 ? "bg-w5 text-space" : round.wagerDelta < 0 ? "bg-danger text-space" : "bg-fg/10 text-fg-muted",
               )}
             >
               Wager {round.wagerDelta >= 0 ? "+" : "−"}

@@ -5,6 +5,7 @@ import { Providers } from "@/components/layout/providers";
 import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { Starfield } from "@/components/animations/starfield";
+import { ThemeScript } from "@/components/layout/theme-script";
 import "./globals.css";
 
 const display = Space_Grotesk({ variable: "--font-space-grotesk", subsets: ["latin"], display: "swap" });
@@ -34,8 +35,8 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0B1020",
-  colorScheme: "dark",
+  themeColor: "#050505",
+  colorScheme: "dark light",
   viewportFit: "cover",
   width: "device-width",
   initialScale: 1,
@@ -43,7 +44,11 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${display.variable} ${body.variable}`} data-motion="system">
+    // data-theme/data-motion are set before paint by ThemeScript; suppress the expected attribute diff.
+    <html lang="en" className={`${display.variable} ${body.variable}`} data-theme="dark" data-motion="system" suppressHydrationWarning>
+      <head>
+        <ThemeScript />
+      </head>
       <body className="flex min-h-dvh flex-col">
         <a
           href="#main"

@@ -53,7 +53,7 @@ export function Timer({ deadline, limitMs, frozen, color }: { deadline: number |
   return (
     <div className={cn("relative grid h-14 w-14 shrink-0 place-items-center", urgent && !frozen && "animate-[pulse-soft_1s_ease-in-out_infinite]")}>
       <svg viewBox="0 0 52 52" className="absolute inset-0 -rotate-90" aria-hidden="true">
-        <circle cx="26" cy="26" r={R} fill="none" stroke="rgb(248 250 255 / 0.1)" strokeWidth="4" />
+        <circle cx="26" cy="26" r={R} fill="none" stroke="var(--aq-line)" strokeWidth="4" />
         <circle
           ref={ringRef}
           cx="26"

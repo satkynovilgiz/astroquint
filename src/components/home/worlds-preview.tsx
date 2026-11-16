@@ -54,7 +54,7 @@ export function WorldsPreview() {
                   <Planet palette={world.palette} surface={world.surface} spinSeconds={30} glow={0.5} />
                 </motion.div>
                 <div className="min-w-0 flex-1">
-                  <p className="hud-label" style={{ color: world.palette.text }}>
+                  <p className="hud-label" style={{ color: world.ink }}>
                     {world.code} · {world.skill}
                   </p>
                   <h3 className="mt-1 font-display text-lg font-semibold">{world.name}</h3>

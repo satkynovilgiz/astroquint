@@ -33,7 +33,7 @@ export function Hero() {
           >
             Five Worlds.
             <br />
-            <span className="bg-gradient-to-r from-brand-soft via-[#d9c9ff] to-action bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-brand-soft via-brand to-action bg-clip-text text-transparent">
               One Brilliant Mind.
             </span>
           </motion.h1>

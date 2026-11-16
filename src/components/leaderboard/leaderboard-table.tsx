@@ -24,7 +24,7 @@ export function LeaderboardTable({ rows, empty }: { rows: LeaderRow[]; empty: st
           <span
             className={cn(
               "tabular grid h-8 w-8 shrink-0 place-items-center rounded-full font-display text-sm font-bold",
-              r.rank === 1 ? "bg-w5 text-space" : r.rank === 2 ? "bg-[#D6DCEB] text-space" : r.rank === 3 ? "bg-solar text-space" : "bg-white/8 text-fg-muted",
+              r.rank === 1 ? "bg-w5 text-space" : r.rank === 2 ? "bg-[#D6DCEB] text-space" : r.rank === 3 ? "bg-solar text-space" : "bg-fg/8 text-fg-muted",
             )}
           >
             {r.rank === 1 ? <Crown className="h-4 w-4" aria-label="1st" /> : r.rank}

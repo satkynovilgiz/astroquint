@@ -51,8 +51,8 @@ export function Asteroids({ className }: { className?: string }) {
             } as CSSProperties
           }
         >
-          <path d={SHAPES[r.shape]} fill="#3A4366" stroke="#5B6690" strokeWidth="0.8" />
-          <circle cx="7" cy="8" r="1.6" fill="#2A3150" />
+          <path d={SHAPES[r.shape]} fill="var(--aq-rock)" stroke="var(--aq-rock-edge)" strokeWidth="0.8" />
+          <circle cx="7" cy="8" r="1.6" fill="var(--aq-rock-shade)" />
         </svg>
       ))}
     </div>

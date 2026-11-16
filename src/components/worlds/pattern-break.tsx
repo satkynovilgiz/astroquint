@@ -27,7 +27,7 @@ export function PatternBreak({ question, world, locked, submitted, reveal, onSub
                   ? ({
                       "--glow": world.palette.glow,
                       animation: reveal ? undefined : "tile-glow 1.6s ease-in-out infinite",
-                      color: reveal ? (reveal.correct ? "#B9F46D" : world.palette.text) : world.palette.text,
+                      color: reveal ? (reveal.correct ? "#B9F46D" : world.ink) : world.ink,
                     } as React.CSSProperties)
                   : undefined
               }

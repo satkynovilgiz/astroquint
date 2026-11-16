@@ -15,7 +15,7 @@ export function Burst({ color = "#B9F46D" }: { color?: string }) {
           <motion.span
             key={i}
             className="absolute h-1.5 w-1.5 rounded-full"
-            style={{ background: i % 2 ? color : "#F8FAFF" }}
+            style={{ background: i % 2 ? color : "var(--aq-fg)" }}
             initial={{ x: 0, y: 0, opacity: 1, scale: 1 }}
             animate={{ x: Math.cos(a) * d, y: Math.sin(a) * d, opacity: 0, scale: 0.4 }}
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}

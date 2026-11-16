@@ -28,7 +28,7 @@ export function WorldIntro({ world, relaxed, onBegin, waitingLabel }: { world: W
         <Planet palette={world.palette} surface={world.surface} ring={world.id === "pattern-break" || world.id === "final-bet"} spinSeconds={22} glow={1} />
       </motion.div>
       <motion.div variants={staggerChildren(0.15)} initial="hidden" animate="visible" className="text-center sm:text-left">
-        <motion.p variants={riseIn} className="hud-label" style={{ color: world.palette.text }}>
+        <motion.p variants={riseIn} className="hud-label" style={{ color: world.ink }}>
           World {world.order} of 5 · {world.skill}
         </motion.p>
         <motion.h2 variants={riseIn} className="mt-2 font-display text-[clamp(2.25rem,8vw,3.5rem)] font-bold leading-none tracking-[-0.03em]">

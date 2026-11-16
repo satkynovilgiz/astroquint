@@ -42,7 +42,7 @@ export function Timeline({ question, world, locked, submitted, reveal, onSubmit 
                 transition={{ ...spring.settle, delay: i * 0.08 }}
                 className={cn("panel flex items-center gap-3 rounded-2xl p-3 sm:p-4", right ? "border-action/50" : "border-danger/40")}
               >
-                <span className="tabular w-[5.5rem] shrink-0 font-display text-sm font-bold sm:w-28 sm:text-base" style={{ color: world.palette.text }}>
+                <span className="tabular w-[5.5rem] shrink-0 font-display text-sm font-bold sm:w-28 sm:text-base" style={{ color: world.ink }}>
                   {e.dateLabel}
                 </span>
                 <span className="flex-1 text-[0.98rem] leading-snug">{e.label}</span>
@@ -143,7 +143,7 @@ function TimelineItem({
       >
         <GripVertical className="h-5 w-5" aria-hidden="true" />
       </button>
-      <span className="tabular grid h-7 w-7 shrink-0 place-items-center rounded-lg bg-white/8 font-display text-sm font-bold" aria-hidden="true">
+      <span className="tabular grid h-7 w-7 shrink-0 place-items-center rounded-lg bg-fg/8 font-display text-sm font-bold" aria-hidden="true">
         {index + 1}
       </span>
       <span className="flex-1 py-1 text-[0.98rem] leading-snug">{item.label}</span>

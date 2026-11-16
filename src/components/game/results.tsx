@@ -183,7 +183,7 @@ export function Results({
                     transition={{ duration: 1.1, delay: 1.6, ease: "easeInOut" }}
                   />
                 )}
-                <span className={cn("grid h-11 w-11 shrink-0 place-items-center rounded-xl text-2xl", got ? "bg-reward/20" : "bg-white/5")} aria-hidden="true">
+                <span className={cn("grid h-11 w-11 shrink-0 place-items-center rounded-xl text-2xl", got ? "bg-reward/20" : "bg-fg/5")} aria-hidden="true">
                   {got ? a.glyph : <Lock className="h-4 w-4 text-fg-muted" />}
                 </span>
                 <span>
@@ -218,7 +218,7 @@ export function Results({
                       {r.outcome === "correct" ? <Check className="h-3.5 w-3.5" strokeWidth={4} /> : <X className="h-3.5 w-3.5" strokeWidth={4} />}
                     </span>
                     <span className="min-w-0 flex-1">
-                      <span className="hud-label block" style={{ color: w.palette.text }}>
+                      <span className="hud-label block" style={{ color: w.ink }}>
                         {w.name}
                       </span>
                       <span className="block truncate text-[0.95rem]">{r.title}</span>

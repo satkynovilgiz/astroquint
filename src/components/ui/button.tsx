@@ -18,7 +18,7 @@ const variants: Record<ButtonVariant, string> = {
     "bg-action text-action-fg shadow-[0_0_0_1px_rgb(185_244_109/0.4),0_10px_30px_-10px_rgb(185_244_109/0.7)] hover:shadow-[0_0_0_1px_rgb(185_244_109/0.7),0_14px_40px_-8px_rgb(185_244_109/0.85)]",
   secondary:
     "bg-surface-2/80 text-fg border border-line-strong hover:border-brand hover:bg-surface-2 backdrop-blur",
-  ghost: "text-fg-muted hover:text-fg hover:bg-white/5",
+  ghost: "text-fg-muted hover:text-fg hover:bg-fg/5",
 };
 
 const sizes: Record<ButtonSize, string> = {

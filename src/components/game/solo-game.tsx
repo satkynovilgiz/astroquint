@@ -94,7 +94,7 @@ function SoloLobby({ relaxed, setRelaxed, onLaunch, busy, error }: { relaxed: bo
               >
                 <Planet palette={w.palette} surface={w.surface} spinSeconds={24 + i * 3} glow={0.7} />
               </motion.div>
-              <span className="hud-label mt-2 hidden sm:block" style={{ color: w.palette.text }}>
+              <span className="hud-label mt-2 hidden sm:block" style={{ color: w.ink }}>
                 {w.code}
               </span>
               <span className="mt-1 text-[0.7rem] font-medium leading-tight sm:text-sm">{w.name}</span>

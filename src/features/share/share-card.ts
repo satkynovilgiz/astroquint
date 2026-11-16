@@ -15,9 +15,9 @@ export async function renderShareCard(summary: GameSummary, title: string, subti
 
   // Space background
   const bg = ctx.createLinearGradient(0, 0, 0, SIZE.h);
-  bg.addColorStop(0, "#1A1440");
-  bg.addColorStop(0.55, "#0B1020");
-  bg.addColorStop(1, "#0B1020");
+  bg.addColorStop(0, "#140d2b");
+  bg.addColorStop(0.55, "#050505");
+  bg.addColorStop(1, "#000000");
   ctx.fillStyle = bg;
   ctx.fillRect(0, 0, SIZE.w, SIZE.h);
   for (let i = 0; i < 140; i++) {
@@ -36,7 +36,7 @@ export async function renderShareCard(summary: GameSummary, title: string, subti
   ctx.fillStyle = "#BFA8FF";
   ctx.fillText("quint", SIZE.w / 2 + 84, 160);
 
-  ctx.fillStyle = "#A4AEC6";
+  ctx.fillStyle = "#A4A4B2";
   ctx.font = `600 34px ${display}`;
   ctx.fillText(title.toUpperCase(), SIZE.w / 2, 250);
   if (subtitle) {
@@ -48,7 +48,7 @@ export async function renderShareCard(summary: GameSummary, title: string, subti
   ctx.fillStyle = "#B9F46D";
   ctx.font = `700 230px ${display}`;
   ctx.fillText(String(summary.total), SIZE.w / 2, 560);
-  ctx.fillStyle = "#A4AEC6";
+  ctx.fillStyle = "#A4A4B2";
   ctx.font = `500 38px ${display}`;
   ctx.fillText("points", SIZE.w / 2, 620);
 
@@ -75,7 +75,7 @@ export async function renderShareCard(summary: GameSummary, title: string, subti
     ctx.beginPath();
     ctx.arc(cx + 44, cy + 44, 22, 0, Math.PI * 2);
     ctx.fill();
-    ctx.strokeStyle = "#0B1020";
+    ctx.strokeStyle = "#050505";
     ctx.lineWidth = 6;
     ctx.lineCap = "round";
     ctx.beginPath();
@@ -90,7 +90,7 @@ export async function renderShareCard(summary: GameSummary, title: string, subti
       ctx.lineTo(cx + 36, cy + 52);
     }
     ctx.stroke();
-    ctx.fillStyle = "#A4AEC6";
+    ctx.fillStyle = "#A4A4B2";
     ctx.font = `600 24px ${display}`;
     ctx.fillText(w.code, cx, cy + 112);
   });
@@ -103,7 +103,7 @@ export async function renderShareCard(summary: GameSummary, title: string, subti
     ctx.font = `500 32px ${display}`;
     ctx.fillText(`${summary.achievements.length} achievement${summary.achievements.length === 1 ? "" : "s"} unlocked`, SIZE.w / 2, 1080);
   }
-  ctx.fillStyle = "#A4AEC6";
+  ctx.fillStyle = "#A4A4B2";
   ctx.font = `500 30px ${display}`;
   ctx.fillText("Five Worlds. One Brilliant Mind.", SIZE.w / 2, 1250);
 

@@ -63,7 +63,7 @@ export default function HowToPlayPage() {
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-                      <p className="hud-label" style={{ color: w.palette.text }}>
+                      <p className="hud-label" style={{ color: w.ink }}>
                         {w.code} · {w.theme}
                       </p>
                       <p className="inline-flex items-center gap-1 text-xs text-fg-muted">

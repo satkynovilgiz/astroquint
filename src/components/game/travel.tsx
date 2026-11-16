@@ -110,7 +110,7 @@ export function Travel({ from, to, onDone }: { from: WorldDefinition; to: WorldD
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.9, duration: 0.4 }}
       >
-        <p className="hud-label" style={{ color: to.palette.text }}>
+        <p className="hud-label" style={{ color: to.ink }}>
           Next stop · {to.code}
         </p>
         <p className="mt-1 font-display text-2xl font-bold">{to.name}</p>
