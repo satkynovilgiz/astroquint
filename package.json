@@ -12,7 +12,8 @@
     "test:watch": "vitest",
     "check": "npm run lint && npm run typecheck && npm run test && npm run build",
     "test:e2e": "playwright test",
-    "build:map": "node scripts/build-world-map.mjs"
+    "build:map": "node scripts/build-world-map.mjs",
+    "test:prod": "playwright test -c playwright.prod.config.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.119.0",
