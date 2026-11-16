@@ -52,6 +52,7 @@ export function LaunchButton({
       <ButtonLink
         href={href}
         size={size}
+        aurora
         className={className}
         icon={<Rocket className="h-5 w-5" aria-hidden="true" />}
         onClick={(e) => {

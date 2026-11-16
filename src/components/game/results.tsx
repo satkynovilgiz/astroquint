@@ -1,9 +1,11 @@
 "use client";
 
-import { animate, motion, useMotionValue, useTransform } from "motion/react";
+import { motion } from "motion/react";
 import { useEffect, useState } from "react";
 import { Check, ChevronDown, Download, Lock, RotateCcw, Share2, X, LayoutGrid } from "lucide-react";
 import { renderShareCard, shareOrDownloadCard } from "@/features/share/share-card";
+import { CountUp } from "./count-up";
+import { Celebration } from "./celebration";
 import { WORLDS } from "@/features/worlds/worlds";
 import { ACHIEVEMENTS } from "@/features/achievements/achievements";
 import { shareText, type GameSummary } from "@/features/gameplay/summary";
@@ -11,39 +13,8 @@ import type { GameView } from "@/features/gameplay/controller";
 import { playSound } from "@/features/audio/synth";
 import { Planet } from "@/components/animations/planet";
 import { Button, ButtonLink } from "@/components/ui/button";
-import { useShouldReduceMotion } from "@/hooks/use-reduced-motion";
-import { ease, riseIn, spring, staggerChildren } from "@/lib/motion/tokens";
+import { riseIn, spring, staggerChildren } from "@/lib/motion/tokens";
 import { cn } from "@/lib/utils/cn";
-
-function CountUp({ to }: { to: number }) {
-  const reduce = useShouldReduceMotion();
-  const mv = useMotionValue(reduce ? to : 0);
-  const text = useTransform(mv, (v) => Math.round(v).toLocaleString("en-US"));
-  useEffect(() => {
-    if (reduce) return;
-    const c = animate(mv, to, { duration: 1.6, ease: ease.arrive, delay: 0.3 });
-    return () => c.stop();
-  }, [mv, to, reduce]);
-  return <motion.span>{text}</motion.span>;
-}
-
-function Sparkles() {
-  return (
-    <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
-      {Array.from({ length: 14 }, (_, i) => (
-        <span
-          key={i}
-          className="absolute bottom-0 h-1.5 w-1.5 rounded-full"
-          style={{
-            left: `${(i * 37) % 100}%`,
-            background: ["#B9F46D", "#F5C451", "#C7B2FF", "#FFB681"][i % 4],
-            animation: `rise-fade ${2.4 + (i % 5) * 0.4}s ease-out ${0.4 + (i % 7) * 0.35}s infinite`,
-          }}
-        />
-      ))}
-    </div>
-  );
-}
 
 export function Results({
   view,
@@ -106,7 +77,7 @@ export function Results({
   return (
     <div className="space-y-8">
       <section className="relative overflow-hidden rounded-[1.75rem] border border-line bg-gradient-to-b from-surface-2/80 to-surface/60 px-5 py-8 text-center sm:py-10">
-        {summary.correct >= 3 && <Sparkles />}
+        {summary.correct >= 3 && <Celebration />}
         <motion.p initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="hud-label text-brand-soft">
           {title}
         </motion.p>

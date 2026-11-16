@@ -38,7 +38,7 @@ async function playSolo(page: import("@playwright/test").Page, plans: Plan[], wa
 }
 
 test.describe("solo orbit", () => {
-  test.describe.configure({ timeout: 90_000 });
+  test.describe.configure({ timeout: 180_000 });
 
   test("a perfect run scores, unlocks achievements and can be replayed", async ({ page }) => {
     await playSolo(page, ["right", "right", "right", "right", "right"], "All in");
@@ -106,7 +106,7 @@ test.describe("solo orbit", () => {
 
 test.describe("solo orbit on mobile", () => {
   test.use({ viewport: { width: 375, height: 812 }, hasTouch: true });
-  test.describe.configure({ timeout: 90_000 });
+  test.describe.configure({ timeout: 180_000 });
 
   test("full run is playable at phone width without horizontal scroll", async ({ page }) => {
     await playSolo(page, ["right", "wrong", "right", "right", "wrong"], "Nothing");

@@ -1,3 +1,6 @@
+"use client";
+
+import { motion } from "motion/react";
 import { Crown } from "lucide-react";
 import { cn } from "@/lib/utils/cn";
 
@@ -16,8 +19,12 @@ export function LeaderboardTable({ rows, empty }: { rows: LeaderRow[]; empty: st
   return (
     <ol className="panel divide-y divide-line overflow-hidden rounded-2xl" aria-label="Rankings">
       {rows.map((r, i) => (
-        <li
-          key={`${r.rank}-${i}`}
+        <motion.li
+          key={`${r.displayName}-${r.score}-${i}`}
+          layout
+          initial={{ opacity: 0, x: -14 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ type: "spring", stiffness: 300, damping: 28, delay: Math.min(i, 10) * 0.04 }}
           className={cn("flex min-h-14 items-center gap-3 px-4 py-2.5", r.isYou && "bg-action/10")}
           aria-current={r.isYou ? "true" : undefined}
         >
@@ -35,7 +42,7 @@ export function LeaderboardTable({ rows, empty }: { rows: LeaderRow[]; empty: st
           </span>
           <span className="hidden text-sm text-fg-muted sm:inline">{r.correct}/5</span>
           <span className="tabular w-16 text-right font-display text-lg font-bold">{r.score}</span>
-        </li>
+        </motion.li>
       ))}
     </ol>
   );

@@ -28,6 +28,8 @@ import { duration, ease, spring } from "@/lib/motion/tokens";
 import { cn } from "@/lib/utils/cn";
 import { Countdown, useSecondsLeft } from "./countdown";
 import { ErrorNotice } from "@/components/ui/error-notice";
+import { Burst } from "@/components/game/burst";
+import { Celebration } from "@/components/game/celebration";
 import { NameField, rememberName, savedName } from "./party-landing";
 
 const scene = {
@@ -172,7 +174,15 @@ function PlayerList({ view, room, showKick }: { view: PartyView; room: Room; sho
               </span>
             )}
             {!p.isHost && (
-              <span className={cn("hud-label rounded-pill px-2 py-1", p.ready ? "bg-action text-action-fg" : "border border-line text-fg-muted")}>{p.ready ? "Ready" : "Not ready"}</span>
+              <motion.span
+                key={p.ready ? "ready" : "waiting"}
+                initial={{ scale: 0.6, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={spring.press}
+                className={cn("hud-label rounded-pill px-2 py-1", p.ready ? "bg-action text-action-fg" : "border border-line text-fg-muted")}
+              >
+                {p.ready ? "Ready" : "Not ready"}
+              </motion.span>
             )}
             {showKick && !p.isYou && (
               <button
@@ -220,7 +230,17 @@ function Lobby({ view, room }: { view: PartyView; room: Room }) {
           Room code
         </h1>
         <p className="tabular mt-2 font-display text-[clamp(2.75rem,12vw,4.5rem)] font-bold tracking-[0.18em] text-w4" aria-label={`Room code ${view.code.split("").join(" ")}`}>
-          {view.code}
+          {view.code.split("").map((ch, i) => (
+            <motion.span
+              key={`${view.code}-${i}`}
+              className="inline-block"
+              initial={{ opacity: 0, y: 24, rotateX: 80 }}
+              animate={{ opacity: 1, y: 0, rotateX: 0 }}
+              transition={{ type: "spring", stiffness: 320, damping: 20, delay: 0.1 + i * 0.07 }}
+            >
+              {ch}
+            </motion.span>
+          ))}
         </p>
         <div className="mt-4 flex flex-wrap gap-2">
           <Button onClick={invite} icon={copied ? <Check className="h-4 w-4" aria-hidden="true" /> : <Share2 className="h-4 w-4" aria-hidden="true" />}>
@@ -262,6 +282,7 @@ function Lobby({ view, room }: { view: PartyView; room: Room }) {
           {isHost ? (
             <Button
               size="lg"
+              aurora={!view.startBlocker}
               className="flex-1"
               disabled={!!view.startBlocker || room.busy}
               onClick={() => {
@@ -425,10 +446,19 @@ function RoundResults({ view, room, endsAt }: { view: PartyView; room: Room; end
       </div>
       {view.reveal && <p className="mt-2 text-sm leading-relaxed text-fg-muted">{view.reveal.explanation}</p>}
       <ol className="mt-4 space-y-1.5">
-        {sorted.map((p) => {
+        {sorted.map((p, i) => {
           const delta = (p.round?.points ?? 0) + (p.round?.wagerDelta ?? 0);
+          const correct = p.round?.outcome === "correct";
           return (
-            <li key={p.id} className={cn("flex items-center gap-3 rounded-xl px-3 py-2", p.isYou && "bg-fg/5")}>
+            <motion.li
+              key={p.id}
+              layout
+              initial={{ opacity: 0, x: -12 }}
+              animate={{ opacity: 1, x: 0, backgroundColor: correct ? ["rgba(185,244,109,0.28)", "rgba(185,244,109,0)"] : undefined }}
+              transition={{ ...spring.settle, delay: 0.1 + i * 0.06, backgroundColor: { duration: 1.1, delay: 0.25 + i * 0.06 } }}
+              className={cn("relative flex items-center gap-3 rounded-xl px-3 py-2", p.isYou && "bg-fg/5")}
+            >
+              {correct && p.isYou && <Burst />}
               <span className={cn("grid h-6 w-6 place-items-center rounded-full text-xs font-bold", p.round?.outcome === "correct" ? "bg-action text-action-fg" : "bg-danger/80 text-space")} aria-hidden="true">
                 {p.round?.outcome === "correct" ? "✓" : "✕"}
               </span>
@@ -439,7 +469,7 @@ function RoundResults({ view, room, endsAt }: { view: PartyView; room: Room; end
                 {Math.abs(delta)}
               </span>
               <span className="tabular w-14 text-right text-sm text-fg-muted">{p.score}</span>
-            </li>
+            </motion.li>
           );
         })}
       </ol>
@@ -459,8 +489,9 @@ function Podium({ view, room }: { view: PartyView; room: Room }) {
   const heights = { 1: "h-36", 2: "h-28", 3: "h-20" } as Record<number, string>;
   const you = view.standings.find((s) => s.isYou);
   return (
-    <div className="pt-6">
-      <div className="text-center">
+    <div className="relative pt-6">
+      <Celebration />
+      <div className="relative text-center">
         <p className="hud-label text-w4">Final standings · Room {view.code}</p>
         <motion.h1 initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={spring.settle} className="mt-2 font-display text-4xl font-bold">
           {you?.rank === 1 ? "You win the galaxy!" : `${view.standings[0]?.name} wins!`}
@@ -486,7 +517,17 @@ function Podium({ view, room }: { view: PartyView; room: Room }) {
             <p className="mt-2 w-full truncate text-center font-medium">{p.name}</p>
             <p className="tabular font-display font-bold">{p.score}</p>
             <div className={cn("mt-2 grid w-full place-items-center rounded-t-2xl border border-b-0 border-line-strong bg-surface-2/80 font-display text-2xl font-bold", heights[p.rank] ?? "h-16", p.rank === 1 && "text-w5")}>
-              {p.rank === 1 ? <Trophy className="h-7 w-7" aria-label="First place" /> : `#${p.rank}`}
+              {p.rank === 1 ? (
+                <motion.span
+                  initial={{ y: -30, rotate: -20, opacity: 0 }}
+                  animate={{ y: [-30, 0, -6, 0], rotate: [-20, 0, 6, 0], opacity: 1 }}
+                  transition={{ duration: 0.9, delay: 1.0, times: [0, 0.55, 0.8, 1] }}
+                >
+                  <Trophy className="h-7 w-7" aria-label="First place" />
+                </motion.span>
+              ) : (
+                `#${p.rank}`
+              )}
             </div>
           </motion.li>
         ))}

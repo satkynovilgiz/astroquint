@@ -111,8 +111,9 @@ export function WagerPicker({ score, onLock, busy }: { score: number; onLock: (w
             <div className="mt-4 flex flex-col gap-2 sm:flex-row">
               <Button
                 size="lg"
+                aurora
                 autoFocus
-                disabled={busy}
+                loading={busy}
                 onClick={() => {
                   playSound("lock");
                   onLock(wager);

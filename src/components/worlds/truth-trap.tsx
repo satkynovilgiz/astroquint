@@ -53,6 +53,7 @@ export function TruthTrap({ question, world, locked, submitted, reveal, onSubmit
                   onSubmit({ kind: "choice", index: i });
                 }}
                 whileHover={locked ? undefined : { scale: 1.01 }}
+                animate={reveal ? (isFalse ? { scale: [1, 1.025, 1] } : { scale: 0.99, opacity: 0.92 }) : { scale: 1, opacity: 1 }}
                 whileTap={locked ? undefined : { scale: 0.98 }}
                 transition={spring.press}
                 aria-keyshortcuts={String(i + 1)}
@@ -88,6 +89,16 @@ export function TruthTrap({ question, world, locked, submitted, reveal, onSubmit
                   <span className="mt-2 block pl-10 text-xs font-semibold text-fg-muted">Your pick{correctPick ? " ✓" : ""}</span>
                 )}
                 {correctPick && <Burst />}
+                {reveal && isFalse && (
+                  // A brief red flash marks the lie.
+                  <motion.span
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-0 rounded-2xl bg-danger/25"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: [0, 1, 0] }}
+                    transition={{ duration: 0.7, delay: 0.1 }}
+                  />
+                )}
               </motion.button>
               {detail && (
                 <motion.p

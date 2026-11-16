@@ -11,7 +11,7 @@ import { playSound } from "@/features/audio/synth";
 import { useShouldReduceMotion } from "@/hooks/use-reduced-motion";
 import { ease } from "@/lib/motion/tokens";
 
-const TRAVEL_MS = 1900;
+const TRAVEL_MS = 1250;
 
 /**
  * Planet-to-planet travel: the current world falls away, the ship burns, the
@@ -68,8 +68,8 @@ export function Travel({ from, to, onDone }: { from: WorldDefinition; to: WorldD
       <motion.div
         className="absolute left-1/2 top-1/2 w-48 -translate-x-1/2 -translate-y-1/2 sm:w-64"
         initial={{ x: 0, scale: 1, opacity: 1 }}
-        animate={{ x: "-70vw", scale: 0.25, opacity: 0 }}
-        transition={{ duration: 1.0, ease: ease.depart }}
+        animate={{ x: "-55vw", scale: 0.2, opacity: 0, filter: "blur(3px)" }}
+        transition={{ duration: 0.6, ease: ease.depart }}
       >
         <Planet palette={from.palette} surface={from.surface} glow={0.6} />
       </motion.div>
@@ -77,12 +77,29 @@ export function Travel({ from, to, onDone }: { from: WorldDefinition; to: WorldD
       {/* arriving world */}
       <motion.div
         className="absolute left-1/2 top-1/2 w-48 -translate-x-1/2 -translate-y-1/2 sm:w-64"
-        initial={{ x: "45vw", scale: 0.05, opacity: 0 }}
-        animate={{ x: 0, scale: 1, opacity: 1 }}
-        transition={{ duration: 0.95, ease: ease.arrive, delay: 0.85 }}
+        initial={{ x: "35vw", scale: 0.06, opacity: 0 }}
+        animate={{ x: 0, scale: [0.06, 1.12, 1], opacity: 1 }}
+        transition={{ duration: 0.75, ease: ease.arrive, delay: 0.5, times: [0, 0.75, 1] }}
       >
         <Planet palette={to.palette} surface={to.surface} glow={1} spinSeconds={20} />
       </motion.div>
+
+      {/* Warp streaks rushing past */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+        {Array.from({ length: 14 }, (_, i) => (
+          <span
+            key={i}
+            className="absolute h-px origin-right rounded-full"
+            style={{
+              top: `${8 + ((i * 37) % 84)}%`,
+              right: `${(i * 23) % 40}%`,
+              width: `${18 + ((i * 13) % 22)}%`,
+              background: `linear-gradient(90deg, transparent, ${i % 3 === 0 ? to.palette.glow : "var(--aq-fg)"})`,
+              animation: `warp-lines 0.55s ${0.12 + (i % 5) * 0.06}s var(--ease-move) both`,
+            }}
+          />
+        ))}
+      </div>
 
       {/* the ship: accelerates, holds, then eases into orbit */}
       <motion.div
@@ -108,7 +125,7 @@ export function Travel({ from, to, onDone }: { from: WorldDefinition; to: WorldD
         className="absolute inset-x-0 bottom-6 text-center"
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.9, duration: 0.4 }}
+        transition={{ delay: 0.55, duration: 0.35 }}
       >
         <p className="hud-label" style={{ color: to.ink }}>
           Next stop · {to.code}

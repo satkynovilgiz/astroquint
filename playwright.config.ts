@@ -7,7 +7,7 @@ export default defineConfig({
   fullyParallel: true,
   // Games are real-time (20s rounds): too many parallel browsers starve the CPU
   // and turn timing into flakiness, so cap concurrency.
-  workers: process.env.CI ? 2 : 4,
+  workers: process.env.CI ? 2 : 3,
   retries: process.env.CI ? 1 : 0,
   reporter: [["list"]],
   use: {

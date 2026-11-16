@@ -223,12 +223,33 @@ export function WorldMap({ selected, onSelect, locked, correctId, accent }: Worl
               d={c.d}
               data-country={c.id}
               fill={fill(c)}
+              className={c.id === selected && !correctId ? "geo-selected" : undefined}
               stroke="var(--aq-map-stroke)"
               strokeWidth={0.6 / view.k}
               onPointerEnter={() => setHover(c.id)}
               style={{ transition: "fill 180ms" }}
             />
           ))}
+          {/* Sonar rings on the correct country after the reveal */}
+          {correctId &&
+            (() => {
+              const c = byId.get(correctId);
+              if (!c) return null;
+              return [0, 0.5, 1].map((d) => (
+                <circle
+                  key={d}
+                  className="geo-ripple"
+                  cx={c.c[0]}
+                  cy={c.c[1]}
+                  r={Math.max(6, Math.min(20, (c.b[2] - c.b[0]) / 3))}
+                  fill="none"
+                  stroke="#8FD44A"
+                  strokeWidth={1.4 / view.k}
+                  style={{ animationDelay: `${d}s` }}
+                  pointerEvents="none"
+                />
+              ));
+            })()}
           {/* Selection ring drawn on top so small countries stay visible */}
           {(selected || correctId) &&
             [correctId, selected].filter(Boolean).map((id) => {

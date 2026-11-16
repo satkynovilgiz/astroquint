@@ -29,6 +29,7 @@ export function OrbitSystem({ className }: { className?: string }) {
   const reduce = useShouldReduceMotion();
   const finePointer = useMediaQuery("(pointer: fine)");
   const satellites = useRef<Array<HTMLDivElement | null>>([]);
+  const moon = useRef<HTMLDivElement>(null);
 
   // Pointer-driven depth tilt (desktop only).
   const mx = useMotionValue(0);
@@ -55,6 +56,12 @@ export function OrbitSystem({ className }: { className?: string }) {
     let last = performance.now();
 
     const place = () => {
+      // A little grey moon on the inner orbit, faster and counter-phased.
+      if (moon.current) {
+        const p = orbitPoint(-offset * 2.6 + 1.1, INNER);
+        moon.current.style.transform = `translate3d(${(p.x * 100).toFixed(3)}cqw, ${(p.y * 100).toFixed(3)}cqw, 0) scale(${(0.8 + ((p.depth + 1) / 2) * 0.35).toFixed(3)})`;
+        moon.current.style.zIndex = p.depth > 0 ? "25" : "6";
+      }
       WORLDS.forEach((_, i) => {
         const el = satellites.current[i];
         if (!el) return;
@@ -101,6 +108,18 @@ export function OrbitSystem({ className }: { className?: string }) {
       >
         {/* Far halves of the orbits, behind everything */}
         <OrbitTrails paths={[FAR_PATH, INNER_FAR]} opacity={0.35} className="z-0" />
+
+        {/* Breathing light behind the core */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-[20%] z-[1] rounded-full motion-safe:animate-[core-breathe_7s_ease-in-out_infinite]"
+          style={{ background: "radial-gradient(circle, rgb(145 103 244 / 0.35), transparent 65%)" }}
+        />
+
+        {/* Small moon */}
+        <div ref={moon} aria-hidden="true" className="absolute left-1/2 top-1/2 -ml-[2.25%] -mt-[2.25%] w-[4.5%] will-change-transform">
+          <div className="aspect-square w-full rounded-full shadow-[inset_-3px_-3px_6px_rgb(0_0_0/0.45)]" style={{ background: "radial-gradient(circle at 35% 30%, #E8E9F2, #8C8FA6 55%, #44475A)" }} />
+        </div>
 
         {/* Core planet */}
         <motion.div

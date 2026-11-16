@@ -35,31 +35,59 @@ interface CommonProps {
   variant?: ButtonVariant;
   size?: ButtonSize;
   icon?: ReactNode;
+  /** Shows a spinner in place of the icon and marks the button busy. */
+  loading?: boolean;
+  /** Animated aurora border — reserve for the one key action on a screen. */
+  aurora?: boolean;
   children: ReactNode;
+}
+
+function decorate(variant: ButtonVariant, aurora?: boolean) {
+  return cn(variant === "primary" && "btn-sheen overflow-hidden", aurora && "btn-aurora");
+}
+
+/** Decorative layers for the aurora border (see .btn-aurora in globals.css). */
+function AuroraLayers() {
+  return (
+    <>
+      <span aria-hidden="true" className="aurora-ring" />
+      <span aria-hidden="true" className="aurora-fill" />
+    </>
+  );
+}
+
+function Spinner() {
+  return <span aria-hidden="true" className="h-4 w-4 animate-spin rounded-full border-2 border-current border-r-transparent" />;
 }
 
 export function Button({
   variant = "primary",
   size = "md",
   icon,
+  loading = false,
+  aurora = false,
   className,
   children,
   onClick,
+  disabled,
   ...rest
 }: CommonProps & Omit<HTMLMotionProps<"button">, "children">) {
   return (
     <motion.button
       type="button"
       {...pressable}
-      className={buttonClasses(variant, size, className)}
+      className={buttonClasses(variant, size, cn(decorate(variant, aurora), className))}
       onClick={(e) => {
         playSound("tap");
         onClick?.(e);
       }}
+      disabled={disabled || loading}
+      aria-busy={loading || undefined}
       {...rest}
     >
+      {aurora && <AuroraLayers />}
       {children}
-      {icon}
+      {loading ? <Spinner /> : icon}
     </motion.button>
   );
 }
@@ -70,21 +98,23 @@ export function ButtonLink({
   variant = "primary",
   size = "md",
   icon,
+  aurora = false,
   className,
   children,
   onClick,
   ...rest
-}: CommonProps & Omit<ComponentProps<typeof MotionLink>, "children">) {
+}: Omit<CommonProps, "loading"> & Omit<ComponentProps<typeof MotionLink>, "children">) {
   return (
     <MotionLink
       {...pressable}
-      className={buttonClasses(variant, size, className)}
+      className={buttonClasses(variant, size, cn(decorate(variant, aurora), className))}
       onClick={(e) => {
         playSound("tap");
         onClick?.(e);
       }}
       {...rest}
     >
+      {aurora && <AuroraLayers />}
       {children}
       {icon}
     </MotionLink>

@@ -447,3 +447,96 @@ html[data-motion="reduced"]::view-transition-group(*) {
     radial-gradient(80% 55% at 50% 0%, color-mix(in srgb, var(--world-glow) 22%, transparent), transparent 70%),
     radial-gradient(60% 40% at 100% 100%, color-mix(in srgb, var(--world-glow) 10%, transparent), transparent 70%);
 }
+
+/* ───────────────────────── Interaction polish ───────────────────────── */
+
+@keyframes sheen {
+  from { transform: translateX(-120%) skewX(-18deg); }
+  to { transform: translateX(220%) skewX(-18deg); }
+}
+
+@keyframes core-breathe {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50% { opacity: 0.9; transform: scale(1.06); }
+}
+
+/* Light sweep across primary buttons on hover */
+.btn-sheen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 40%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.45), transparent);
+  transform: translateX(-120%) skewX(-18deg);
+  pointer-events: none;
+}
+.btn-sheen:hover::after {
+  animation: sheen 700ms var(--ease-move);
+}
+
+/* Aurora border for the most important calls to action. The conic gradient
+   is rasterised once and only *rotated* (compositor-only), clipped to a 2px
+   ring by the fill layer on top — no per-frame style or paint work. */
+.btn-aurora {
+  isolation: isolate;
+  background: transparent !important;
+}
+.aurora-ring {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  overflow: hidden;
+  border-radius: inherit;
+}
+.aurora-ring::before {
+  content: "";
+  position: absolute;
+  inset: -150%;
+  background: conic-gradient(#b9f46d, #9167f4, #ffb681, #3dd6c4, #b9f46d);
+  animation: orbit-spin 4s linear infinite;
+}
+.aurora-fill {
+  position: absolute;
+  inset: 2px;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--aq-action);
+}
+button:disabled .aurora-ring::before {
+  animation: none;
+}
+
+/* ───────────────────────── World effects ───────────────────────── */
+
+@keyframes geo-pulse {
+  0%, 100% { fill-opacity: 1; }
+  50% { fill-opacity: 0.55; }
+}
+@keyframes geo-ripple {
+  from { transform: scale(0.2); opacity: 0.9; }
+  to { transform: scale(2.6); opacity: 0; }
+}
+.geo-selected {
+  animation: geo-pulse 1.3s ease-in-out infinite;
+}
+.geo-ripple {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: geo-ripple 1.6s var(--ease-arrive) infinite;
+}
+
+@keyframes rays-spin {
+  to { transform: rotate(360deg); }
+}
+.final-rays {
+  background: repeating-conic-gradient(from 0deg, rgb(245 196 81 / 0.28) 0deg 6deg, transparent 6deg 22deg);
+  mask-image: radial-gradient(circle, #000 25%, transparent 68%);
+  animation: rays-spin 40s linear infinite;
+}
+
+@keyframes warp-lines {
+  from { transform: scaleX(0.1); opacity: 0; }
+  30% { opacity: 1; }
+  to { transform: scaleX(1.6); opacity: 0; }
+}

@@ -7,6 +7,7 @@ import { playSound } from "@/features/audio/synth";
 import { spring } from "@/lib/motion/tokens";
 import { cn } from "@/lib/utils/cn";
 import { Button } from "@/components/ui/button";
+import { Burst } from "@/components/game/burst";
 import type { WorldProps } from "./types";
 
 type Item = { id: string; label: string };
@@ -27,10 +28,33 @@ export function Timeline({ question, world, locked, submitted, reveal, onSubmit 
 
   if (reveal?.timeline) {
     const yours = submitted?.kind === "order" ? submitted.ids : null;
+    const perfect = !!yours && reveal.timeline.every((e, i) => yours[i] === e.id);
     return (
       <div className="space-y-4">
-        <h2 className="font-display text-xl font-semibold sm:text-2xl">The real order</h2>
-        <ol className="space-y-2.5">
+        <div className="flex flex-wrap items-center gap-3">
+          <h2 className="font-display text-xl font-semibold sm:text-2xl">The real order</h2>
+          {perfect && (
+            <motion.span
+              initial={{ scale: 0, rotate: -8 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ ...spring.press, delay: 0.5 }}
+              className="relative rounded-pill bg-action px-3 py-1 text-sm font-bold text-action-fg"
+            >
+              Perfect order!
+              <Burst />
+            </motion.span>
+          )}
+        </div>
+        <ol className="relative space-y-2.5 pl-5">
+          {/* Chronological spine drawing itself downward */}
+          <motion.span
+            aria-hidden="true"
+            className="absolute bottom-3 left-1.5 top-3 w-0.5 origin-top rounded-full"
+            style={{ background: `linear-gradient(${world.palette.glow}, color-mix(in srgb, ${world.palette.glow} 20%, transparent))` }}
+            initial={{ scaleY: 0 }}
+            animate={{ scaleY: 1 }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          />
           {reveal.timeline.map((e, i) => {
             const right = yours ? yours[i] === e.id : false;
             return (
@@ -40,8 +64,16 @@ export function Timeline({ question, world, locked, submitted, reveal, onSubmit 
                 initial={{ opacity: 0, x: -12 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ ...spring.settle, delay: i * 0.08 }}
-                className={cn("panel flex items-center gap-3 rounded-2xl p-3 sm:p-4", right ? "border-action/50" : "border-danger/40")}
+                className={cn("panel relative flex items-center gap-3 rounded-2xl p-3 sm:p-4", right ? "border-action/50" : "border-danger/40")}
               >
+                <motion.span
+                  aria-hidden="true"
+                  className="absolute -left-[1.3rem] top-1/2 h-3 w-3 -translate-y-1/2 rounded-full border-2 border-bg"
+                  style={{ background: world.palette.glow }}
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ ...spring.press, delay: 0.2 + i * 0.12 }}
+                />
                 <span className="tabular w-[5.5rem] shrink-0 font-display text-sm font-bold sm:w-28 sm:text-base" style={{ color: world.ink }}>
                   {e.dateLabel}
                 </span>

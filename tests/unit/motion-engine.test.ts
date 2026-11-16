@@ -34,3 +34,19 @@ describe("orbit maths", () => {
     expect(orbitArcPath(shape, "far")).toMatch(/^M 0\.00 50\.00/);
   });
 });
+
+import { createMotes, meteorAlpha, spawnShootingStar } from "@/components/animations/starfield-engine";
+
+describe("shooting stars & dust", () => {
+  it("meteors fade in and out within their lifetime", () => {
+    expect(meteorAlpha(0, 800)).toBe(0);
+    expect(meteorAlpha(160, 800)).toBeCloseTo(1);
+    expect(meteorAlpha(800, 800)).toBe(0);
+    const m = spawnShootingStar(1000, 600, 0, () => 0.3);
+    expect(m.vy).toBeGreaterThan(0); // always heads downward
+    expect(m.life).toBeGreaterThan(600);
+  });
+  it("creates the requested number of motes", () => {
+    expect(createMotes(7, 400, 800)).toHaveLength(7);
+  });
+});

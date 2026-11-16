@@ -7,6 +7,8 @@ import { CalendarClock, Dumbbell, Loader2, Play, Trophy } from "lucide-react";
 import { api } from "@/lib/api/client";
 import { describeError, type FriendlyError } from "@/lib/api/errors";
 import { ErrorNotice } from "@/components/ui/error-notice";
+import { RollingText } from "@/components/ui/rolling-text";
+import { CountUp } from "@/components/game/count-up";
 import { formatCountdown, msUntilNextUtcDay } from "@/features/daily/time";
 import { useServerGame, type MatchPayload } from "@/features/gameplay/use-server-game";
 import { getAchievement, type AchievementId } from "@/features/achievements/achievements";
@@ -132,13 +134,19 @@ export function DailyOrbit() {
               Today&apos;s route
             </h2>
             <ol className="mt-4 grid grid-cols-5 gap-2" aria-label="Today's worlds">
-              {(["pattern-break", "truth-trap", "timeline", "geotap", "final-bet"] as const).map((id) => {
+              {(["pattern-break", "truth-trap", "timeline", "geotap", "final-bet"] as const).map((id, i) => {
                 const w = getWorld(id);
                 return (
-                  <li key={id} className="text-center">
+                  <motion.li
+                    key={id}
+                    className="text-center"
+                    initial={{ opacity: 0, y: 18, scale: 0.7 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.15 + i * 0.08 }}
+                  >
                     <Planet palette={w.palette} surface={w.surface} spinSeconds={30} glow={0.6} />
                     <span className="mt-1 block text-[0.7rem] text-fg-muted">{w.name}</span>
-                  </li>
+                  </motion.li>
                 );
               })}
             </ol>
@@ -146,7 +154,9 @@ export function DailyOrbit() {
             {status.result ? (
               <div className="mt-6 rounded-2xl border border-action/40 bg-action/10 p-4">
                 <p className="hud-label text-action">Ranked result locked in</p>
-                <p className="tabular mt-1 font-display text-4xl font-bold">{status.result.score}</p>
+                <p className="tabular mt-1 font-display text-4xl font-bold">
+                  <CountUp to={status.result.score} />
+                </p>
                 <p className="text-sm text-fg-muted">
                   {status.result.correct}/5 correct
                   {status.result.rank ? ` · Rank #${status.result.rank.rank} of ${status.result.rank.total}` : ""}
@@ -217,7 +227,7 @@ function DailyHeader({ number, date }: { number?: number; date?: string }) {
         <CalendarClock className="h-4 w-4" aria-hidden="true" />
         {date ? new Date(`${date}T00:00:00Z`).toLocaleDateString("en-US", { timeZone: "UTC", weekday: "long", month: "long", day: "numeric" }) : "Today"} (UTC)
         <span aria-hidden="true">·</span>
-        New orbit in <span className="tabular font-semibold text-fg">{now === null ? "--:--:--" : formatCountdown(msUntilNextUtcDay(now))}</span>
+        New orbit in <RollingText className="tabular font-semibold text-fg" text={now === null ? "--:--:--" : formatCountdown(msUntilNextUtcDay(now))} />
       </p>
     </div>
   );
@@ -256,10 +266,21 @@ function ActiveDaily({
         resultsExtra={
           <div className="space-y-3">
             {ranked && payload.rank && (
-              <p className="panel rounded-2xl p-4 text-lg">
-                <Trophy className="mr-2 inline h-5 w-5 text-w5" aria-hidden="true" />
-                You placed <strong className="tabular">#{payload.rank.rank}</strong> of {payload.rank.total} on today&apos;s leaderboard so far.
-              </p>
+              <div className="panel flex items-center gap-4 rounded-2xl p-4 text-lg">
+                <motion.span
+                  aria-hidden="true"
+                  className="grid h-14 w-14 shrink-0 place-items-center rounded-full text-3xl"
+                  style={{ background: payload.rank.rank <= 3 ? ["#F5C451", "#D6DCEB", "#E8995C"][payload.rank.rank - 1] : "var(--aq-surface-2)" }}
+                  initial={{ scale: 0, rotate: -120 }}
+                  animate={{ scale: 1, rotate: 0 }}
+                  transition={{ type: "spring", stiffness: 220, damping: 14, delay: 1.2 }}
+                >
+                  {payload.rank.rank <= 3 ? ["🥇", "🥈", "🥉"][payload.rank.rank - 1] : <Trophy className="h-6 w-6 text-w5" />}
+                </motion.span>
+                <p>
+                  You placed <strong className="tabular">#{payload.rank.rank}</strong> of {payload.rank.total} on today&apos;s leaderboard so far.
+                </p>
+              </div>
             )}
             {!ranked && <p className="text-sm text-fg-muted">Practice runs aren&apos;t ranked, so this score won&apos;t affect your leaderboard result.</p>}
             {payload.newAchievements && payload.newAchievements.length > 0 && (

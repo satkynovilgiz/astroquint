@@ -48,3 +48,63 @@ export function warpEnvelope(elapsedMs: number, durationMs: number): number {
   const ease = (v: number) => v * v * (3 - 2 * v);
   return ease(Math.min(up, down));
 }
+
+// ── Shooting stars & cosmic dust ─────────────────────────────────────────
+
+export interface ShootingStar {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  born: number;
+  life: number;
+  length: number;
+}
+
+/** A meteor entering from the upper part of the screen, travelling diagonally. */
+export function spawnShootingStar(width: number, height: number, now: number, rand = Math.random): ShootingStar {
+  const leftward = rand() < 0.5;
+  const angle = (leftward ? 200 : -20) * (Math.PI / 180) + (rand() - 0.5) * 0.35;
+  const speed = 0.9 + rand() * 0.6; // px per ms
+  return {
+    x: leftward ? width * (0.45 + rand() * 0.55) : width * rand() * 0.55,
+    y: height * rand() * 0.35,
+    vx: Math.cos(angle) * speed * (leftward ? 1 : 1),
+    vy: Math.abs(Math.sin(angle)) * speed + 0.25,
+    born: now,
+    life: 650 + rand() * 450,
+    length: 110 + rand() * 110,
+  };
+}
+
+/** 0→1→0 brightness over a meteor's life. */
+export function meteorAlpha(age: number, life: number): number {
+  if (age <= 0 || age >= life) return 0;
+  const t = age / life;
+  return t < 0.2 ? t / 0.2 : (1 - t) / 0.8;
+}
+
+export interface Mote {
+  x: number;
+  y: number;
+  r: number;
+  vx: number;
+  vy: number;
+  hue: string;
+  phase: number;
+}
+
+const MOTE_HUES = ["145,103,244", "61,214,196", "185,244,109", "255,182,129"];
+
+/** A few large, slow, softly glowing dust motes for depth. */
+export function createMotes(count: number, width: number, height: number, rand = Math.random): Mote[] {
+  return Array.from({ length: count }, () => ({
+    x: rand() * width,
+    y: rand() * height,
+    r: 1.4 + rand() * 2.4,
+    vx: (rand() - 0.5) * 0.012,
+    vy: -0.004 - rand() * 0.01,
+    hue: MOTE_HUES[Math.floor(rand() * MOTE_HUES.length)],
+    phase: rand() * Math.PI * 2,
+  }));
+}

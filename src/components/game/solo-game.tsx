@@ -113,7 +113,7 @@ function SoloLobby({ relaxed, setRelaxed, onLaunch, busy, error }: { relaxed: bo
         </motion.div>
 
         <motion.div variants={riseIn} className="mt-6">
-          <Button size="lg" onClick={onLaunch} disabled={busy} className="w-full sm:w-auto" icon={busy ? <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" /> : <Rocket className="h-5 w-5" aria-hidden="true" />}>
+          <Button size="lg" aurora onClick={onLaunch} loading={busy} className="w-full sm:w-auto" icon={<Rocket className="h-5 w-5" aria-hidden="true" />}>
             Launch solo run
           </Button>
           {error && <ErrorNotice error={error} onRetry={onLaunch} retrying={busy} className="mt-4" />}

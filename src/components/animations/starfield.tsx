@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import { useShouldReduceMotion } from "@/hooks/use-reduced-motion";
 import { usePreferences } from "@/features/preferences/use-preferences";
-import { createStars, spawnStar, starBudget, warpEnvelope, type Star } from "./starfield-engine";
+import { createMotes, createStars, meteorAlpha, spawnShootingStar, spawnStar, starBudget, warpEnvelope, type Mote, type ShootingStar, type Star } from "./starfield-engine";
 import { onWarp } from "./warp-bus";
 
 /**
@@ -35,6 +35,30 @@ export function Starfield() {
     let width = 0;
     let height = 0;
     let stars: Star[] = [];
+    let motes: Mote[] = [];
+    // Pre-rendered glow sprites (one per hue) — far cheaper than a gradient per mote per frame.
+    const sprites = new Map<string, HTMLCanvasElement>();
+    const spriteFor = (hue: string) => {
+      let c = sprites.get(hue);
+      if (!c) {
+        c = document.createElement("canvas");
+        c.width = c.height = 64;
+        const sctx = c.getContext("2d");
+        if (sctx) {
+          const g = sctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+          g.addColorStop(0, `rgba(${hue},1)`);
+          g.addColorStop(1, `rgba(${hue},0)`);
+          sctx.fillStyle = g;
+          sctx.fillRect(0, 0, 64, 64);
+        }
+        sprites.set(hue, c);
+      }
+      return c;
+    };
+    let meteors: ShootingStar[] = [];
+    // Occasional shooting stars: rarer in light mode, never under reduced motion.
+    const nextGap = () => (light ? 9000 : 4500) + Math.random() * (light ? 9000 : 7000);
+    let nextMeteorAt = performance.now() + 2500 + Math.random() * 3000;
     let raf = 0;
     let last = performance.now();
     let running = false;
@@ -58,6 +82,7 @@ export function Starfield() {
       canvas.height = Math.round(height * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       stars = createStars(starBudget(width, height, lowPower), width, height);
+      motes = createMotes(lowPower ? 5 : width < 640 ? 7 : 12, width, height);
       if (!running) draw(performance.now(), 0);
     };
 
@@ -124,6 +149,53 @@ export function Starfield() {
           ctx.arc(sx, y, s.r, 0, Math.PI * 2);
           ctx.fill();
         }
+      }
+
+      // Cosmic dust: soft glows drifting upward at a different depth.
+      for (const m of motes) {
+        if (!reduce && dt > 0) {
+          m.x += m.vx * dt;
+          m.y += m.vy * dt;
+          if (m.y < -20) m.y = height + 20;
+          if (m.x < -20) m.x = width + 20;
+          if (m.x > width + 20) m.x = -20;
+        }
+        const mx = m.x + px * 40;
+        const my = m.y + py * 28;
+        const pulse = 0.55 + 0.45 * Math.sin(now * 0.0009 + m.phase);
+        const a = (light ? 0.22 : 0.32) * pulse * (1 - warp);
+        const size = m.r * 12;
+        ctx.globalAlpha = a;
+        ctx.drawImage(spriteFor(m.hue), mx - size / 2, my - size / 2, size, size);
+        ctx.globalAlpha = 1;
+      }
+
+      // Shooting stars.
+      if (!reduce && dt > 0 && warp === 0 && now >= nextMeteorAt) {
+        meteors.push(spawnShootingStar(width, height, now));
+        nextMeteorAt = now + nextGap();
+      }
+      meteors = meteors.filter((m) => now - m.born < m.life);
+      for (const m of meteors) {
+        const age = now - m.born;
+        const hx = m.x + m.vx * age;
+        const hy = m.y + m.vy * age;
+        const mag = Math.hypot(m.vx, m.vy);
+        const tx = hx - (m.vx / mag) * m.length;
+        const ty = hy - (m.vy / mag) * m.length;
+        const a = meteorAlpha(age, m.life) * (light ? 0.5 : 0.95);
+        const head = light ? "98,54,212" : "248,250,255";
+        const grad = ctx.createLinearGradient(hx, hy, tx, ty);
+        grad.addColorStop(0, `rgba(${head},${a})`);
+        grad.addColorStop(0.3, `rgba(${light ? head : "191,168,255"},${a * 0.5})`);
+        grad.addColorStop(1, `rgba(${head},0)`);
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = 1.6;
+        ctx.lineCap = "round";
+        ctx.beginPath();
+        ctx.moveTo(hx, hy);
+        ctx.lineTo(tx, ty);
+        ctx.stroke();
       }
     };
 

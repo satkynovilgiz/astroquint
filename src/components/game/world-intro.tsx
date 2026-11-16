@@ -20,11 +20,12 @@ export function WorldIntro({ world, relaxed, onBegin, waitingLabel }: { world: W
   return (
     <div className="grid items-center gap-6 py-2 sm:grid-cols-[auto_1fr] sm:gap-10 sm:py-6">
       <motion.div
-        className="mx-auto w-40 sm:w-56"
+        className="relative mx-auto w-40 sm:w-56"
         initial={{ scale: 0.55, opacity: 0, y: 30 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
         transition={{ duration: duration.scene, ease: ease.arrive }}
       >
+        {world.id === "final-bet" && <div aria-hidden="true" className="final-rays absolute inset-[-45%] rounded-full" />}
         <Planet palette={world.palette} surface={world.surface} ring={world.id === "pattern-break" || world.id === "final-bet"} spinSeconds={22} glow={1} />
       </motion.div>
       <motion.div variants={staggerChildren(0.15)} initial="hidden" animate="visible" className="text-center sm:text-left">
