@@ -2,11 +2,11 @@ import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
 test.describe("themes", () => {
-  test("black theme is the default for new visitors", async ({ page }) => {
+  test("dark (charcoal) theme is the default for new visitors", async ({ page }) => {
     await page.goto("/");
     await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
     const bg = await page.evaluate(() => getComputedStyle(document.body).backgroundColor);
-    expect(bg).toBe("rgb(5, 5, 5)");
+    expect(bg).toBe("rgb(18, 20, 29)"); // deep charcoal, not pure black
   });
 
   test("toggle switches theme, persists across navigation and reload", async ({ page }) => {

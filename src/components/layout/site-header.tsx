@@ -32,7 +32,7 @@ export function SiteHeader() {
       data-scrolled={scrolled}
       className={cn(
         "sticky top-0 z-50 border-b pt-[var(--safe-top)] transition-[background-color,border-color,backdrop-filter] duration-[var(--dur-base)]",
-        scrolled ? "border-line bg-space/80 backdrop-blur-xl" : "border-transparent bg-transparent",
+        scrolled ? "border-line bg-bg/80 shadow-[0_10px_30px_-20px_rgb(0_0_0/0.45)] backdrop-blur-xl" : "border-transparent bg-transparent",
       )}
       style={{ viewTransitionName: "site-header" }}
     >

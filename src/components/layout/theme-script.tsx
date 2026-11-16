@@ -11,4 +11,4 @@ export function ThemeScript() {
   return <script dangerouslySetInnerHTML={{ __html: script }} />;
 }
 
-export const THEME_COLORS = { dark: "#050505", light: "#f4f4f8" } as const;
+export const THEME_COLORS = { dark: "#12141d", light: "#f1f1f6" } as const;

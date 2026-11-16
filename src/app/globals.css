@@ -8,17 +8,17 @@
 :root,
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --aq-bg: #050505;
-  --aq-bg-deep: #000000;
-  --aq-surface: #111114;
-  --aq-surface-2: #19191f;
-  --aq-panel: rgb(17 17 20 / 0.78);
-  --aq-line: #292930;
-  --aq-line-strong: #3b3b46;
-  --aq-fg: #f8faff;
-  --aq-fg-muted: #a4a4b2;
+  --aq-bg: #12141d;
+  --aq-bg-deep: #181b26;
+  --aq-surface: #202331;
+  --aq-surface-2: #292c3b;
+  --aq-panel: rgb(32 35 49 / 0.82);
+  --aq-line: #35394a;
+  --aq-line-strong: #474c62;
+  --aq-fg: #f2f2f7;
+  --aq-fg-muted: #aab0c1;
   --aq-action: #b9f46d; /* Electric Lime: primary actions */
-  --aq-action-fg: #0b1406;
+  --aq-action-fg: #10170a;
   --aq-brand: #9167f4; /* Orbit Violet: identity & progression */
   --aq-brand-soft: #bfa8ff;
   --aq-reward: #ffb681; /* Solar Orange: rewards & energy */
@@ -29,27 +29,29 @@
   --aq-w4: #5fe3d3;
   --aq-w5: #f5c451;
   --aq-glow-strength: 1;
-  --aq-shadow: 0 20px 50px -24px rgb(0 0 0 / 0.9);
-  --aq-map-ocean: #07090f;
-  --aq-map-land: #23232c;
-  --aq-map-land-hover: #34343f;
-  --aq-map-stroke: #050505;
-  --aq-rock: #26262e;
-  --aq-rock-edge: #44444f;
-  --aq-rock-shade: #18181d;
+  --aq-shadow: inset 0 1px 0 rgb(255 255 255 / 0.04), 0 1px 2px rgb(0 0 0 / 0.25), 0 18px 40px -22px rgb(4 5 12 / 0.75);
+  --aq-map-ocean: #161926;
+  --aq-map-land: #2f3346;
+  --aq-map-land-hover: #3d425a;
+  --aq-map-stroke: #12141d;
+  --aq-rock: #2b2e3d;
+  --aq-rock-edge: #4a4e63;
+  --aq-rock-shade: #1e2130;
+  --aq-shadow-lift: inset 0 1px 0 rgb(255 255 255 / 0.06), 0 2px 4px rgb(0 0 0 / 0.25), 0 26px 50px -24px rgb(4 5 12 / 0.85);
+  --aq-planet-shadow: none;
 }
 
 :root[data-theme="light"] {
   color-scheme: light;
-  --aq-bg: #f4f4f8;
-  --aq-bg-deep: #ffffff;
-  --aq-surface: #ffffff;
-  --aq-surface-2: #ececf2;
-  --aq-panel: rgb(255 255 255 / 0.86);
-  --aq-line: #dcdce6;
-  --aq-line-strong: #c4c4d2;
-  --aq-fg: #0b0b12;
-  --aq-fg-muted: #55556a;
+  --aq-bg: #f1f1f6;
+  --aq-bg-deep: #e9eaf1;
+  --aq-surface: #faf9fd;
+  --aq-surface-2: #e9eaf1;
+  --aq-panel: rgb(250 249 253 / 0.88);
+  --aq-line: #dfdfea;
+  --aq-line-strong: #c9c9da;
+  --aq-fg: #1d1e29;
+  --aq-fg-muted: #606477;
   /* Accents deepen in light mode so they stay readable as text (WCAG AA) */
   --aq-action: #38700a;
   --aq-action-fg: #ffffff;
@@ -62,15 +64,17 @@
   --aq-w3: #a64b12;
   --aq-w4: #0a7268;
   --aq-w5: #855800;
-  --aq-glow-strength: 0.45;
-  --aq-shadow: 0 18px 40px -24px rgb(30 20 80 / 0.35);
-  --aq-map-ocean: #dfe7f3;
-  --aq-map-land: #b9bccb;
-  --aq-map-land-hover: #9ea2b6;
-  --aq-map-stroke: #f4f4f8;
-  --aq-rock: #c9c9d6;
-  --aq-rock-edge: #a9a9ba;
-  --aq-rock-shade: #b3b3c4;
+  --aq-glow-strength: 0.75;
+  --aq-shadow: 0 1px 2px rgb(29 30 41 / 0.05), 0 12px 32px -18px rgb(70 56 140 / 0.22);
+  --aq-map-ocean: #e2e5f0;
+  --aq-map-land: #bec1d3;
+  --aq-map-land-hover: #a5a9c0;
+  --aq-map-stroke: #f1f1f6;
+  --aq-rock: #cfd0de;
+  --aq-rock-edge: #b2b4c8;
+  --aq-rock-shade: #bcbdd0;
+  --aq-shadow-lift: 0 2px 4px rgb(29 30 41 / 0.06), 0 22px 44px -20px rgb(70 56 140 / 0.3);
+  --aq-planet-shadow: drop-shadow(0 10px 18px rgb(70 56 140 / 0.22));
 }
 
 @theme inline {
@@ -160,16 +164,21 @@ body::before {
   inset: 0;
   z-index: -20;
   pointer-events: none;
+  /* Deep charcoal space: a soft lift in the middle, violet haze above, teal below. */
   background:
-    radial-gradient(70% 45% at 88% -8%, rgb(145 103 244 / calc(0.12 * var(--aq-glow-strength))), transparent 70%),
-    radial-gradient(60% 40% at -8% 108%, rgb(61 214 196 / calc(0.06 * var(--aq-glow-strength))), transparent 70%),
-    radial-gradient(120% 90% at 50% 50%, transparent 55%, rgb(0 0 0 / calc(0.55 * var(--aq-glow-strength))) 100%);
+    radial-gradient(60% 45% at 85% -5%, rgb(145 103 244 / 0.14), transparent 70%),
+    radial-gradient(55% 40% at -5% 105%, rgb(61 214 196 / 0.07), transparent 70%),
+    radial-gradient(80% 60% at 50% 35%, rgb(42 46 70 / 0.35), transparent 75%),
+    linear-gradient(180deg, var(--aq-bg) 0%, var(--aq-bg-deep) 100%);
 }
 
+/* Soft pearl: lavender light from above, a cool blush below. */
 :root[data-theme="light"] body::before {
   background:
-    radial-gradient(70% 45% at 88% -8%, rgb(145 103 244 / 0.12), transparent 70%),
-    radial-gradient(60% 40% at -8% 108%, rgb(61 214 196 / 0.1), transparent 70%);
+    radial-gradient(60% 45% at 85% -5%, rgb(145 103 244 / 0.12), transparent 70%),
+    radial-gradient(55% 40% at -5% 105%, rgb(61 214 196 / 0.08), transparent 70%),
+    radial-gradient(80% 60% at 50% 30%, rgb(255 255 255 / 0.55), transparent 75%),
+    linear-gradient(180deg, var(--aq-bg) 0%, var(--aq-bg-deep) 100%);
 }
 
 ::selection {
@@ -204,6 +213,11 @@ body::before {
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
     box-shadow: var(--aq-shadow);
+  }
+
+  /* Planets keep their colour; in light mode they get a soft grounding shadow. */
+  .planet-art {
+    filter: var(--aq-planet-shadow);
   }
 }
 

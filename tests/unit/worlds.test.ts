@@ -25,7 +25,7 @@ describe("worlds", () => {
   });
   it("label colours meet WCAG AA contrast on black-theme backgrounds and cards", () => {
     for (const w of WORLDS) {
-      for (const bg of ["#050505", "#111114", "#19191F"]) expect(contrast(w.palette.text, bg)).toBeGreaterThanOrEqual(4.5);
+      for (const bg of ["#12141D", "#202331", "#292C3B"]) expect(contrast(w.palette.text, bg)).toBeGreaterThanOrEqual(4.5);
     }
   });
 

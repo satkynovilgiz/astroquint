@@ -18,7 +18,7 @@ export interface WorldPalette {
   shadow: string;
   /** Atmospheric glow. */
   glow: string;
-  /** Text-safe accent for labels on the black theme (≥ 4.5:1 on #050505). */
+  /** Text-safe accent for labels on the black theme (≥ 4.5:1 on the charcoal theme). */
   text: string;
 }
 

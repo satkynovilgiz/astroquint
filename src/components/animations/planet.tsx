@@ -55,7 +55,7 @@ export function Planet({
           }}
         />
       )}
-      <svg viewBox="0 0 100 100" overflow="visible" className="relative h-full w-full">
+      <svg viewBox="0 0 100 100" overflow="visible" className="planet-art relative h-full w-full">
         <defs>
           <radialGradient id={id("body")} cx="34%" cy="30%" r="78%">
             <stop offset="0%" stopColor={palette.highlight} />
