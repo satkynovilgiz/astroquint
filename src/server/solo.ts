@@ -8,6 +8,8 @@ import { evaluateAnswer, revealFor } from "@/features/questions/present";
 import type { GameView } from "@/features/gameplay/controller";
 import type { GameActionInput } from "@/lib/validation/game";
 import { mulberry32, randomId } from "@/lib/utils/random";
+import { utcDayKey } from "@/features/daily/time";
+import { dailySelection } from "./daily-selection";
 import { sessionSecret } from "./env";
 import { ApiError } from "./http";
 import { LATE_GRACE_MS } from "./games";
@@ -69,7 +71,8 @@ function payload(state: GameState, now: number): SoloPayload {
 
 export function startSolo(relaxed: boolean, recent: string[], now = Date.now()): SoloPayload {
   const id = randomId();
-  const questionIds = selectQuestions(mulberry32(parseInt(id.slice(0, 8), 16)), new Set(recent));
+  // Never serve today's Daily Orbit questions in practice: their reveals would leak ranked answers.
+  const questionIds = selectQuestions(mulberry32(parseInt(id.slice(0, 8), 16)), new Set(recent), new Set(dailySelection(utcDayKey(now))));
   return payload(createGame({ id, questionIds, relaxed, now }), now);
 }
 

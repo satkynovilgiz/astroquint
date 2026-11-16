@@ -4,6 +4,7 @@ export class ApiRequestError extends Error {
     public status: number,
     public code: string,
     message: string,
+    public requestId?: string,
   ) {
     super(message);
   }
@@ -22,9 +23,13 @@ export async function api<T>(path: string, init?: { method?: string; body?: unkn
     });
   } catch (err) {
     if ((err as Error).name === "AbortError") throw err;
-    throw new ApiRequestError(0, "network", "Can't reach mission control. Check your connection and try again.");
+    throw new ApiRequestError(0, "network", "Can't reach the game server. Check your connection and try again.");
   }
-  const data = (await res.json().catch(() => null)) as (T & { error?: { code: string; message: string } }) | null;
-  if (!res.ok) throw new ApiRequestError(res.status, data?.error?.code ?? "error", data?.error?.message ?? "Something went wrong");
+  const data = (await res.json().catch(() => null)) as (T & { error?: { code: string; message: string; requestId?: string } }) | null;
+  if (!res.ok) {
+    // Non-JSON failures (e.g. a platform 502/504 page) still get a meaningful code.
+    const fallbackCode = res.status >= 500 ? "server_unavailable" : "error";
+    throw new ApiRequestError(res.status, data?.error?.code ?? fallbackCode, data?.error?.message ?? `The server responded with an error (${res.status}).`, data?.error?.requestId);
+  }
   return data as T;
 }

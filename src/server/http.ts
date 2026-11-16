@@ -3,6 +3,8 @@ import { NextResponse } from "next/server";
 import { unstable_rethrow } from "next/navigation";
 import type { z } from "zod";
 import { rateLimit } from "./rate-limit";
+import { ConfigError } from "./env";
+import { randomId } from "@/lib/utils/random";
 
 export class ApiError extends Error {
   constructor(
@@ -44,16 +46,45 @@ export function limit(req: Request, bucket: string, max: number, windowMs = 60_0
   }
 }
 
-/** Wrap a handler: converts ApiError into JSON responses and hides internals. */
+function requestIdOf(args: unknown[]): string {
+  const req = args[0] instanceof Request ? args[0] : null;
+  // Vercel's request id matches its runtime logs; fall back to our own.
+  return req?.headers.get("x-vercel-id")?.split("::").pop() ?? randomId(6);
+}
+
+function routeOf(args: unknown[]): string {
+  const req = args[0] instanceof Request ? args[0] : null;
+  if (!req) return "?";
+  try {
+    return `${req.method} ${new URL(req.url).pathname}`;
+  } catch {
+    return req.method;
+  }
+}
+
+/**
+ * Wrap a route handler. Every failure becomes a typed JSON error with a
+ * request id the player can report; configuration problems are 503s with an
+ * honest message; unexpected exceptions are logged in full server-side and
+ * never leak internals to the browser.
+ */
 export function handle<A extends unknown[]>(fn: (...args: A) => Promise<Response>) {
   return async (...args: A): Promise<Response> => {
     try {
       return await fn(...args);
     } catch (err) {
       unstable_rethrow(err); // let Next.js internals (e.g. prerender bail-outs) through
-      if (err instanceof ApiError) return json({ error: { code: err.code, message: err.message } }, err.status);
-      console.error("[api] unexpected error", err instanceof Error ? err.message : err);
-      return json({ error: { code: "internal", message: "Something went wrong" } }, 500);
+      const requestId = requestIdOf(args);
+      if (err instanceof ApiError) return json({ error: { code: err.code, message: err.message, requestId } }, err.status);
+      if (err instanceof ConfigError) {
+        console.error(`[api] config error ${err.code} on ${routeOf(args)} (req ${requestId}): ${err.operatorHint}`);
+        return json({ error: { code: err.code, message: err.userMessage, requestId } }, { status: 503, headers: { "Retry-After": "60" } });
+      }
+      console.error(`[api] unexpected error on ${routeOf(args)} (req ${requestId})`, err);
+      return json(
+        { error: { code: "internal", message: "The game server hit an unexpected problem. Please try again in a moment.", requestId } },
+        500,
+      );
     }
   };
 }

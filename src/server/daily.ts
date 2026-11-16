@@ -1,7 +1,7 @@
 import "server-only";
-import { selectQuestions } from "@/features/questions/select";
+import { dailySelection } from "./daily-selection";
 import { formatCountdown, msUntilNextUtcDay, utcDayKey } from "@/features/daily/time";
-import { seededRandom, randomId } from "@/lib/utils/random";
+import { randomId } from "@/lib/utils/random";
 import { ApiError } from "./http";
 import { getStore } from "./store";
 import { newMatch, payloadFor, type MatchPayload } from "./games";
@@ -14,10 +14,7 @@ export function dailyNumber(date: string): number {
   return Math.floor((Date.parse(`${date}T00:00:00Z`) - Date.parse(`${DAILY_EPOCH}T00:00:00Z`)) / 86_400_000) + 1;
 }
 
-/** Deterministic per-day selection; frozen in the store on first use. */
-export function dailySelection(date: string): string[] {
-  return selectQuestions(seededRandom(`astroquint-daily:${date}`));
-}
+export { dailySelection };
 
 export async function dailyQuestions(date: string): Promise<string[]> {
   const store = getStore();

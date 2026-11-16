@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Check, Loader2, Lock, Pencil } from "lucide-react";
 import { api, ApiRequestError } from "@/lib/api/client";
+import { describeError, type FriendlyError } from "@/lib/api/errors";
+import { ErrorNotice } from "@/components/ui/error-notice";
 import { displayNameSchema } from "@/lib/validation/game";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils/cn";
@@ -17,7 +19,8 @@ interface Overview {
 
 export function ProfileView() {
   const [data, setData] = useState<Overview | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<FriendlyError | null>(null);
+  const [attempt, setAttempt] = useState(0);
   const [editing, setEditing] = useState(false);
   const [name, setName] = useState("");
   const [nameError, setNameError] = useState<string | null>(null);
@@ -29,8 +32,8 @@ export function ProfileView() {
         setData(d);
         setName(d.profile.displayName);
       })
-      .catch((err) => setError(err instanceof ApiRequestError ? err.message : "Couldn't load your profile."));
-  }, []);
+      .catch((err) => setError(describeError(err, "profile")));
+  }, [attempt]);
 
   const save = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,7 +55,16 @@ export function ProfileView() {
     }
   };
 
-  if (error) return <p role="alert" className="panel rounded-2xl p-5 text-danger">{error}</p>;
+  if (error)
+    return (
+      <ErrorNotice
+        error={error}
+        onRetry={() => {
+          setError(null);
+          setAttempt((n) => n + 1);
+        }}
+      />
+    );
   if (!data)
     return (
       <p className="inline-flex items-center gap-2 text-fg-muted" role="status">

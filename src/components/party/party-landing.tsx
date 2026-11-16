@@ -4,7 +4,11 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { motion } from "motion/react";
 import { DoorOpen, Loader2, PartyPopper } from "lucide-react";
-import { api, ApiRequestError } from "@/lib/api/client";
+import { api } from "@/lib/api/client";
+import { describeError, type FriendlyError } from "@/lib/api/errors";
+import { ErrorNotice } from "@/components/ui/error-notice";
+import { useServiceStatus } from "@/hooks/use-service-status";
+import Link from "next/link";
 import { displayNameSchema, roomCodeSchema } from "@/lib/validation/game";
 import { Button } from "@/components/ui/button";
 import { PartyArt } from "@/components/play/mode-art";
@@ -63,6 +67,9 @@ export function PartyLanding() {
   const [nameError, setNameError] = useState<string | null>(null);
   const [codeError, setCodeError] = useState<string | null>(null);
   const [pending, setPending] = useState<"create" | "join" | null>(null);
+  const [failure, setFailure] = useState<{ error: FriendlyError; retry: () => void } | null>(null);
+  const service = useServiceStatus();
+  const unavailable = service !== null && !service.modes.party;
 
   const validName = () => {
     const r = displayNameSchema.safeParse(name);
@@ -78,17 +85,24 @@ export function PartyLanding() {
     const n = validName();
     if (!n) return;
     setPending("create");
+    setFailure(null);
     try {
       const room = await api<PartyView>("/api/party", { body: { name: n } });
       router.push(`/party/${room.code}`, { transitionTypes: ["nav-forward"] });
     } catch (err) {
-      setNameError(err instanceof ApiRequestError ? err.message : "Couldn't create a room.");
+      const e = describeError(err, "party-create");
+      if (e.kind === "input") setNameError(e.message);
+      else setFailure({ error: e, retry: () => void create() });
       setPending(null);
     }
   };
 
-  const join = async (e: React.FormEvent) => {
+  const join = (e: React.FormEvent) => {
     e.preventDefault();
+    void joinRoom();
+  };
+
+  const joinRoom = async () => {
     const n = validName();
     const c = code.trim().toUpperCase();
     if (!roomCodeSchema.safeParse(c).success) {
@@ -97,11 +111,14 @@ export function PartyLanding() {
     }
     if (!n) return;
     setPending("join");
+    setFailure(null);
     try {
       await api<PartyView>(`/api/party/${c}/actions`, { body: { type: "join", name: n } });
       router.push(`/party/${c}`, { transitionTypes: ["nav-forward"] });
     } catch (err) {
-      setCodeError(err instanceof ApiRequestError ? err.message : "Couldn't join that room.");
+      const e = describeError(err, "party-join");
+      if (e.kind === "state" || e.kind === "input") setCodeError(e.message);
+      else setFailure({ error: e, retry: () => void joinRoom() });
       setPending(null);
     }
   };
@@ -119,6 +136,34 @@ export function PartyLanding() {
           <motion.p variants={riseIn} className="mt-4 max-w-lg text-[1.05rem] leading-relaxed text-fg-muted">
             Open a private room, share the code, and play the same rounds at the same time. The server keeps the clock and the score.
           </motion.p>
+
+          {unavailable && (
+            <motion.div variants={riseIn} className="mt-6">
+              <ErrorNotice
+                error={{
+                  kind: service!.checks.sessionSecret === "missing" ? "config" : "storage",
+                  code: service!.checks.sessionSecret === "missing" ? "session_secret_missing" : "storage_not_configured",
+                  title: "Party Mode isn't online yet",
+                  message:
+                    service!.checks.sessionSecret === "missing"
+                      ? "The game server is still being set up, so rooms can't be created right now."
+                      : "Party rooms need Astroquint's online database, which isn't connected on this deployment yet.",
+                  retryable: false,
+                }}
+              >
+                <p className="mt-2 text-sm">
+                  <Link href="/play/solo" className="font-medium text-action underline underline-offset-2">
+                    Play Solo Orbit instead
+                  </Link>
+                </p>
+              </ErrorNotice>
+            </motion.div>
+          )}
+          {failure && (
+            <div className="mt-6">
+              <ErrorNotice error={failure.error} onRetry={failure.retry} retrying={pending !== null} />
+            </div>
+          )}
 
           <motion.div variants={riseIn} className="panel mt-8 space-y-4 rounded-[1.5rem] p-5 sm:p-6">
             <NameField value={name} onChange={(v) => { setName(v); setNameError(null); }} error={nameError} />

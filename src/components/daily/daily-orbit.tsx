@@ -3,8 +3,10 @@
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { motion } from "motion/react";
-import { CalendarClock, Dumbbell, Loader2, Play, RotateCcw, Trophy } from "lucide-react";
-import { api, ApiRequestError } from "@/lib/api/client";
+import { CalendarClock, Dumbbell, Loader2, Play, Trophy } from "lucide-react";
+import { api } from "@/lib/api/client";
+import { describeError, type FriendlyError } from "@/lib/api/errors";
+import { ErrorNotice } from "@/components/ui/error-notice";
 import { formatCountdown, msUntilNextUtcDay } from "@/features/daily/time";
 import { useServerGame, type MatchPayload } from "@/features/gameplay/use-server-game";
 import { getAchievement, type AchievementId } from "@/features/achievements/achievements";
@@ -27,27 +29,33 @@ interface DailyStatus {
 
 export function DailyOrbit() {
   const [status, setStatus] = useState<DailyStatus | null>(null);
-  const [loadError, setLoadError] = useState<string | null>(null);
+  const [loadError, setLoadError] = useState<FriendlyError | null>(null);
+  const [reloading, setReloading] = useState(false);
   const [active, setActive] = useState<{ payload: MatchPayload; offset: number } | null>(null);
   const [starting, setStarting] = useState<"ranked" | "practice" | null>(null);
-  const [startError, setStartError] = useState<string | null>(null);
+  const [startError, setStartError] = useState<FriendlyError | null>(null);
 
   const refresh = useCallback(async () => {
+    setReloading(true);
     try {
       setStatus(await api<DailyStatus>("/api/daily"));
       setLoadError(null);
     } catch (err) {
-      setLoadError(err instanceof ApiRequestError ? err.message : "Couldn't load today's orbit.");
+      setLoadError(describeError(err, "daily"));
+    } finally {
+      setReloading(false);
     }
   }, []);
 
   useEffect(() => {
     api<DailyStatus>("/api/daily")
       .then(setStatus)
-      .catch((err) => setLoadError(err instanceof ApiRequestError ? err.message : "Couldn't load today's orbit."));
+      .catch((err) => setLoadError(describeError(err, "daily")));
   }, []);
 
+  const [lastPractice, setLastPractice] = useState(false);
   const start = async (practice: boolean) => {
+    setLastPractice(practice);
     setStarting(practice ? "practice" : "ranked");
     setStartError(null);
     try {
@@ -55,7 +63,7 @@ export function DailyOrbit() {
       const payload = await api<MatchPayload>("/api/daily/start", { body: { practice } });
       setActive({ payload, offset: payload.serverNow - (sentAt + Date.now()) / 2 });
     } catch (err) {
-      setStartError(err instanceof ApiRequestError ? err.message : "Couldn't start the orbit.");
+      setStartError(describeError(err, "daily-start"));
       void refresh();
     } finally {
       setStarting(null);
@@ -69,7 +77,7 @@ export function DailyOrbit() {
       const payload = await api<MatchPayload>(`/api/matches/${matchId}`);
       setActive({ payload, offset: payload.serverNow - (sentAt + Date.now()) / 2 });
     } catch (err) {
-      setStartError(err instanceof ApiRequestError ? err.message : "Couldn't resume.");
+      setStartError(describeError(err, "daily-start"));
     } finally {
       setStarting(null);
     }
@@ -100,12 +108,15 @@ export function DailyOrbit() {
       <DailyHeader number={status?.number} date={status?.date} />
 
       {loadError && (
-        <div role="alert" className="panel mt-6 rounded-2xl p-5">
-          <p>{loadError}</p>
-          <Button className="mt-3" variant="secondary" onClick={() => void refresh()} icon={<RotateCcw className="h-4 w-4" aria-hidden="true" />}>
-            Try again
-          </Button>
-        </div>
+        <ErrorNotice error={loadError} onRetry={() => void refresh()} retrying={reloading} className="mt-6">
+          {loadError.kind === "storage" && (
+            <p className="mt-2 text-sm">
+              <Link href="/play/solo" className="font-medium text-action underline underline-offset-2">
+                Play Solo Orbit instead
+              </Link>
+            </p>
+          )}
+        </ErrorNotice>
       )}
 
       {!status && !loadError && (
@@ -171,11 +182,7 @@ export function DailyOrbit() {
                 </div>
               </div>
             )}
-            {startError && (
-              <p role="alert" className="mt-3 text-sm text-danger">
-                {startError}
-              </p>
-            )}
+            {startError && <ErrorNotice error={startError} onRetry={() => void start(lastPractice)} retrying={starting !== null} className="mt-4" />}
           </motion.section>
 
           <motion.section variants={riseIn} aria-labelledby="board-title">

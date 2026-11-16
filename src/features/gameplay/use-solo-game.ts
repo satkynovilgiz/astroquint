@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { api, ApiRequestError } from "@/lib/api/client";
+import { describeError, type FriendlyError } from "@/lib/api/errors";
 import type { Answer } from "@/features/questions/types";
 import type { GameActions, GameView } from "./controller";
 
@@ -43,7 +44,7 @@ type ActionBody = { type: "begin" } | { type: "lockWager"; wager: number } | { t
 export function useSoloGame() {
   const [run, setRun] = useState<{ token: string; view: GameView; offset: number } | null>(() => load<{ token: string; view: GameView; offset: number }>(SAVE_KEY));
   const [busy, setBusy] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<FriendlyError | null>(null);
   const inflight = useRef(false);
   const [retryTick, setRetryTick] = useState(0);
   const retries = useRef(0);
@@ -68,7 +69,7 @@ export function useSoloGame() {
       try {
         accept(await api<SoloPayload>("/api/solo/start", { body: { relaxed, recent: load<string[]>(RECENT_KEY) ?? [] } }), sentAt);
       } catch (err) {
-        setError(err instanceof ApiRequestError ? err.message : "Couldn't start a run.");
+        setError(describeError(err, "solo-start"));
       } finally {
         inflight.current = false;
         setBusy(false);
@@ -93,7 +94,7 @@ export function useSoloGame() {
         } else if (action.type !== "timeout") retries.current = 0;
       } catch (err) {
         if (err instanceof ApiRequestError && (err.code === "expired" || err.code === "bad_token")) setRun(null);
-        setError(err instanceof ApiRequestError ? err.message : "Something went wrong. Please try again.");
+        setError(describeError(err, "game-action"));
       } finally {
         inflight.current = false;
         setBusy(false);
@@ -123,7 +124,10 @@ export function useSoloGame() {
   );
 
   const view: GameView | null = useMemo(
-    () => (run ? { ...run.view, deadline: run.view.deadline === null ? null : run.view.deadline - run.offset, busy, error } : null),
+    () =>
+      run
+        ? { ...run.view, deadline: run.view.deadline === null ? null : run.view.deadline - run.offset, busy, error: error ? `${error.title}. ${error.message}` : null }
+        : null,
     [run, busy, error],
   );
 

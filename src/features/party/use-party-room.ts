@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { api, ApiRequestError } from "@/lib/api/client";
+import { describeError, type FriendlyError } from "@/lib/api/errors";
 import type { Answer } from "@/features/questions/types";
 import type { PartyView } from "./engine";
 
@@ -26,7 +27,7 @@ export type PartyCommand =
 export function usePartyRoom(code: string) {
   const [view, setView] = useState<PartyView | null>(null);
   const [offset, setOffset] = useState(0);
-  const [error, setError] = useState<{ code: string; message: string } | null>(null);
+  const [error, setError] = useState<FriendlyError | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [online, setOnline] = useState(true);
@@ -48,7 +49,7 @@ export function usePartyRoom(code: string) {
     } catch (err) {
       if ((err as Error).name === "AbortError") return;
       if (err instanceof ApiRequestError && err.status === 0) setOnline(false);
-      else if (err instanceof ApiRequestError) setError({ code: err.code, message: err.message });
+      else setError(describeError(err, "party-room"));
     }
   }, [code]);
 
@@ -110,7 +111,8 @@ export function usePartyRoom(code: string) {
         setView(v);
         return true;
       } catch (err) {
-        setActionError(err instanceof ApiRequestError ? err.message : "Something went wrong.");
+        const e = describeError(err, "party-room");
+        setActionError(e.kind === "state" || e.kind === "input" ? e.message : `${e.title}. ${e.message}`);
         void refresh();
         return false;
       } finally {

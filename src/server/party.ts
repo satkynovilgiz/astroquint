@@ -15,6 +15,8 @@ import {
   type RoomState,
 } from "@/features/party/engine";
 import { ApiError } from "./http";
+import { dailySelection } from "./daily-selection";
+import { utcDayKey } from "@/features/daily/time";
 import { getStore } from "./store";
 import { publishRoomChange } from "./realtime";
 
@@ -106,7 +108,8 @@ export async function readRoom(code: string, pid: string | null, now = Date.now(
   return roomView(advanceRoom(room.state, now), pid, now);
 }
 
-export function newMatchSeed(code: string): { seed: string; questionIds: string[] } {
+export function newMatchSeed(code: string, now = Date.now()): { seed: string; questionIds: string[] } {
   const seed = `${code}:${randomId(6)}`;
-  return { seed, questionIds: partyQuestionIds(seed) };
+  // Keep today's ranked Daily questions out of parties so their answers aren't revealed early.
+  return { seed, questionIds: partyQuestionIds(seed, new Set(dailySelection(utcDayKey(now)))) };
 }

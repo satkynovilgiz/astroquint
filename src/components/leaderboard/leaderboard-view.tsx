@@ -2,7 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
-import { api, ApiRequestError } from "@/lib/api/client";
+import { api } from "@/lib/api/client";
+import { describeError, type FriendlyError } from "@/lib/api/errors";
+import { ErrorNotice } from "@/components/ui/error-notice";
 import { LeaderboardTable, type LeaderRow } from "./leaderboard-table";
 
 interface Board {
@@ -18,7 +20,8 @@ const shift = (date: string, days: number) => new Date(Date.parse(`${date}T00:00
 export function LeaderboardView() {
   const [date, setDate] = useState<string | null>(null);
   const [board, setBoard] = useState<Board | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<FriendlyError | null>(null);
+  const [attempt, setAttempt] = useState(0);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -31,14 +34,14 @@ export function LeaderboardView() {
         setError(null);
       } catch (err) {
         if ((err as Error).name === "AbortError") return;
-        setError(err instanceof ApiRequestError ? err.message : "Couldn't load the leaderboard.");
+        setError(describeError(err, "leaderboard"));
       } finally {
         if (!ctrl.signal.aborted) setLoading(false);
       }
     };
     void load();
     return () => ctrl.abort();
-  }, [date]);
+  }, [date, attempt]);
 
   const current = board?.date ?? date;
   const label = current ? new Date(`${current}T00:00:00Z`).toLocaleDateString("en-US", { timeZone: "UTC", month: "short", day: "numeric", year: "numeric" }) : "";
@@ -79,11 +82,7 @@ export function LeaderboardView() {
         </p>
       )}
 
-      {error && (
-        <p role="alert" className="panel rounded-2xl p-4 text-danger">
-          {error}
-        </p>
-      )}
+      {error && <ErrorNotice error={error} onRetry={() => setAttempt((n) => n + 1)} retrying={loading} />}
       {loading && !board && (
         <p className="inline-flex items-center gap-2 text-fg-muted" role="status">
           <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> Loading rankings…

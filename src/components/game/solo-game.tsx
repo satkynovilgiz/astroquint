@@ -13,6 +13,8 @@ import { Switch } from "@/components/ui/switch";
 import { playSound } from "@/features/audio/synth";
 import { riseIn, riseInVisible, staggerChildren } from "@/lib/motion/tokens";
 import { GameScreen } from "./game-screen";
+import { ErrorNotice } from "@/components/ui/error-notice";
+import type { FriendlyError } from "@/lib/api/errors";
 
 export function SoloGameRoot() {
   const hydrated = useHydrated();
@@ -66,7 +68,7 @@ function SoloGame() {
   );
 }
 
-function SoloLobby({ relaxed, setRelaxed, onLaunch, busy, error }: { relaxed: boolean; setRelaxed: (v: boolean) => void; onLaunch: () => void; busy: boolean; error: string | null }) {
+function SoloLobby({ relaxed, setRelaxed, onLaunch, busy, error }: { relaxed: boolean; setRelaxed: (v: boolean) => void; onLaunch: () => void; busy: boolean; error: FriendlyError | null }) {
   return (
     <div className="mx-auto max-w-3xl px-4 pt-4 sm:px-6 sm:pt-8">
       <motion.div variants={staggerChildren(0.05)} initial="hidden" animate="visible">
@@ -114,11 +116,7 @@ function SoloLobby({ relaxed, setRelaxed, onLaunch, busy, error }: { relaxed: bo
           <Button size="lg" onClick={onLaunch} disabled={busy} className="w-full sm:w-auto" icon={busy ? <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" /> : <Rocket className="h-5 w-5" aria-hidden="true" />}>
             Launch solo run
           </Button>
-          {error && (
-            <p role="alert" className="mt-3 text-sm text-danger">
-              {error}
-            </p>
-          )}
+          {error && <ErrorNotice error={error} onRetry={onLaunch} retrying={busy} className="mt-4" />}
         </motion.div>
       </motion.div>
     </div>

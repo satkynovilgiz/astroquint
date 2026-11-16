@@ -124,8 +124,8 @@ export function createRoomState(input: { code: string; hostPid: string; hostName
   };
 }
 
-export function partyQuestionIds(seed: string): string[] {
-  return selectQuestions(seededRandom(`party:${seed}`));
+export function partyQuestionIds(seed: string, forbidden: ReadonlySet<string> = new Set()): string[] {
+  return selectQuestions(seededRandom(`party:${seed}`), new Set(), forbidden);
 }
 
 export const isConnected = (p: PartyPlayer, now: number) => !p.left && now - p.lastSeen < PRESENCE_TIMEOUT_MS;

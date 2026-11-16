@@ -1,7 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { api, ApiRequestError } from "@/lib/api/client";
+import { api } from "@/lib/api/client";
+import { describeError } from "@/lib/api/errors";
 import type { Answer } from "@/features/questions/types";
 import type { GameActions, GameView } from "./controller";
 
@@ -58,7 +59,8 @@ export function useServerGame(initial: MatchPayload, initialOffsetMs = 0) {
           timeoutRetries.current = 0;
         }
       } catch (err) {
-        setError(err instanceof ApiRequestError ? err.message : "Something went wrong. Please try again.");
+        const e = describeError(err, "game-action");
+        setError(`${e.title}. ${e.message}`);
       } finally {
         inflight.current = false;
         setBusy(false);

@@ -27,6 +27,7 @@ import { FinalBetQuestion, WagerPicker } from "@/components/worlds/final-bet";
 import { duration, ease, spring } from "@/lib/motion/tokens";
 import { cn } from "@/lib/utils/cn";
 import { Countdown, useSecondsLeft } from "./countdown";
+import { ErrorNotice } from "@/components/ui/error-notice";
 import { NameField, rememberName, savedName } from "./party-landing";
 
 const scene = {
@@ -45,6 +46,16 @@ export function PartyRoom({ code }: { code: string }) {
         <h1 className="font-display text-3xl font-bold">Room not found</h1>
         <p className="mt-2 text-fg-muted">The code {code} doesn&apos;t match an open room. It may have expired.</p>
         <ButtonLink href="/party" className="mt-6" transitionTypes={["nav-back"]}>
+          Back to Party Mode
+        </ButtonLink>
+      </Centered>
+    );
+  }
+  if (!view && error) {
+    return (
+      <Centered>
+        <ErrorNotice error={error} onRetry={() => void room.refresh()} className="w-full" />
+        <ButtonLink href="/party" className="mt-6" variant="ghost" transitionTypes={["nav-back"]}>
           Back to Party Mode
         </ButtonLink>
       </Centered>
