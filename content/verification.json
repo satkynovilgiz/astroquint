@@ -1,0 +1,796 @@
+{
+ "generatedAt": "2026-11-16T07:41:46.589Z",
+ "method": "Key fact pattern found in the cited Wikipedia article's wikitext. Supports, but does not replace, human review.",
+ "questions": {
+  "tl-001": {
+   "verified": true,
+   "claims": [
+    {
+     "claim": "Gutenberg's movable-type printing press — c. 1440",
+     "source": "https://en.wikipedia.org/wiki/Printing_press",
+     "verified": true
+    },
+    {
+     "claim": "Alexander Graham Bell patents the telephone — 1876",
+     "source": "https://en.wikipedia.org/wiki/Invention_of_the_telephone",
+     "verified": true
+    },
+    {
+     "claim": "The Wright brothers' first powered flight — 1903",
+     "source": "https://en.wikipedia.org/wiki/Wright_Flyer",
+     "verified": true
+    },
+    {
+     "claim": "Tim Berners-Lee proposes the World Wide Web — 1989",
+     "source": "https://en.wikipedia.org/wiki/World_Wide_Web",
+     "verified": true
+    }
+   ]
+  },
+  "tl-002": {
+   "verified": true,
+   "claims": [
+    {
+     "claim": "Sputnik 1, the first artificial satellite, is launched — 1957",
+     "source": "https://en.wikipedia.org/wiki/Sputnik_1",
+     "verified": true
+    },
+    {
+     "claim": "Yuri Gagarin becomes the first human in space — 1961",
+     "source": "https://en.wikipedia.org/wiki/Yuri_Gagarin",
+     "verified": true
+    },
+    {
+     "claim": "Apollo 11 lands on the Moon — 1969",
+     "source": "https://en.wikipedia.org/wiki/Apollo_11",
+     "verified": true
+    },
+    {
+     "claim": "The Hubble Space Telescope is launched — 1990",
+     "source": "https://en.wikipedia.org/wiki/Hubble_Space_Telescope",
+     "verified": true
+    }
+   ]
+  },
+  "tl-003": {
+   "verified": true,
+   "claims": [
+    {
+     "claim": "The Great Pyramid of Giza — c. 2600 BC",
+     "source": "https://en.wikipedia.org/wiki/Great_Pyramid_of_Giza",
+     "verified": true
+    },
+    {
+     "claim": "The Parthenon in Athens — 447–432 BC",
+     "source": "https://en.wikipedia.org/wiki/Parthenon",
+     "verified": true
+    },
+    {
+     "claim": "The Colosseum in Rome — AD 80",
+     "source": "https://en.wikipedia.org/wiki/Colosseum",
+     "verified": true
+    },
+    {
+     "claim": "The Taj Mahal — 1643–1653",
+     "source": "https://en.wikipedia.org/wiki/Taj_Mahal",
+     "verified": true
+    }
+   ]
+  },
+  "tl-004": {
+   "verified": true,
+   "claims": [
+    {
+     "claim": "Newton publishes the Principia — 1687",
+     "source": "https://en.wikipedia.org/wiki/Philosophi%C3%A6_Naturalis_Principia_Mathematica",
+     "verified": true
+    },
+    {
+     "claim": "Darwin publishes On the Origin of Species — 1859",
+     "source": "https://en.wikipedia.org/wiki/On_the_Origin_of_Species",
+     "verified": true
+    },
+    {
+     "claim": "Einstein publishes special relativity — 1905",
+     "source": "https://en.wikipedia.org/wiki/Special_relativity",
+     "verified": true
+    },
+    {
+     "claim": "Watson and Crick describe the structure of DNA — 1953",
+     "source": "https://en.wikipedia.org/wiki/Molecular_Structure_of_Nucleic_Acids:_A_Structure_for_Deoxyribose_Nucleic_Acid",
+     "verified": true
+    }
+   ]
+  },
+  "tl-005": {
+   "verified": true,
+   "claims": [
+    {
+     "claim": "The Penny Black, the first adhesive postage stamp — 1840",
+     "source": "https://en.wikipedia.org/wiki/Penny_Black",
+     "verified": true
+    },
+    {
+     "claim": "The first transatlantic telegraph cable carries messages — 1858",
+     "source": "https://en.wikipedia.org/wiki/Transatlantic_telegraph_cable",
+     "verified": true
+    },
+    {
+     "claim": "Marconi's first transatlantic radio signal — 1901",
+     "source": "https://en.wikipedia.org/wiki/Guglielmo_Marconi",
+     "verified": true
+    },
+    {
+     "claim": "The first iPhone is released — 2007",
+     "source": "https://en.wikipedia.org/wiki/IPhone_(1st_generation)",
+     "verified": true
+    }
+   ]
+  },
+  "tl-006": {
+   "verified": true,
+   "claims": [
+    {
+     "claim": "Edward Jenner's smallpox vaccine — 1796",
+     "source": "https://en.wikipedia.org/wiki/Edward_Jenner",
+     "verified": true
+    },
+    {
+     "claim": "Alexander Fleming discovers penicillin — 1928",
+     "source": "https://en.wikipedia.org/wiki/Penicillin",
+     "verified": true
+    },
+    {
+     "claim": "The first human heart transplant — 1967",
+     "source": "https://en.wikipedia.org/wiki/Heart_transplantation",
+     "verified": true
+    },
+    {
+     "claim": "The Human Genome Project is declared complete — 2003",
+     "source": "https://en.wikipedia.org/wiki/Human_Genome_Project",
+     "verified": true
+    }
+   ]
+  },
+  "tl-007": {
+   "verified": true,
+   "claims": [
+    {
+     "claim": "Columbus reaches the Americas — 1492",
+     "source": "https://en.wikipedia.org/wiki/Voyages_of_Christopher_Columbus",
+     "verified": true
+    },
+    {
+     "claim": "The Magellan–Elcano expedition completes the first circumnavigation — 1522",
+     "source": "https://en.wikipedia.org/wiki/Magellan_expedition",
+     "verified": true
+    },
+    {
+     "claim": "Roald Amundsen's team reaches the South Pole — 1911",
+     "source": "https://en.wikipedia.org/wiki/Amundsen%27s_South_Pole_expedition",
+     "verified": true
+    },
+    {
+     "claim": "Hillary and Norgay summit Mount Everest — 1953",
+     "source": "https://en.wikipedia.org/wiki/1953_British_Mount_Everest_expedition",
+     "verified": true
+    }
+   ]
+  },
+  "tl-008": {
+   "verified": true,
+   "claims": [
+    {
+     "claim": "The Stockton and Darlington Railway opens — 1825",
+     "source": "https://en.wikipedia.org/wiki/Stockton_and_Darlington_Railway",
+     "verified": true
+    },
+    {
+     "claim": "Karl Benz patents his Motorwagen — 1886",
+     "source": "https://en.wikipedia.org/wiki/Benz_Patent-Motorwagen",
+     "verified": true
+    },
+    {
+     "claim": "The Ford Model T is introduced — 1908",
+     "source": "https://en.wikipedia.org/wiki/Ford_Model_T",
+     "verified": true
+    },
+    {
+     "claim": "Concorde begins commercial passenger flights — 1976",
+     "source": "https://en.wikipedia.org/wiki/Concorde",
+     "verified": true
+    }
+   ]
+  },
+  "tl-009": {
+   "verified": true,
+   "claims": [
+    {
+     "claim": "Charles Babbage first describes the Analytical Engine — 1837",
+     "source": "https://en.wikipedia.org/wiki/Analytical_engine",
+     "verified": true
+    },
+    {
+     "claim": "ENIAC is unveiled to the public — 1946",
+     "source": "https://en.wikipedia.org/wiki/ENIAC",
+     "verified": true
+    },
+    {
+     "claim": "Ray Tomlinson sends the first networked email — 1971",
+     "source": "https://en.wikipedia.org/wiki/Ray_Tomlinson",
+     "verified": true
+    },
+    {
+     "claim": "Google is founded — 1998",
+     "source": "https://en.wikipedia.org/wiki/Google",
+     "verified": true
+    }
+   ]
+  },
+  "tl-010": {
+   "verified": true,
+   "claims": [
+    {
+     "claim": "Beethoven's Ninth Symphony premieres — 1824",
+     "source": "https://en.wikipedia.org/wiki/Symphony_No._9_(Beethoven)",
+     "verified": true
+    },
+    {
+     "claim": "The first modern Olympic Games, in Athens — 1896",
+     "source": "https://en.wikipedia.org/wiki/1896_Summer_Olympics",
+     "verified": true
+    },
+    {
+     "claim": "The first Nobel Prizes are awarded — 1901",
+     "source": "https://en.wikipedia.org/wiki/Nobel_Prize",
+     "verified": true
+    },
+    {
+     "claim": "The first FIFA World Cup, in Uruguay — 1930",
+     "source": "https://en.wikipedia.org/wiki/1930_FIFA_World_Cup",
+     "verified": true
+    }
+   ]
+  },
+  "gt-001": {
+   "verified": true,
+   "claims": [
+    {
+     "claim": "Japan is an island country in East Asia. Its capital is Tokyo.",
+     "source": "https://en.wikipedia.org/wiki/Japan",
+     "verified": true
+    }
+   ]
+  },
+  "gt-002": {
+   "verified": true,
+   "claims": [
+    {
+     "claim": "Brazil is the largest country in South America. Its capital is Brasília.",
+     "source": "https://en.wikipedia.org/wiki/Brazil",
+     "verified": true
+    }
+   ]
+  },
+  "gt-003": {
+   "verified": true,
+   "claims": [
+    {
+     "claim": "Egypt is in the north-east corner of Africa, and the Nile runs through it. Its capital is Cairo.",
+     "source": "https://en.wikipedia.org/wiki/Egypt",
+     "verified": true
+    }
+   ]
+  },
+  "gt-004": {
+   "verified": true,
+   "claims": [
+    {
+     "claim": "India is in South Asia, with the Himalayas along its northern border. Its capital is New Delhi.",
+     "source": "https://en.wikipedia.org/wiki/India",
+     "verified": true
+    }
+   ]
+  },
+  "gt-005": {
+   "verified": true,
+   "claims": [
+    {
+     "claim": "Mexico lies between the United States and Central America. Its capital is Mexico City.",
+     "source": "https://en.wikipedia.org/wiki/Mexico",
+     "verified": true
+    }
+   ]
+  },
+  "gt-006": {
+   "verified": true,
+   "claims": [
+    {
+     "claim": "Italy is the boot-shaped peninsula in southern Europe. Its capital is Rome.",
+     "source": "https://en.wikipedia.org/wiki/Italy",
+     "verified": true
+    }
+   ]
+  },
+  "gt-007": {
+   "verified": true,
+   "claims": [
+    {
+     "claim": "Indonesia is the world's largest archipelagic country, with thousands of islands between the Indian and Pacific Oceans.",
+     "source": "https://en.wikipedia.org/wiki/Indonesia",
+     "verified": true
+    }
+   ]
+  },
+  "gt-008": {
+   "verified": true,
+   "claims": [
+    {
+     "claim": "South Africa is at the southern tip of Africa. It has three capital cities: Pretoria, Cape Town and Bloemfontein.",
+     "source": "https://en.wikipedia.org/wiki/South_Africa",
+     "verified": true
+    }
+   ]
+  },
+  "gt-009": {
+   "verified": true,
+   "claims": [
+    {
+     "claim": "Madagascar is a large island nation off the south-east coast of Africa. Its capital is Antananarivo.",
+     "source": "https://en.wikipedia.org/wiki/Madagascar",
+     "verified": true
+    }
+   ]
+  },
+  "gt-010": {
+   "verified": true,
+   "claims": [
+    {
+     "claim": "Chile is a long, narrow country along the western edge of South America. Its capital is Santiago.",
+     "source": "https://en.wikipedia.org/wiki/Chile",
+     "verified": true
+    }
+   ]
+  },
+  "gt-011": {
+   "verified": true,
+   "claims": [
+    {
+     "claim": "New Zealand is in the south-west Pacific, south-east of Australia. Its capital is Wellington.",
+     "source": "https://en.wikipedia.org/wiki/New_Zealand",
+     "verified": true
+    }
+   ]
+  },
+  "gt-012": {
+   "verified": true,
+   "claims": [
+    {
+     "claim": "Spain covers most of the Iberian Peninsula in south-western Europe. Its capital is Madrid.",
+     "source": "https://en.wikipedia.org/wiki/Spain",
+     "verified": true
+    }
+   ]
+  },
+  "gt-013": {
+   "verified": true,
+   "claims": [
+    {
+     "claim": "Ukraine is in Eastern Europe, on the northern coast of the Black Sea. Its capital is Kyiv.",
+     "source": "https://en.wikipedia.org/wiki/Ukraine",
+     "verified": true
+    }
+   ]
+  },
+  "gt-014": {
+   "verified": true,
+   "claims": [
+    {
+     "claim": "Nairobi is the capital of Kenya. Kenya is in East Africa, on the Indian Ocean coast.",
+     "source": "https://en.wikipedia.org/wiki/Kenya",
+     "verified": true
+    }
+   ]
+  },
+  "gt-015": {
+   "verified": true,
+   "claims": [
+    {
+     "claim": "Lima is the capital of Peru. Peru is on the Pacific coast of South America.",
+     "source": "https://en.wikipedia.org/wiki/Peru",
+     "verified": true
+    }
+   ]
+  },
+  "gt-016": {
+   "verified": true,
+   "claims": [
+    {
+     "claim": "Astana is the capital of Kazakhstan. Kazakhstan, in Central Asia, is the world's largest landlocked country.",
+     "source": "https://en.wikipedia.org/wiki/Kazakhstan",
+     "verified": true
+    }
+   ]
+  },
+  "gt-017": {
+   "verified": true,
+   "claims": [
+    {
+     "claim": "Ulaanbaatar is the capital of Mongolia. Mongolia is landlocked between Russia and China.",
+     "source": "https://en.wikipedia.org/wiki/Mongolia",
+     "verified": true
+    }
+   ]
+  },
+  "gt-018": {
+   "verified": true,
+   "claims": [
+    {
+     "claim": "Abuja is the capital of Nigeria. Nigeria is in West Africa, on the Gulf of Guinea.",
+     "source": "https://en.wikipedia.org/wiki/Nigeria",
+     "verified": true
+    }
+   ]
+  },
+  "gt-019": {
+   "verified": true,
+   "claims": [
+    {
+     "claim": "Canberra, not Sydney or Melbourne, is the capital of Australia.",
+     "source": "https://en.wikipedia.org/wiki/Australia",
+     "verified": true
+    }
+   ]
+  },
+  "gt-020": {
+   "verified": true,
+   "claims": [
+    {
+     "claim": "Ottawa, in the province of Ontario, is the capital of Canada, not Toronto.",
+     "source": "https://en.wikipedia.org/wiki/Canada",
+     "verified": true
+    }
+   ]
+  },
+  "gt-021": {
+   "verified": true,
+   "claims": [
+    {
+     "claim": "Bangkok is the capital of Thailand. Thailand is in mainland Southeast Asia.",
+     "source": "https://en.wikipedia.org/wiki/Thailand",
+     "verified": true
+    }
+   ]
+  },
+  "gt-022": {
+   "verified": true,
+   "claims": [
+    {
+     "claim": "Riyadh is the capital of Saudi Arabia. Saudi Arabia covers most of the Arabian Peninsula.",
+     "source": "https://en.wikipedia.org/wiki/Saudi_Arabia",
+     "verified": true
+    }
+   ]
+  },
+  "gt-023": {
+   "verified": true,
+   "claims": [
+    {
+     "claim": "Buenos Aires is the capital of Argentina. Argentina is in southern South America, with the Andes along its western border with Chile.",
+     "source": "https://en.wikipedia.org/wiki/Argentina",
+     "verified": true
+    }
+   ]
+  },
+  "fb-001": {
+   "verified": true,
+   "claims": [
+    {
+     "claim": "Which element has the chemical symbol W? → Tungsten",
+     "source": "https://en.wikipedia.org/wiki/Tungsten",
+     "verified": true
+    }
+   ]
+  },
+  "fb-003": {
+   "verified": true,
+   "claims": [
+    {
+     "claim": "Which planet rotates almost on its side, with an axial tilt of about 98°? → Uranus",
+     "source": "https://en.wikipedia.org/wiki/Uranus",
+     "verified": true
+    }
+   ]
+  },
+  "fb-004": {
+   "verified": true,
+   "claims": [
+    {
+     "claim": "In which year did the Berlin Wall fall? → 1989",
+     "source": "https://en.wikipedia.org/wiki/Fall_of_the_Berlin_Wall",
+     "verified": true
+    }
+   ]
+  },
+  "fb-005": {
+   "verified": true,
+   "claims": [
+    {
+     "claim": "Which mineral defines hardness 1, the softest point, on the Mohs scale? → Talc",
+     "source": "https://en.wikipedia.org/wiki/Mohs_scale",
+     "verified": true
+    }
+   ]
+  },
+  "fb-007": {
+   "verified": true,
+   "claims": [
+    {
+     "claim": "Who formulated the three laws of planetary motion? → Johannes Kepler",
+     "source": "https://en.wikipedia.org/wiki/Kepler%27s_laws_of_planetary_motion",
+     "verified": true
+    }
+   ]
+  },
+  "fb-008": {
+   "verified": true,
+   "claims": [
+    {
+     "claim": "Which element has the chemical symbol Na? → Sodium",
+     "source": "https://en.wikipedia.org/wiki/Sodium",
+     "verified": true
+    }
+   ]
+  },
+  "fb-009": {
+   "verified": true,
+   "claims": [
+    {
+     "claim": "What is the largest internal organ of the human body? → Liver",
+     "source": "https://en.wikipedia.org/wiki/Liver",
+     "verified": true
+    }
+   ]
+  },
+  "fb-010": {
+   "verified": true,
+   "claims": [
+    {
+     "claim": "Which gas makes up the largest share of Earth's atmosphere? → Nitrogen",
+     "source": "https://en.wikipedia.org/wiki/Atmosphere_of_Earth",
+     "verified": true
+    }
+   ]
+  },
+  "fb-011": {
+   "verified": true,
+   "claims": [
+    {
+     "claim": "In modern computing, how many bits make up one byte? → 8",
+     "source": "https://en.wikipedia.org/wiki/Byte",
+     "verified": true
+    }
+   ]
+  },
+  "tt-001": {
+   "verified": true,
+   "claims": [
+    {
+     "claim": "Venus spins in the opposite direction to most planets in the Solar System.",
+     "source": "https://en.wikipedia.org/wiki/Venus",
+     "verified": true
+    },
+    {
+     "claim": "Mars is the hottest planet in the Solar System.",
+     "source": "https://en.wikipedia.org/wiki/Venus",
+     "verified": true
+    },
+    {
+     "claim": "One rotation of Venus takes longer than one Venusian year.",
+     "source": "https://en.wikipedia.org/wiki/Venus",
+     "verified": true
+    }
+   ]
+  },
+  "tt-002": {
+   "verified": true,
+   "claims": [
+    {
+     "claim": "Octopuses have three hearts.",
+     "source": "https://en.wikipedia.org/wiki/Octopus",
+     "verified": true
+    },
+    {
+     "claim": "All bat species are completely blind.",
+     "source": "https://en.wikipedia.org/wiki/Bat",
+     "verified": true
+    },
+    {
+     "claim": "Hummingbirds can fly backwards.",
+     "source": "https://en.wikipedia.org/wiki/Hummingbird",
+     "verified": true
+    }
+   ]
+  },
+  "tt-003": {
+   "verified": true,
+   "claims": [
+    {
+     "claim": "An adult human skeleton typically has 206 bones.",
+     "source": "https://en.wikipedia.org/wiki/Human_skeleton",
+     "verified": true
+    },
+    {
+     "claim": "The femur (thigh bone) is the longest bone in the human body.",
+     "source": "https://en.wikipedia.org/wiki/Femur",
+     "verified": true
+    },
+    {
+     "claim": "The smallest bone in the human body is in the foot.",
+     "source": "https://en.wikipedia.org/wiki/Stapes",
+     "verified": true
+    }
+   ]
+  },
+  "tt-004": {
+   "verified": true,
+   "claims": [
+    {
+     "claim": "Russia spans 11 time zones.",
+     "source": "https://en.wikipedia.org/wiki/Time_in_Russia",
+     "verified": true
+    },
+    {
+     "claim": "The Nile and the Amazon are the two longest rivers in the world.",
+     "source": "https://en.wikipedia.org/wiki/List_of_river_systems_by_length",
+     "verified": true
+    },
+    {
+     "claim": "Counting polar deserts, the Sahara is the largest desert on Earth.",
+     "source": "https://en.wikipedia.org/wiki/List_of_deserts_by_area",
+     "verified": true
+    }
+   ]
+  },
+  "tt-005": {
+   "verified": true,
+   "claims": [
+    {
+     "claim": "Water expands when it freezes.",
+     "source": "https://en.wikipedia.org/wiki/Properties_of_water",
+     "verified": true
+    },
+    {
+     "claim": "Sunlight takes roughly eight minutes to reach Earth.",
+     "source": "https://en.wikipedia.org/wiki/Sunlight",
+     "verified": true
+    },
+    {
+     "claim": "Sound travels faster through air than through water.",
+     "source": "https://en.wikipedia.org/wiki/Speed_of_sound",
+     "verified": true
+    }
+   ]
+  },
+  "tt-006": {
+   "verified": true,
+   "claims": [
+    {
+     "claim": "The Eiffel Tower was completed in 1889.",
+     "source": "https://en.wikipedia.org/wiki/Eiffel_Tower",
+     "verified": true
+    },
+    {
+     "claim": "The Great Wall of China is easily visible from the Moon with the naked eye.",
+     "source": "https://en.wikipedia.org/wiki/Great_Wall_of_China",
+     "verified": true
+    },
+    {
+     "claim": "The first crewed Moon landing took place in 1969.",
+     "source": "https://en.wikipedia.org/wiki/Apollo_11",
+     "verified": true
+    }
+   ]
+  },
+  "tt-007": {
+   "verified": true,
+   "claims": [
+    {
+     "claim": "Bananas are classified as berries in botany.",
+     "source": "https://en.wikipedia.org/wiki/Banana",
+     "verified": true
+    },
+    {
+     "claim": "Strawberries are not true berries in botany.",
+     "source": "https://en.wikipedia.org/wiki/Strawberry",
+     "verified": true
+    },
+    {
+     "claim": "Peanuts are tree nuts that grow on branches.",
+     "source": "https://en.wikipedia.org/wiki/Peanut",
+     "verified": true
+    }
+   ]
+  },
+  "tt-008": {
+   "verified": true,
+   "claims": [
+    {
+     "claim": "Jupiter is the largest planet in the Solar System.",
+     "source": "https://en.wikipedia.org/wiki/Jupiter",
+     "verified": true
+    },
+    {
+     "claim": "Saturn's average density is lower than the density of water.",
+     "source": "https://en.wikipedia.org/wiki/Saturn",
+     "verified": true
+    },
+    {
+     "claim": "Pluto is officially classified as the ninth planet.",
+     "source": "https://en.wikipedia.org/wiki/Pluto",
+     "verified": true
+    }
+   ]
+  },
+  "tt-009": {
+   "verified": true,
+   "claims": [
+    {
+     "claim": "The blue whale is the largest animal known to have ever lived.",
+     "source": "https://en.wikipedia.org/wiki/Blue_whale",
+     "verified": true
+    },
+    {
+     "claim": "Goldfish have a memory span of only three seconds.",
+     "source": "https://en.wikipedia.org/wiki/Goldfish",
+     "verified": true
+    },
+    {
+     "claim": "Eucalyptus leaves make up most of a koala's diet.",
+     "source": "https://en.wikipedia.org/wiki/Koala",
+     "verified": true
+    }
+   ]
+  },
+  "tt-010": {
+   "verified": true,
+   "claims": [
+    {
+     "claim": "Mandarin Chinese has more native speakers than any other language.",
+     "source": "https://en.wikipedia.org/wiki/List_of_languages_by_number_of_native_speakers",
+     "verified": true
+    },
+    {
+     "claim": "The Olympic Games originated in ancient Greece.",
+     "source": "https://en.wikipedia.org/wiki/Ancient_Olympic_Games",
+     "verified": true
+    },
+    {
+     "claim": "Vatican City is larger in area than Monaco.",
+     "source": "https://en.wikipedia.org/wiki/Vatican_City",
+     "verified": true
+    }
+   ]
+  },
+  "tt-011": {
+   "verified": true,
+   "claims": [
+    {
+     "claim": "Diamonds are made of carbon.",
+     "source": "https://en.wikipedia.org/wiki/Diamond",
+     "verified": true
+    },
+    {
+     "claim": "Gold is the most abundant metal in Earth's crust.",
+     "source": "https://en.wikipedia.org/wiki/Abundance_of_elements_in_Earth%27s_crust",
+     "verified": true
+    },
+    {
+     "claim": "Helium is lighter than air.",
+     "source": "https://en.wikipedia.org/wiki/Helium",
+     "verified": true
+    }
+   ]
+  }
+ }
+}

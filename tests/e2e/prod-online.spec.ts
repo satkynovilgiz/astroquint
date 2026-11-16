@@ -3,6 +3,13 @@ import { answerBlind, playThrough } from "./helpers";
 
 // Live-site checks for the database-backed modes. Player names start with
 // "QA Bot" so the data can be identified and cleaned up afterwards.
+//
+// These tests WRITE to the database of the site they target. Against
+// production they are skipped unless the owner explicitly opts in with
+// ALLOW_PROD_WRITES=1 (see docs/operations.md).
+const target = process.env.PROD_URL ?? "https://astroquint.vercel.app";
+const isProduction = /astroquint\.vercel\.app/.test(target);
+test.skip(isProduction && process.env.ALLOW_PROD_WRITES !== "1", "Writes to the production database — disabled unless ALLOW_PROD_WRITES=1");
 
 function watch(page: Page) {
   const bad: string[] = [];

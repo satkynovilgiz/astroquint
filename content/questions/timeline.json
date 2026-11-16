@@ -124,8 +124,8 @@
    {
     "id": "a",
     "label": "The Great Pyramid of Giza",
-    "year": -2560,
-    "dateLabel": "c. 2560 BC",
+    "year": -2600,
+    "dateLabel": "c. 2600 BC",
     "source": {
      "title": "Great Pyramid of Giza",
      "publisher": "Wikipedia",
@@ -166,7 +166,7 @@
     }
    }
   ],
-  "explanation": "Great Pyramid (c. 2560 BC), Parthenon (447–432 BC), Colosseum (AD 80), Taj Mahal (1643–1653).",
+  "explanation": "Great Pyramid (c. 2600 BC), Parthenon (447–432 BC), Colosseum (AD 80), Taj Mahal (1643–1653).",
   "review": {
    "status": "approved",
    "checkedOn": "2026-11-15"

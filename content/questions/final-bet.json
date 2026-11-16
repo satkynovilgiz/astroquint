@@ -9,7 +9,7 @@
    "Titanium"
   ],
   "answer": 0,
-  "explanation": "W comes from wolfram, an older name for tungsten. Vanadium is V, xenon is Xe and titanium is Ti.",
+  "explanation": "W comes from wolfram, tungsten's name in several languages, including German. Vanadium is V, xenon is Xe and titanium is Ti.",
   "sources": [
    {
     "title": "Tungsten",
@@ -189,20 +189,20 @@
  },
  {
   "id": "fb-009",
-  "prompt": "What is the largest organ of the human body?",
+  "prompt": "What is the largest internal organ of the human body?",
   "options": [
-   "Liver",
-   "Skin",
    "Lungs",
-   "Brain"
+   "Liver",
+   "Brain",
+   "Heart"
   ],
   "answer": 1,
-  "explanation": "The skin is the body's largest organ. The liver is the largest internal organ.",
+  "explanation": "The liver is the largest internal organ. It sits in the upper right of the abdomen and has many jobs, from filtering blood to storing energy.",
   "sources": [
    {
-    "title": "Skin",
+    "title": "Liver",
     "publisher": "Wikipedia",
-    "url": "https://en.wikipedia.org/wiki/Skin"
+    "url": "https://en.wikipedia.org/wiki/Liver"
    }
   ],
   "world": "final-bet",
@@ -239,7 +239,7 @@
  },
  {
   "id": "fb-011",
-  "prompt": "How many bits are in one byte?",
+  "prompt": "In modern computing, how many bits make up one byte?",
   "options": [
    "4",
    "8",

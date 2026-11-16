@@ -26,12 +26,17 @@ Astroquint is a browser puzzle and knowledge game. Each 2–4 minute game travel
 | **Production** | `astroquint.vercel.app` (deploys from `main`) | Supabase `astroquint-db`, connected to the **Production** environment only |
 | **Preview** | Vercel preview deployments | None yet: Daily/Party show "not connected". Solo works. A staging database is pending (see below). |
 | **Local dev** | `npm run dev` | In-memory store (no database credentials in `.env.local`) |
-| **Automated tests** | `npm test`, `npm run test:e2e` | Always in-memory: `playwright.config.ts` blanks Supabase variables |
-| **Live checks** | `npm run test:prod` | Production. Creates real data, so name test players "QA Bot …" and remove them afterwards |
+| **Automated tests** | `npm test`, `npm run test:e2e` | Always in-memory: `playwright.config.ts` blanks Supabase variables. SQL migrations are tested in **PGlite**, an in-process Postgres (`tests/unit/migrations.test.ts`) |
+| **Live checks** | `npm run test:prod` | Production, **read-only by default** (a full Solo game). Tests that create Daily/Party data are skipped unless `ALLOW_PROD_WRITES=1` |
 
 Production database credentials must never be placed in `.env.local`. If a development server ever connects to a remote Supabase project, it prints a loud warning naming the host.
 
-**Staging database (pending):** Supabase's free plan allows 2 active projects per owner, and that limit is reached. To add staging, pause or delete another free project or upgrade. Then run `vercel integration add supabase --name astroquint-staging --no-connect`, connect it with `vercel integration resource connect astroquint-staging -e preview -e development --yes`, apply the migrations and run `vercel env pull`.
+**Isolated databases:** the migrations are tested locally in PGlite (no Docker, no network). A full local Supabase stack (`supabase start`) needs Docker, and a cloud staging project would exceed the Free plan's 2-project limit. Both options are described in [`docs/operations.md`](docs/operations.md), and neither has been set up.
+
+More docs:
+- [`docs/operations.md`](docs/operations.md): Free-plan limits, manual backups, the migration procedure and rollback, and monitoring.
+- [`docs/data-retention.md`](docs/data-retention.md): what's stored, and what cleanup *would* delete (not enabled).
+- [`docs/legal-checklist.md`](docs/legal-checklist.md): information still needed for the Privacy Policy and Terms.
 
 ## Quick start
 
@@ -97,12 +102,12 @@ Every API error includes a `code` and the Vercel request id. The UI shows them a
 | File | Status in production |
 |---|---|
 | `0001_init.sql` | ✅ applied (Nov 2026) |
-| `0002_rate_limits.sql` | ⏳ written, **awaiting approval** to apply. Until then rate limits are per instance (the app falls back automatically). |
+| `0002_rate_limits.sql` | ⏳ **Awaiting approval.** Tested in PGlite: it changes no existing rows, is safe to re-apply, blocks only above the limits, is unreachable for public roles, and has a tested rollback (`supabase/rollbacks/0002_rate_limits_down.sql`). Until it's applied, rate limits are per instance (the app falls back automatically). |
 
 **Backups and data persistence:**
 - **Free plan:** Supabase's free plan has no automatic daily backups, and an inactive free project is paused after a period without traffic. For real players, upgrade to Pro, which adds daily backups and no pausing.
 - **Manual export:** `scripts/export-db.mjs` makes a read-only logical backup (JSON) of every table. Run it with `POSTGRES_URL_NON_POOLING` set. The output contains player data, so keep it private; `/backups/` is gitignored.
-- **Cleanup isn't scheduled yet.** `public.astroquint_cleanup()` removes expired rooms, practice matches older than 30 days and stale rate-limit rows, but it only runs once it's scheduled with pg_cron (needs approval because it deletes data). Until then, expired rooms are refused by the app and simply remain in the table.
+- **Cleanup is not enabled.** `public.astroquint_cleanup()` exists but nothing runs it. Retention periods must be finalised with the Privacy Policy first; see [`docs/data-retention.md`](docs/data-retention.md). `npm run db:cleanup-dry-run` reports, read-only, what it *would* delete.
 
 > **Without Supabase on Vercel**, Solo still works because its state travels in a signed token. Daily and Party need shared storage: the memory store isn't shared between serverless instances. Use Supabase, or a single long-running Node server (`npm start`).
 
@@ -179,11 +184,13 @@ There are 73 approved questions in `content/questions/*.json`, and each one is v
 
 **Review status:** "approved" means the questions were chosen to be well established and checked editorially against the cited reference.
 
-**Content audit (Nov 2026):**
+**Content audit (Nov 2026):** `npm run verify:claims` writes `content/verification.json`.
 - **Sources:** all 102 source URLs resolve, with no broken links or redirects.
 - **Spot-check:** 20 higher-risk claims were checked against the cited article's text. One wasn't supported (koala fingerprints) and was replaced with a sourced fact.
 - **Give-away fixed:** one cross-world give-away was removed. The old Final Bet question "capital of Australia" was answered by a GeoTap clue in the same game. A test now blocks Final Bet answers from appearing in other worlds.
-- **Still recommended:** an independent human fact-check before a wider launch. The remaining claims were selected as well established but weren't individually text-verified.
+- **Source-text verification:** every factual claim (105 claims across the 53 Truth Trap, Timeline, GeoTap and sourced Final Bet questions) is checked against the text of its own cited article, and all pass. The run corrected the Great Pyramid date (now c. 2600 BC, per its source). It also replaced the Final Bet question "largest organ is the skin", which its source didn't support, with "largest internal organ is the liver", which it does.
+- **Computed answers:** maths questions (Pattern Break, and Final Bet without sources) are checked by computation in `tests/unit/content-verification.test.ts`.
+- **Limit of the check:** it confirms the cited source *contains* each key fact. It isn't an independent expert review, and a human review is still advisable before a wider launch.
 
 GeoTap uses public-domain Natural Earth 1:110m boundaries (via `world-atlas`), pre-projected at build time.
 

@@ -366,7 +366,7 @@
   "prompt": "Find the country whose capital is Canberra",
   "countryId": "036",
   "countryName": "Australia",
-  "explanation": "Canberra is the capital of Australia. Canberra, not Sydney, is Australia's capital.",
+  "explanation": "Canberra, not Sydney or Melbourne, is the capital of Australia.",
   "sources": [
    {
     "title": "Australia",
@@ -386,7 +386,7 @@
   "prompt": "Find the country whose capital is Ottawa",
   "countryId": "124",
   "countryName": "Canada",
-  "explanation": "Ottawa is the capital of Canada. Ottawa, in the province of Ontario, is Canada's capital.",
+  "explanation": "Ottawa, in the province of Ontario, is the capital of Canada, not Toronto.",
   "sources": [
    {
     "title": "Canada",
@@ -446,7 +446,7 @@
   "prompt": "Find the country whose capital is Buenos Aires",
   "countryId": "032",
   "countryName": "Argentina",
-  "explanation": "Buenos Aires is the capital of Argentina. Argentina is in southern South America, east of the Andes.",
+  "explanation": "Buenos Aires is the capital of Argentina. Argentina is in southern South America, with the Andes along its western border with Chile.",
   "sources": [
    {
     "title": "Argentina",
