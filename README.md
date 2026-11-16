@@ -19,12 +19,23 @@ Modes: **Solo Orbit** (no account), **Daily Orbit** (the same questions for ever
 | Milestone | Scope | State |
 |-----------|-------|-------|
 | 1 | Foundation, design system, motion system, homepage, mode select | ✅ Done |
-| 2 | Full five-world solo game, question bank, planet travel, results | ⏳ Next |
+| 2 | Full five-world solo game, question bank, planet travel, results | ✅ Done |
 | 3 | Supabase, server-side scoring, Daily Orbit, leaderboards, profiles | Needs Supabase credentials |
 | 4 | Real-time Party Mode | Needs Supabase |
 | 5 | Polish, audio, accessibility review, production readiness | — |
 
-Pages for features that aren't built yet (`/play/solo`, `/daily`, `/party`, `/leaderboard`, `/profile`) say so plainly and name the milestone that delivers them. Nothing on them is simulated.
+Pages for features that aren't built yet (`/daily`, `/party`, `/leaderboard`, `/profile`) say so plainly and name the milestone that delivers them. Nothing on them is simulated.
+
+## Question bank
+
+Questions live in `content/questions/*.json`, one file per world. There are 73 approved questions (18 Pattern Break, 11 Truth Trap, 10 Timeline, 23 GeoTap, 11 Final Bet).
+
+- **Schema:** each question is validated against `src/features/questions/schema.ts` by `tests/unit/question-bank.test.ts`. The checks cover IDs, option counts, exactly one false statement, distinct event years, GeoTap countries that exist on the map, and https sources.
+- **Adding questions:** append to the JSON file and run `npm test`. No UI code changes are needed.
+- **Review status:** only questions with `review.status = "approved"` are ever served. Every factual statement, event and answer cites a reference. Pattern questions are pure arithmetic or logic.
+- **What "approved" means:** the facts were chosen to be well established and checked editorially against the cited reference. They have **not** been through a separate human fact-check. That's recommended before a public launch.
+- **No answer leaks:** the public question shown to a player never contains the answer (enforced by a test). Option and event order is shuffled deterministically per game seed.
+- **Map data:** GeoTap uses Natural Earth 1:110m country boundaries, which are public domain (via `world-atlas`). They are projected at build time into `src/features/geo/world-map.json` with `npm run build:map`.
 
 ## Tech stack
 

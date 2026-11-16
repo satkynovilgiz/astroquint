@@ -6,7 +6,7 @@
 
 import { getPreferences } from "@/features/preferences/store";
 
-export type SoundName = "tap" | "select" | "launch" | "toggle-on";
+export type SoundName = "tap" | "select" | "launch" | "toggle-on" | "correct" | "incorrect" | "tick" | "warp" | "reward" | "lock";
 
 let ctx: AudioContext | null = null;
 
@@ -43,6 +43,24 @@ const SOUNDS: Record<SoundName, Tone[]> = {
     { freq: 660, at: 0.06, dur: 0.06, type: "sine", gain: 0.06 },
     { freq: 990, at: 0.12, dur: 0.1, type: "sine", gain: 0.05 },
   ],
+  correct: [
+    { freq: 660, dur: 0.09, type: "triangle", gain: 0.06 },
+    { freq: 880, at: 0.08, dur: 0.09, type: "triangle", gain: 0.06 },
+    { freq: 1320, at: 0.16, dur: 0.16, type: "sine", gain: 0.05 },
+  ],
+  incorrect: [
+    { freq: 300, to: 220, dur: 0.18, type: "triangle", gain: 0.05 },
+    { freq: 220, to: 180, at: 0.12, dur: 0.2, type: "sine", gain: 0.04 },
+  ],
+  tick: [{ freq: 1200, dur: 0.035, type: "square", gain: 0.012 }],
+  warp: [{ freq: 90, to: 900, dur: 1.1, type: "sine", gain: 0.035 }],
+  reward: [
+    { freq: 523, dur: 0.12, type: "triangle", gain: 0.05 },
+    { freq: 659, at: 0.1, dur: 0.12, type: "triangle", gain: 0.05 },
+    { freq: 784, at: 0.2, dur: 0.12, type: "triangle", gain: 0.05 },
+    { freq: 1047, at: 0.3, dur: 0.3, type: "sine", gain: 0.05 },
+  ],
+  lock: [{ freq: 180, to: 120, dur: 0.12, type: "square", gain: 0.02 }],
   launch: [
     { freq: 140, to: 720, dur: 0.6, type: "sawtooth", gain: 0.025 },
     { freq: 280, to: 1440, dur: 0.6, type: "sine", gain: 0.03 },

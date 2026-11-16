@@ -63,7 +63,9 @@ export const staggerChildren = (delayChildren = 0, each: number = stagger.base) 
 
 /** Press / hover feedback shared by all interactive surfaces. */
 export const pressable = {
-  whileHover: { y: -2 },
-  whileTap: { scale: 0.96, y: 0 },
+  // Scale (not translate) on hover: a lifted element can slide out from under
+  // the cursor at its edge and flicker between hover states.
+  whileHover: { scale: 1.03 },
+  whileTap: { scale: 0.96 },
   transition: spring.press,
 } as const;

@@ -1,0 +1,582 @@
+[
+ {
+  "id": "tl-001",
+  "world": "timeline",
+  "difficulty": 1,
+  "prompt": "Order these inventions from earliest to latest.",
+  "events": [
+   {
+    "id": "a",
+    "label": "Gutenberg's movable-type printing press",
+    "year": 1440,
+    "dateLabel": "c. 1440",
+    "source": {
+     "title": "Printing press",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Printing_press"
+    }
+   },
+   {
+    "id": "b",
+    "label": "Alexander Graham Bell patents the telephone",
+    "year": 1876,
+    "dateLabel": "1876",
+    "source": {
+     "title": "Invention of the telephone",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Invention_of_the_telephone"
+    }
+   },
+   {
+    "id": "c",
+    "label": "The Wright brothers' first powered flight",
+    "year": 1903,
+    "dateLabel": "1903",
+    "source": {
+     "title": "Wright Flyer",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Wright_Flyer"
+    }
+   },
+   {
+    "id": "d",
+    "label": "Tim Berners-Lee proposes the World Wide Web",
+    "year": 1989,
+    "dateLabel": "1989",
+    "source": {
+     "title": "World Wide Web",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/World_Wide_Web"
+    }
+   }
+  ],
+  "explanation": "Printing press (c. 1440), telephone (1876), powered flight (1903), World Wide Web (1989).",
+  "review": {
+   "status": "approved",
+   "checkedOn": "2026-11-15"
+  },
+  "sources": []
+ },
+ {
+  "id": "tl-002",
+  "world": "timeline",
+  "difficulty": 2,
+  "prompt": "Order these space milestones from earliest to latest.",
+  "events": [
+   {
+    "id": "a",
+    "label": "Sputnik 1, the first artificial satellite, is launched",
+    "year": 1957,
+    "dateLabel": "1957",
+    "source": {
+     "title": "Sputnik 1",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Sputnik_1"
+    }
+   },
+   {
+    "id": "b",
+    "label": "Yuri Gagarin becomes the first human in space",
+    "year": 1961,
+    "dateLabel": "1961",
+    "source": {
+     "title": "Yuri Gagarin",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Yuri_Gagarin"
+    }
+   },
+   {
+    "id": "c",
+    "label": "Apollo 11 lands on the Moon",
+    "year": 1969,
+    "dateLabel": "1969",
+    "source": {
+     "title": "Apollo 11",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Apollo_11"
+    }
+   },
+   {
+    "id": "d",
+    "label": "The Hubble Space Telescope is launched",
+    "year": 1990,
+    "dateLabel": "1990",
+    "source": {
+     "title": "Hubble Space Telescope",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Hubble_Space_Telescope"
+    }
+   }
+  ],
+  "explanation": "Sputnik 1 (1957), Gagarin (1961), Apollo 11 (1969), Hubble (1990).",
+  "review": {
+   "status": "approved",
+   "checkedOn": "2026-11-15"
+  },
+  "sources": []
+ },
+ {
+  "id": "tl-003",
+  "world": "timeline",
+  "difficulty": 2,
+  "prompt": "Order these structures by when they were completed.",
+  "events": [
+   {
+    "id": "a",
+    "label": "The Great Pyramid of Giza",
+    "year": -2560,
+    "dateLabel": "c. 2560 BC",
+    "source": {
+     "title": "Great Pyramid of Giza",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Great_Pyramid_of_Giza"
+    }
+   },
+   {
+    "id": "b",
+    "label": "The Parthenon in Athens",
+    "year": -438,
+    "dateLabel": "447–432 BC",
+    "source": {
+     "title": "Parthenon",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Parthenon"
+    }
+   },
+   {
+    "id": "c",
+    "label": "The Colosseum in Rome",
+    "year": 80,
+    "dateLabel": "AD 80",
+    "source": {
+     "title": "Colosseum",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Colosseum"
+    }
+   },
+   {
+    "id": "d",
+    "label": "The Taj Mahal",
+    "year": 1643,
+    "dateLabel": "1643–1653",
+    "source": {
+     "title": "Taj Mahal",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Taj_Mahal"
+    }
+   }
+  ],
+  "explanation": "Great Pyramid (c. 2560 BC), Parthenon (447–432 BC), Colosseum (AD 80), Taj Mahal (1643–1653).",
+  "review": {
+   "status": "approved",
+   "checkedOn": "2026-11-15"
+  },
+  "sources": []
+ },
+ {
+  "id": "tl-004",
+  "world": "timeline",
+  "difficulty": 3,
+  "prompt": "Order these scientific landmarks from earliest to latest.",
+  "events": [
+   {
+    "id": "a",
+    "label": "Newton publishes the Principia",
+    "year": 1687,
+    "dateLabel": "1687",
+    "source": {
+     "title": "Philosophiæ Naturalis Principia Mathematica",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Philosophi%C3%A6_Naturalis_Principia_Mathematica"
+    }
+   },
+   {
+    "id": "b",
+    "label": "Darwin publishes On the Origin of Species",
+    "year": 1859,
+    "dateLabel": "1859",
+    "source": {
+     "title": "On the Origin of Species",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/On_the_Origin_of_Species"
+    }
+   },
+   {
+    "id": "c",
+    "label": "Einstein publishes special relativity",
+    "year": 1905,
+    "dateLabel": "1905",
+    "source": {
+     "title": "Special relativity",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Special_relativity"
+    }
+   },
+   {
+    "id": "d",
+    "label": "Watson and Crick describe the structure of DNA",
+    "year": 1953,
+    "dateLabel": "1953",
+    "source": {
+     "title": "Molecular Structure of Nucleic Acids",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Molecular_Structure_of_Nucleic_Acids:_A_Structure_for_Deoxyribose_Nucleic_Acid"
+    }
+   }
+  ],
+  "explanation": "Principia (1687), Origin of Species (1859), special relativity (1905), DNA double helix (1953).",
+  "review": {
+   "status": "approved",
+   "checkedOn": "2026-11-15"
+  },
+  "sources": []
+ },
+ {
+  "id": "tl-005",
+  "world": "timeline",
+  "difficulty": 2,
+  "prompt": "Order these communication firsts from earliest to latest.",
+  "events": [
+   {
+    "id": "a",
+    "label": "The Penny Black, the first adhesive postage stamp",
+    "year": 1840,
+    "dateLabel": "1840",
+    "source": {
+     "title": "Penny Black",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Penny_Black"
+    }
+   },
+   {
+    "id": "b",
+    "label": "The first transatlantic telegraph cable carries messages",
+    "year": 1858,
+    "dateLabel": "1858",
+    "source": {
+     "title": "Transatlantic telegraph cable",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Transatlantic_telegraph_cable"
+    }
+   },
+   {
+    "id": "c",
+    "label": "Marconi's first transatlantic radio signal",
+    "year": 1901,
+    "dateLabel": "1901",
+    "source": {
+     "title": "Guglielmo Marconi",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Guglielmo_Marconi"
+    }
+   },
+   {
+    "id": "d",
+    "label": "The first iPhone is released",
+    "year": 2007,
+    "dateLabel": "2007",
+    "source": {
+     "title": "iPhone (1st generation)",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/IPhone_(1st_generation)"
+    }
+   }
+  ],
+  "explanation": "Penny Black (1840), transatlantic telegraph (1858), transatlantic radio (1901), iPhone (2007).",
+  "review": {
+   "status": "approved",
+   "checkedOn": "2026-11-15"
+  },
+  "sources": []
+ },
+ {
+  "id": "tl-006",
+  "world": "timeline",
+  "difficulty": 2,
+  "prompt": "Order these medical breakthroughs from earliest to latest.",
+  "events": [
+   {
+    "id": "a",
+    "label": "Edward Jenner's smallpox vaccine",
+    "year": 1796,
+    "dateLabel": "1796",
+    "source": {
+     "title": "Edward Jenner",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Edward_Jenner"
+    }
+   },
+   {
+    "id": "b",
+    "label": "Alexander Fleming discovers penicillin",
+    "year": 1928,
+    "dateLabel": "1928",
+    "source": {
+     "title": "Penicillin",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Penicillin"
+    }
+   },
+   {
+    "id": "c",
+    "label": "The first human heart transplant",
+    "year": 1967,
+    "dateLabel": "1967",
+    "source": {
+     "title": "Heart transplantation",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Heart_transplantation"
+    }
+   },
+   {
+    "id": "d",
+    "label": "The Human Genome Project is declared complete",
+    "year": 2003,
+    "dateLabel": "2003",
+    "source": {
+     "title": "Human Genome Project",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Human_Genome_Project"
+    }
+   }
+  ],
+  "explanation": "Smallpox vaccine (1796), penicillin (1928), heart transplant (1967), Human Genome Project (2003).",
+  "review": {
+   "status": "approved",
+   "checkedOn": "2026-11-15"
+  },
+  "sources": []
+ },
+ {
+  "id": "tl-007",
+  "world": "timeline",
+  "difficulty": 2,
+  "prompt": "Order these voyages of exploration from earliest to latest.",
+  "events": [
+   {
+    "id": "a",
+    "label": "Columbus reaches the Americas",
+    "year": 1492,
+    "dateLabel": "1492",
+    "source": {
+     "title": "Voyages of Christopher Columbus",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Voyages_of_Christopher_Columbus"
+    }
+   },
+   {
+    "id": "b",
+    "label": "The Magellan–Elcano expedition completes the first circumnavigation",
+    "year": 1522,
+    "dateLabel": "1522",
+    "source": {
+     "title": "Magellan expedition",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Magellan_expedition"
+    }
+   },
+   {
+    "id": "c",
+    "label": "Roald Amundsen's team reaches the South Pole",
+    "year": 1911,
+    "dateLabel": "1911",
+    "source": {
+     "title": "Amundsen's South Pole expedition",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Amundsen%27s_South_Pole_expedition"
+    }
+   },
+   {
+    "id": "d",
+    "label": "Hillary and Norgay summit Mount Everest",
+    "year": 1953,
+    "dateLabel": "1953",
+    "source": {
+     "title": "1953 British Mount Everest expedition",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/1953_British_Mount_Everest_expedition"
+    }
+   }
+  ],
+  "explanation": "Columbus (1492), first circumnavigation (1522), South Pole (1911), Everest summit (1953).",
+  "review": {
+   "status": "approved",
+   "checkedOn": "2026-11-15"
+  },
+  "sources": []
+ },
+ {
+  "id": "tl-008",
+  "world": "timeline",
+  "difficulty": 3,
+  "prompt": "Order these transport milestones from earliest to latest.",
+  "events": [
+   {
+    "id": "a",
+    "label": "The Stockton and Darlington Railway opens",
+    "year": 1825,
+    "dateLabel": "1825",
+    "source": {
+     "title": "Stockton and Darlington Railway",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Stockton_and_Darlington_Railway"
+    }
+   },
+   {
+    "id": "b",
+    "label": "Karl Benz patents his Motorwagen",
+    "year": 1886,
+    "dateLabel": "1886",
+    "source": {
+     "title": "Benz Patent-Motorwagen",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Benz_Patent-Motorwagen"
+    }
+   },
+   {
+    "id": "c",
+    "label": "The Ford Model T is introduced",
+    "year": 1908,
+    "dateLabel": "1908",
+    "source": {
+     "title": "Ford Model T",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Ford_Model_T"
+    }
+   },
+   {
+    "id": "d",
+    "label": "Concorde begins commercial passenger flights",
+    "year": 1976,
+    "dateLabel": "1976",
+    "source": {
+     "title": "Concorde",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Concorde"
+    }
+   }
+  ],
+  "explanation": "Stockton and Darlington Railway (1825), Benz Motorwagen (1886), Model T (1908), Concorde (1976).",
+  "review": {
+   "status": "approved",
+   "checkedOn": "2026-11-15"
+  },
+  "sources": []
+ },
+ {
+  "id": "tl-009",
+  "world": "timeline",
+  "difficulty": 3,
+  "prompt": "Order these computing milestones from earliest to latest.",
+  "events": [
+   {
+    "id": "a",
+    "label": "Charles Babbage first describes the Analytical Engine",
+    "year": 1837,
+    "dateLabel": "1837",
+    "source": {
+     "title": "Analytical engine",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Analytical_engine"
+    }
+   },
+   {
+    "id": "b",
+    "label": "ENIAC is unveiled to the public",
+    "year": 1946,
+    "dateLabel": "1946",
+    "source": {
+     "title": "ENIAC",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/ENIAC"
+    }
+   },
+   {
+    "id": "c",
+    "label": "Ray Tomlinson sends the first networked email",
+    "year": 1971,
+    "dateLabel": "1971",
+    "source": {
+     "title": "Ray Tomlinson",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Ray_Tomlinson"
+    }
+   },
+   {
+    "id": "d",
+    "label": "Google is founded",
+    "year": 1998,
+    "dateLabel": "1998",
+    "source": {
+     "title": "Google",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Google"
+    }
+   }
+  ],
+  "explanation": "Analytical Engine (1837), ENIAC (1946), first networked email (1971), Google (1998).",
+  "review": {
+   "status": "approved",
+   "checkedOn": "2026-11-15"
+  },
+  "sources": []
+ },
+ {
+  "id": "tl-010",
+  "world": "timeline",
+  "difficulty": 2,
+  "prompt": "Order these cultural firsts from earliest to latest.",
+  "events": [
+   {
+    "id": "a",
+    "label": "Beethoven's Ninth Symphony premieres",
+    "year": 1824,
+    "dateLabel": "1824",
+    "source": {
+     "title": "Symphony No. 9 (Beethoven)",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Symphony_No._9_(Beethoven)"
+    }
+   },
+   {
+    "id": "b",
+    "label": "The first modern Olympic Games, in Athens",
+    "year": 1896,
+    "dateLabel": "1896",
+    "source": {
+     "title": "1896 Summer Olympics",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/1896_Summer_Olympics"
+    }
+   },
+   {
+    "id": "c",
+    "label": "The first Nobel Prizes are awarded",
+    "year": 1901,
+    "dateLabel": "1901",
+    "source": {
+     "title": "Nobel Prize",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Nobel_Prize"
+    }
+   },
+   {
+    "id": "d",
+    "label": "The first FIFA World Cup, in Uruguay",
+    "year": 1930,
+    "dateLabel": "1930",
+    "source": {
+     "title": "1930 FIFA World Cup",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/1930_FIFA_World_Cup"
+    }
+   }
+  ],
+  "explanation": "Beethoven's Ninth (1824), first modern Olympics (1896), first Nobel Prizes (1901), first World Cup (1930).",
+  "review": {
+   "status": "approved",
+   "checkedOn": "2026-11-15"
+  },
+  "sources": []
+ }
+]

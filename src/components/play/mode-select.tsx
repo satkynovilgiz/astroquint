@@ -95,7 +95,7 @@ export function ModeSelect() {
             whileHover="hover"
             whileTap="press"
             animate="rest"
-            variants={{ rest: { y: 0 }, hover: { y: -6 }, press: { scale: 0.98 } }}
+            variants={{ rest: { scale: 1 }, hover: { scale: 1.015 }, press: { scale: 0.98 } }}
             transition={spring.settle}
             className="h-full"
           >

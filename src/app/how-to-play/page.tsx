@@ -6,6 +6,7 @@ import { Planet } from "@/components/animations/planet";
 import { Card } from "@/components/ui/card";
 import { WORLDS, type WorldId } from "@/features/worlds/worlds";
 import { BASE_POINTS, MAX_SPEED_BONUS, MAX_WAGER } from "@/features/scoring/scoring";
+import { ACHIEVEMENTS } from "@/features/achievements/achievements";
 
 export const metadata: Metadata = {
   title: "How to Play",
@@ -30,7 +31,7 @@ const HOW: Record<WorldId, string[]> = {
   ],
   geotap: [
     "Read the clue, for example “Find Japan”.",
-    "Tap the country on the map. You can zoom, and there's a searchable list if the map is hard to use.",
+    "Tap the country on the map, then lock it in. Pinch, scroll or use the + and − buttons to zoom. With a keyboard, arrow keys move between neighbouring countries.",
     "You get 25 seconds here because maps take longer to scan.",
   ],
   "final-bet": [
@@ -140,6 +141,25 @@ export default function HowToPlayPage() {
           </div>
         </section>
 
+        <section aria-labelledby="achievements-heading" className="mt-14">
+          <h2 id="achievements-heading" className="font-display text-2xl font-bold tracking-[-0.02em] sm:text-3xl">
+            Achievements
+          </h2>
+          <ul className="mt-5 grid gap-3 sm:grid-cols-2">
+            {ACHIEVEMENTS.map((a) => (
+              <li key={a.id} className="panel flex items-center gap-3 rounded-2xl p-4">
+                <span className="text-2xl" aria-hidden="true">
+                  {a.glyph}
+                </span>
+                <span>
+                  <span className="block font-display font-semibold">{a.name}</span>
+                  <span className="block text-sm text-fg-muted">{a.rule}</span>
+                </span>
+              </li>
+            ))}
+          </ul>
+        </section>
+
         <section aria-labelledby="access-heading" className="mt-14">
           <h2 id="access-heading" className="font-display text-2xl font-bold tracking-[-0.02em] sm:text-3xl">
             Comfort &amp; accessibility
@@ -147,6 +167,7 @@ export default function HowToPlayPage() {
           <ul className="mt-4 max-w-2xl space-y-2 text-fg-muted">
             <li>Everything works with a keyboard, and every drag action has a button alternative.</li>
             <li>“Reduce motion” in the menu or footer calms all animation. Your system setting is respected too.</li>
+            <li>Relaxed mode in Solo Orbit turns off timers completely (and the speed bonus with them).</li>
             <li>Sound is off by default, and you never need audio or colour alone to understand a result.</li>
           </ul>
         </section>

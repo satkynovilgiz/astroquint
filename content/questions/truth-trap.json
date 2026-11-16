@@ -1,0 +1,486 @@
+[
+ {
+  "id": "tt-001",
+  "world": "truth-trap",
+  "difficulty": 1,
+  "topic": "Planets",
+  "statements": [
+   {
+    "text": "Venus spins in the opposite direction to most planets in the Solar System.",
+    "isTrue": true,
+    "note": "Venus has retrograde rotation, so it spins clockwise when viewed from above the Sun's north pole.",
+    "source": {
+     "title": "Venus",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Venus"
+    }
+   },
+   {
+    "text": "Mars is the hottest planet in the Solar System.",
+    "isTrue": false,
+    "note": "Venus is the hottest. Its thick carbon-dioxide atmosphere traps heat, keeping the surface around 465 °C.",
+    "source": {
+     "title": "Venus",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Venus"
+    }
+   },
+   {
+    "text": "One rotation of Venus takes longer than one Venusian year.",
+    "isTrue": true,
+    "note": "Venus takes about 243 Earth days to rotate once, but only about 225 Earth days to orbit the Sun.",
+    "source": {
+     "title": "Venus",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Venus"
+    }
+   }
+  ],
+  "explanation": "Mars is cold. Venus is the Solar System's hottest planet, even though Mercury is closer to the Sun.",
+  "review": {
+   "status": "approved",
+   "checkedOn": "2026-11-15"
+  },
+  "sources": []
+ },
+ {
+  "id": "tt-002",
+  "world": "truth-trap",
+  "difficulty": 1,
+  "topic": "Animals",
+  "statements": [
+   {
+    "text": "Octopuses have three hearts.",
+    "isTrue": true,
+    "note": "Two hearts pump blood through the gills and a third pumps it around the body.",
+    "source": {
+     "title": "Octopus",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Octopus"
+    }
+   },
+   {
+    "text": "All bat species are completely blind.",
+    "isTrue": false,
+    "note": "No bat is blind. Many bats use echolocation, but they can all see, and fruit bats rely heavily on their eyesight.",
+    "source": {
+     "title": "Bat",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Bat"
+    }
+   },
+   {
+    "text": "Hummingbirds can fly backwards.",
+    "isTrue": true,
+    "note": "Their unusual wing movement lets them hover and even fly backwards.",
+    "source": {
+     "title": "Hummingbird",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Hummingbird"
+    }
+   }
+  ],
+  "explanation": "“Blind as a bat” is a myth. All bats can see.",
+  "review": {
+   "status": "approved",
+   "checkedOn": "2026-11-15"
+  },
+  "sources": []
+ },
+ {
+  "id": "tt-003",
+  "world": "truth-trap",
+  "difficulty": 1,
+  "topic": "The human body",
+  "statements": [
+   {
+    "text": "An adult human skeleton typically has 206 bones.",
+    "isTrue": true,
+    "note": "Babies are born with more bones, and many of them fuse as the body grows.",
+    "source": {
+     "title": "Human skeleton",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Human_skeleton"
+    }
+   },
+   {
+    "text": "The femur (thigh bone) is the longest bone in the human body.",
+    "isTrue": true,
+    "note": "The femur is the longest and strongest bone in the body.",
+    "source": {
+     "title": "Femur",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Femur"
+    }
+   },
+   {
+    "text": "The smallest bone in the human body is in the foot.",
+    "isTrue": false,
+    "note": "The smallest bone is the stapes, found in the middle ear.",
+    "source": {
+     "title": "Stapes",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Stapes"
+    }
+   }
+  ],
+  "explanation": "The smallest bone is the stapes in the ear, not a bone in the foot.",
+  "review": {
+   "status": "approved",
+   "checkedOn": "2026-11-15"
+  },
+  "sources": []
+ },
+ {
+  "id": "tt-004",
+  "world": "truth-trap",
+  "difficulty": 2,
+  "topic": "Geography",
+  "statements": [
+   {
+    "text": "Russia spans 11 time zones.",
+    "isTrue": true,
+    "note": "Russia has used 11 time zones since 2014, from Kaliningrad in the west to Kamchatka in the east.",
+    "source": {
+     "title": "Time in Russia",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Time_in_Russia"
+    }
+   },
+   {
+    "text": "The Nile and the Amazon are the two longest rivers in the world.",
+    "isTrue": true,
+    "note": "Which of the two is longer depends on how they are measured, but these two rivers are the top two.",
+    "source": {
+     "title": "List of river systems by length",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/List_of_river_systems_by_length"
+    }
+   },
+   {
+    "text": "Counting polar deserts, the Sahara is the largest desert on Earth.",
+    "isTrue": false,
+    "note": "A desert is defined by low rainfall, not heat. Antarctica is the largest desert, and the Sahara is the largest hot desert.",
+    "source": {
+     "title": "List of deserts by area",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/List_of_deserts_by_area"
+    }
+   }
+  ],
+  "explanation": "Antarctica is the largest desert because deserts are defined by rainfall, not temperature.",
+  "review": {
+   "status": "approved",
+   "checkedOn": "2026-11-15"
+  },
+  "sources": []
+ },
+ {
+  "id": "tt-005",
+  "world": "truth-trap",
+  "difficulty": 1,
+  "topic": "Physics",
+  "statements": [
+   {
+    "text": "Water expands when it freezes.",
+    "isTrue": true,
+    "note": "Ice is less dense than liquid water, which is why it floats.",
+    "source": {
+     "title": "Properties of water",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Properties_of_water"
+    }
+   },
+   {
+    "text": "Sunlight takes roughly eight minutes to reach Earth.",
+    "isTrue": true,
+    "note": "At the average Earth–Sun distance, light takes about 8 minutes and 20 seconds.",
+    "source": {
+     "title": "Sunlight",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Sunlight"
+    }
+   },
+   {
+    "text": "Sound travels faster through air than through water.",
+    "isTrue": false,
+    "note": "Sound travels about four times faster in water (around 1,480 m/s) than in air (around 343 m/s).",
+    "source": {
+     "title": "Speed of sound",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Speed_of_sound"
+    }
+   }
+  ],
+  "explanation": "Sound moves much faster through water than through air.",
+  "review": {
+   "status": "approved",
+   "checkedOn": "2026-11-15"
+  },
+  "sources": []
+ },
+ {
+  "id": "tt-006",
+  "world": "truth-trap",
+  "difficulty": 1,
+  "topic": "Landmarks",
+  "statements": [
+   {
+    "text": "The Eiffel Tower was completed in 1889.",
+    "isTrue": true,
+    "note": "It was built as the entrance to the 1889 World's Fair in Paris.",
+    "source": {
+     "title": "Eiffel Tower",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Eiffel_Tower"
+    }
+   },
+   {
+    "text": "The Great Wall of China is easily visible from the Moon with the naked eye.",
+    "isTrue": false,
+    "note": "It's a myth. The wall is far too narrow to see from the Moon, and it is hard to spot even from low Earth orbit.",
+    "source": {
+     "title": "Great Wall of China",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Great_Wall_of_China"
+    }
+   },
+   {
+    "text": "The first crewed Moon landing took place in 1969.",
+    "isTrue": true,
+    "note": "Apollo 11 landed on 20 July 1969.",
+    "source": {
+     "title": "Apollo 11",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Apollo_11"
+    }
+   }
+  ],
+  "explanation": "You cannot see the Great Wall from the Moon with the naked eye.",
+  "review": {
+   "status": "approved",
+   "checkedOn": "2026-11-15"
+  },
+  "sources": []
+ },
+ {
+  "id": "tt-007",
+  "world": "truth-trap",
+  "difficulty": 2,
+  "topic": "Botany",
+  "statements": [
+   {
+    "text": "Bananas are classified as berries in botany.",
+    "isTrue": true,
+    "note": "Botanically, a banana is a berry: a fleshy fruit that develops from a single ovary.",
+    "source": {
+     "title": "Banana",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Banana"
+    }
+   },
+   {
+    "text": "Strawberries are not true berries in botany.",
+    "isTrue": true,
+    "note": "A strawberry is an “accessory fruit”, and its “seeds” are actually tiny individual fruits.",
+    "source": {
+     "title": "Strawberry",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Strawberry"
+    }
+   },
+   {
+    "text": "Peanuts are tree nuts that grow on branches.",
+    "isTrue": false,
+    "note": "Peanuts are legumes, and their pods develop underground.",
+    "source": {
+     "title": "Peanut",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Peanut"
+    }
+   }
+  ],
+  "explanation": "Peanuts are legumes that grow underground. They are not tree nuts.",
+  "review": {
+   "status": "approved",
+   "checkedOn": "2026-11-15"
+  },
+  "sources": []
+ },
+ {
+  "id": "tt-008",
+  "world": "truth-trap",
+  "difficulty": 1,
+  "topic": "The Solar System",
+  "statements": [
+   {
+    "text": "Jupiter is the largest planet in the Solar System.",
+    "isTrue": true,
+    "note": "Jupiter has more than twice the mass of all the other planets combined.",
+    "source": {
+     "title": "Jupiter",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Jupiter"
+    }
+   },
+   {
+    "text": "Saturn's average density is lower than the density of water.",
+    "isTrue": true,
+    "note": "Saturn's average density is about 0.69 g/cm³, while water's is 1 g/cm³.",
+    "source": {
+     "title": "Saturn",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Saturn"
+    }
+   },
+   {
+    "text": "Pluto is officially classified as the ninth planet.",
+    "isTrue": false,
+    "note": "In 2006 the International Astronomical Union reclassified Pluto as a dwarf planet.",
+    "source": {
+     "title": "Pluto",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Pluto"
+    }
+   }
+  ],
+  "explanation": "Pluto has been classified as a dwarf planet since 2006.",
+  "review": {
+   "status": "approved",
+   "checkedOn": "2026-11-15"
+  },
+  "sources": []
+ },
+ {
+  "id": "tt-009",
+  "world": "truth-trap",
+  "difficulty": 1,
+  "topic": "Animal myths",
+  "statements": [
+   {
+    "text": "The blue whale is the largest animal known to have ever lived.",
+    "isTrue": true,
+    "note": "Blue whales can be around 30 m long, bigger than any known dinosaur.",
+    "source": {
+     "title": "Blue whale",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Blue_whale"
+    }
+   },
+   {
+    "text": "Goldfish have a memory span of only three seconds.",
+    "isTrue": false,
+    "note": "It's a myth. Experiments show goldfish can remember things for months.",
+    "source": {
+     "title": "Goldfish",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Goldfish"
+    }
+   },
+   {
+    "text": "Koalas have fingerprints that look very similar to human fingerprints.",
+    "isTrue": true,
+    "note": "Koala fingerprints are so similar to human ones that they are hard to tell apart, even under a microscope.",
+    "source": {
+     "title": "Koala",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Koala"
+    }
+   }
+  ],
+  "explanation": "Goldfish can remember things for months, not just seconds.",
+  "review": {
+   "status": "approved",
+   "checkedOn": "2026-11-15"
+  },
+  "sources": []
+ },
+ {
+  "id": "tt-010",
+  "world": "truth-trap",
+  "difficulty": 2,
+  "topic": "World facts",
+  "statements": [
+   {
+    "text": "Mandarin Chinese has more native speakers than any other language.",
+    "isTrue": true,
+    "note": "Mandarin has roughly 900 million or more native speakers.",
+    "source": {
+     "title": "List of languages by number of native speakers",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/List_of_languages_by_number_of_native_speakers"
+    }
+   },
+   {
+    "text": "The Olympic Games originated in ancient Greece.",
+    "isTrue": true,
+    "note": "The ancient Games were held at Olympia, traditionally starting in 776 BC.",
+    "source": {
+     "title": "Ancient Olympic Games",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Ancient_Olympic_Games"
+    }
+   },
+   {
+    "text": "Vatican City is larger in area than Monaco.",
+    "isTrue": false,
+    "note": "Vatican City covers about 0.49 km² and Monaco about 2 km². The Vatican is the smallest country in the world.",
+    "source": {
+     "title": "Vatican City",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Vatican_City"
+    }
+   }
+  ],
+  "explanation": "Vatican City is the world's smallest country, about a quarter of the size of Monaco.",
+  "review": {
+   "status": "approved",
+   "checkedOn": "2026-11-15"
+  },
+  "sources": []
+ },
+ {
+  "id": "tt-011",
+  "world": "truth-trap",
+  "difficulty": 2,
+  "topic": "Chemistry",
+  "statements": [
+   {
+    "text": "Diamonds are made of carbon.",
+    "isTrue": true,
+    "note": "Diamond is a form of pure carbon, with its atoms arranged in a crystal lattice.",
+    "source": {
+     "title": "Diamond",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Diamond"
+    }
+   },
+   {
+    "text": "Gold is the most abundant metal in Earth's crust.",
+    "isTrue": false,
+    "note": "Aluminium is the most abundant metal in the crust. Gold is extremely rare.",
+    "source": {
+     "title": "Abundance of elements in Earth's crust",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Abundance_of_elements_in_Earth%27s_crust"
+    }
+   },
+   {
+    "text": "Helium is lighter than air.",
+    "isTrue": true,
+    "note": "Helium is much less dense than air, which is why helium balloons float.",
+    "source": {
+     "title": "Helium",
+     "publisher": "Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Helium"
+    }
+   }
+  ],
+  "explanation": "Aluminium is the most abundant metal in Earth's crust. Gold is one of the rarest.",
+  "review": {
+   "status": "approved",
+   "checkedOn": "2026-11-15"
+  },
+  "sources": []
+ }
+]

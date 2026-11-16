@@ -1,0 +1,462 @@
+[
+ {
+  "id": "gt-001",
+  "world": "geotap",
+  "difficulty": 1,
+  "prompt": "Find Japan",
+  "countryId": "392",
+  "countryName": "Japan",
+  "explanation": "Japan is an island country in East Asia. Its capital is Tokyo.",
+  "sources": [
+   {
+    "title": "Japan",
+    "publisher": "Wikipedia",
+    "url": "https://en.wikipedia.org/wiki/Japan"
+   }
+  ],
+  "review": {
+   "status": "approved",
+   "checkedOn": "2026-11-15"
+  }
+ },
+ {
+  "id": "gt-002",
+  "world": "geotap",
+  "difficulty": 1,
+  "prompt": "Find Brazil",
+  "countryId": "076",
+  "countryName": "Brazil",
+  "explanation": "Brazil is the largest country in South America. Its capital is Brasília.",
+  "sources": [
+   {
+    "title": "Brazil",
+    "publisher": "Wikipedia",
+    "url": "https://en.wikipedia.org/wiki/Brazil"
+   }
+  ],
+  "review": {
+   "status": "approved",
+   "checkedOn": "2026-11-15"
+  }
+ },
+ {
+  "id": "gt-003",
+  "world": "geotap",
+  "difficulty": 1,
+  "prompt": "Find Egypt",
+  "countryId": "818",
+  "countryName": "Egypt",
+  "explanation": "Egypt is in the north-east corner of Africa, and the Nile runs through it. Its capital is Cairo.",
+  "sources": [
+   {
+    "title": "Egypt",
+    "publisher": "Wikipedia",
+    "url": "https://en.wikipedia.org/wiki/Egypt"
+   }
+  ],
+  "review": {
+   "status": "approved",
+   "checkedOn": "2026-11-15"
+  }
+ },
+ {
+  "id": "gt-004",
+  "world": "geotap",
+  "difficulty": 1,
+  "prompt": "Find India",
+  "countryId": "356",
+  "countryName": "India",
+  "explanation": "India is in South Asia, with the Himalayas along its northern border. Its capital is New Delhi.",
+  "sources": [
+   {
+    "title": "India",
+    "publisher": "Wikipedia",
+    "url": "https://en.wikipedia.org/wiki/India"
+   }
+  ],
+  "review": {
+   "status": "approved",
+   "checkedOn": "2026-11-15"
+  }
+ },
+ {
+  "id": "gt-005",
+  "world": "geotap",
+  "difficulty": 1,
+  "prompt": "Find Mexico",
+  "countryId": "484",
+  "countryName": "Mexico",
+  "explanation": "Mexico lies between the United States and Central America. Its capital is Mexico City.",
+  "sources": [
+   {
+    "title": "Mexico",
+    "publisher": "Wikipedia",
+    "url": "https://en.wikipedia.org/wiki/Mexico"
+   }
+  ],
+  "review": {
+   "status": "approved",
+   "checkedOn": "2026-11-15"
+  }
+ },
+ {
+  "id": "gt-006",
+  "world": "geotap",
+  "difficulty": 1,
+  "prompt": "Find Italy",
+  "countryId": "380",
+  "countryName": "Italy",
+  "explanation": "Italy is the boot-shaped peninsula in southern Europe. Its capital is Rome.",
+  "sources": [
+   {
+    "title": "Italy",
+    "publisher": "Wikipedia",
+    "url": "https://en.wikipedia.org/wiki/Italy"
+   }
+  ],
+  "review": {
+   "status": "approved",
+   "checkedOn": "2026-11-15"
+  }
+ },
+ {
+  "id": "gt-007",
+  "world": "geotap",
+  "difficulty": 1,
+  "prompt": "Find Indonesia",
+  "countryId": "360",
+  "countryName": "Indonesia",
+  "explanation": "Indonesia is the world's largest archipelagic country, with thousands of islands between the Indian and Pacific Oceans.",
+  "sources": [
+   {
+    "title": "Indonesia",
+    "publisher": "Wikipedia",
+    "url": "https://en.wikipedia.org/wiki/Indonesia"
+   }
+  ],
+  "review": {
+   "status": "approved",
+   "checkedOn": "2026-11-15"
+  }
+ },
+ {
+  "id": "gt-008",
+  "world": "geotap",
+  "difficulty": 1,
+  "prompt": "Find South Africa",
+  "countryId": "710",
+  "countryName": "South Africa",
+  "explanation": "South Africa is at the southern tip of Africa. It has three capital cities: Pretoria, Cape Town and Bloemfontein.",
+  "sources": [
+   {
+    "title": "South Africa",
+    "publisher": "Wikipedia",
+    "url": "https://en.wikipedia.org/wiki/South_Africa"
+   }
+  ],
+  "review": {
+   "status": "approved",
+   "checkedOn": "2026-11-15"
+  }
+ },
+ {
+  "id": "gt-009",
+  "world": "geotap",
+  "difficulty": 1,
+  "prompt": "Find Madagascar",
+  "countryId": "450",
+  "countryName": "Madagascar",
+  "explanation": "Madagascar is a large island nation off the south-east coast of Africa. Its capital is Antananarivo.",
+  "sources": [
+   {
+    "title": "Madagascar",
+    "publisher": "Wikipedia",
+    "url": "https://en.wikipedia.org/wiki/Madagascar"
+   }
+  ],
+  "review": {
+   "status": "approved",
+   "checkedOn": "2026-11-15"
+  }
+ },
+ {
+  "id": "gt-010",
+  "world": "geotap",
+  "difficulty": 1,
+  "prompt": "Find Chile",
+  "countryId": "152",
+  "countryName": "Chile",
+  "explanation": "Chile is a long, narrow country along the western edge of South America. Its capital is Santiago.",
+  "sources": [
+   {
+    "title": "Chile",
+    "publisher": "Wikipedia",
+    "url": "https://en.wikipedia.org/wiki/Chile"
+   }
+  ],
+  "review": {
+   "status": "approved",
+   "checkedOn": "2026-11-15"
+  }
+ },
+ {
+  "id": "gt-011",
+  "world": "geotap",
+  "difficulty": 1,
+  "prompt": "Find New Zealand",
+  "countryId": "554",
+  "countryName": "New Zealand",
+  "explanation": "New Zealand is in the south-west Pacific, south-east of Australia. Its capital is Wellington.",
+  "sources": [
+   {
+    "title": "New Zealand",
+    "publisher": "Wikipedia",
+    "url": "https://en.wikipedia.org/wiki/New_Zealand"
+   }
+  ],
+  "review": {
+   "status": "approved",
+   "checkedOn": "2026-11-15"
+  }
+ },
+ {
+  "id": "gt-012",
+  "world": "geotap",
+  "difficulty": 1,
+  "prompt": "Find Spain",
+  "countryId": "724",
+  "countryName": "Spain",
+  "explanation": "Spain covers most of the Iberian Peninsula in south-western Europe. Its capital is Madrid.",
+  "sources": [
+   {
+    "title": "Spain",
+    "publisher": "Wikipedia",
+    "url": "https://en.wikipedia.org/wiki/Spain"
+   }
+  ],
+  "review": {
+   "status": "approved",
+   "checkedOn": "2026-11-15"
+  }
+ },
+ {
+  "id": "gt-013",
+  "world": "geotap",
+  "difficulty": 1,
+  "prompt": "Find Ukraine",
+  "countryId": "804",
+  "countryName": "Ukraine",
+  "explanation": "Ukraine is in Eastern Europe, on the northern coast of the Black Sea. Its capital is Kyiv.",
+  "sources": [
+   {
+    "title": "Ukraine",
+    "publisher": "Wikipedia",
+    "url": "https://en.wikipedia.org/wiki/Ukraine"
+   }
+  ],
+  "review": {
+   "status": "approved",
+   "checkedOn": "2026-11-15"
+  }
+ },
+ {
+  "id": "gt-014",
+  "world": "geotap",
+  "difficulty": 2,
+  "prompt": "Find the country whose capital is Nairobi",
+  "countryId": "404",
+  "countryName": "Kenya",
+  "explanation": "Nairobi is the capital of Kenya. Kenya is in East Africa, on the Indian Ocean coast.",
+  "sources": [
+   {
+    "title": "Kenya",
+    "publisher": "Wikipedia",
+    "url": "https://en.wikipedia.org/wiki/Kenya"
+   }
+  ],
+  "review": {
+   "status": "approved",
+   "checkedOn": "2026-11-15"
+  }
+ },
+ {
+  "id": "gt-015",
+  "world": "geotap",
+  "difficulty": 2,
+  "prompt": "Find the country whose capital is Lima",
+  "countryId": "604",
+  "countryName": "Peru",
+  "explanation": "Lima is the capital of Peru. Peru is on the Pacific coast of South America.",
+  "sources": [
+   {
+    "title": "Peru",
+    "publisher": "Wikipedia",
+    "url": "https://en.wikipedia.org/wiki/Peru"
+   }
+  ],
+  "review": {
+   "status": "approved",
+   "checkedOn": "2026-11-15"
+  }
+ },
+ {
+  "id": "gt-016",
+  "world": "geotap",
+  "difficulty": 2,
+  "prompt": "Find the country whose capital is Astana",
+  "countryId": "398",
+  "countryName": "Kazakhstan",
+  "explanation": "Astana is the capital of Kazakhstan. Kazakhstan, in Central Asia, is the world's largest landlocked country.",
+  "sources": [
+   {
+    "title": "Kazakhstan",
+    "publisher": "Wikipedia",
+    "url": "https://en.wikipedia.org/wiki/Kazakhstan"
+   }
+  ],
+  "review": {
+   "status": "approved",
+   "checkedOn": "2026-11-15"
+  }
+ },
+ {
+  "id": "gt-017",
+  "world": "geotap",
+  "difficulty": 2,
+  "prompt": "Find the country whose capital is Ulaanbaatar",
+  "countryId": "496",
+  "countryName": "Mongolia",
+  "explanation": "Ulaanbaatar is the capital of Mongolia. Mongolia is landlocked between Russia and China.",
+  "sources": [
+   {
+    "title": "Mongolia",
+    "publisher": "Wikipedia",
+    "url": "https://en.wikipedia.org/wiki/Mongolia"
+   }
+  ],
+  "review": {
+   "status": "approved",
+   "checkedOn": "2026-11-15"
+  }
+ },
+ {
+  "id": "gt-018",
+  "world": "geotap",
+  "difficulty": 2,
+  "prompt": "Find the country whose capital is Abuja",
+  "countryId": "566",
+  "countryName": "Nigeria",
+  "explanation": "Abuja is the capital of Nigeria. Nigeria is in West Africa, on the Gulf of Guinea.",
+  "sources": [
+   {
+    "title": "Nigeria",
+    "publisher": "Wikipedia",
+    "url": "https://en.wikipedia.org/wiki/Nigeria"
+   }
+  ],
+  "review": {
+   "status": "approved",
+   "checkedOn": "2026-11-15"
+  }
+ },
+ {
+  "id": "gt-019",
+  "world": "geotap",
+  "difficulty": 2,
+  "prompt": "Find the country whose capital is Canberra",
+  "countryId": "036",
+  "countryName": "Australia",
+  "explanation": "Canberra is the capital of Australia. Canberra, not Sydney, is Australia's capital.",
+  "sources": [
+   {
+    "title": "Australia",
+    "publisher": "Wikipedia",
+    "url": "https://en.wikipedia.org/wiki/Australia"
+   }
+  ],
+  "review": {
+   "status": "approved",
+   "checkedOn": "2026-11-15"
+  }
+ },
+ {
+  "id": "gt-020",
+  "world": "geotap",
+  "difficulty": 2,
+  "prompt": "Find the country whose capital is Ottawa",
+  "countryId": "124",
+  "countryName": "Canada",
+  "explanation": "Ottawa is the capital of Canada. Ottawa, in the province of Ontario, is Canada's capital.",
+  "sources": [
+   {
+    "title": "Canada",
+    "publisher": "Wikipedia",
+    "url": "https://en.wikipedia.org/wiki/Canada"
+   }
+  ],
+  "review": {
+   "status": "approved",
+   "checkedOn": "2026-11-15"
+  }
+ },
+ {
+  "id": "gt-021",
+  "world": "geotap",
+  "difficulty": 2,
+  "prompt": "Find the country whose capital is Bangkok",
+  "countryId": "764",
+  "countryName": "Thailand",
+  "explanation": "Bangkok is the capital of Thailand. Thailand is in mainland Southeast Asia.",
+  "sources": [
+   {
+    "title": "Thailand",
+    "publisher": "Wikipedia",
+    "url": "https://en.wikipedia.org/wiki/Thailand"
+   }
+  ],
+  "review": {
+   "status": "approved",
+   "checkedOn": "2026-11-15"
+  }
+ },
+ {
+  "id": "gt-022",
+  "world": "geotap",
+  "difficulty": 2,
+  "prompt": "Find the country whose capital is Riyadh",
+  "countryId": "682",
+  "countryName": "Saudi Arabia",
+  "explanation": "Riyadh is the capital of Saudi Arabia. Saudi Arabia covers most of the Arabian Peninsula.",
+  "sources": [
+   {
+    "title": "Saudi Arabia",
+    "publisher": "Wikipedia",
+    "url": "https://en.wikipedia.org/wiki/Saudi_Arabia"
+   }
+  ],
+  "review": {
+   "status": "approved",
+   "checkedOn": "2026-11-15"
+  }
+ },
+ {
+  "id": "gt-023",
+  "world": "geotap",
+  "difficulty": 2,
+  "prompt": "Find the country whose capital is Buenos Aires",
+  "countryId": "032",
+  "countryName": "Argentina",
+  "explanation": "Buenos Aires is the capital of Argentina. Argentina is in southern South America, east of the Andes.",
+  "sources": [
+   {
+    "title": "Argentina",
+    "publisher": "Wikipedia",
+    "url": "https://en.wikipedia.org/wiki/Argentina"
+   }
+  ],
+  "review": {
+   "status": "approved",
+   "checkedOn": "2026-11-15"
+  }
+ }
+]

@@ -1,0 +1,265 @@
+[
+ {
+  "id": "fb-001",
+  "prompt": "Which element has the chemical symbol W?",
+  "options": [
+   "Tungsten",
+   "Vanadium",
+   "Xenon",
+   "Titanium"
+  ],
+  "answer": 0,
+  "explanation": "W comes from wolfram, an older name for tungsten. Vanadium is V, xenon is Xe and titanium is Ti.",
+  "sources": [
+   {
+    "title": "Tungsten",
+    "publisher": "Wikipedia",
+    "url": "https://en.wikipedia.org/wiki/Tungsten"
+   }
+  ],
+  "world": "final-bet",
+  "difficulty": 3,
+  "review": {
+   "status": "approved",
+   "checkedOn": "2026-11-15"
+  }
+ },
+ {
+  "id": "fb-002",
+  "prompt": "What is the smallest prime number greater than 100?",
+  "options": [
+   "101",
+   "103",
+   "107",
+   "111"
+  ],
+  "answer": 0,
+  "explanation": "101 has no divisors other than 1 and itself, so it's prime. (111 = 3 × 37 is not prime.)",
+  "sources": [],
+  "world": "final-bet",
+  "difficulty": 3,
+  "review": {
+   "status": "approved",
+   "checkedOn": "2026-11-15"
+  }
+ },
+ {
+  "id": "fb-003",
+  "prompt": "Which planet rotates almost on its side, with an axial tilt of about 98°?",
+  "options": [
+   "Neptune",
+   "Uranus",
+   "Saturn",
+   "Venus"
+  ],
+  "answer": 1,
+  "explanation": "Uranus is tilted about 98°, so its poles face the Sun in turn as it orbits.",
+  "sources": [
+   {
+    "title": "Uranus",
+    "publisher": "Wikipedia",
+    "url": "https://en.wikipedia.org/wiki/Uranus"
+   }
+  ],
+  "world": "final-bet",
+  "difficulty": 3,
+  "review": {
+   "status": "approved",
+   "checkedOn": "2026-11-15"
+  }
+ },
+ {
+  "id": "fb-004",
+  "prompt": "In which year did the Berlin Wall fall?",
+  "options": [
+   "1985",
+   "1987",
+   "1989",
+   "1991"
+  ],
+  "answer": 2,
+  "explanation": "The border crossings in the Berlin Wall opened on 9 November 1989.",
+  "sources": [
+   {
+    "title": "Fall of the Berlin Wall",
+    "publisher": "Wikipedia",
+    "url": "https://en.wikipedia.org/wiki/Fall_of_the_Berlin_Wall"
+   }
+  ],
+  "world": "final-bet",
+  "difficulty": 3,
+  "review": {
+   "status": "approved",
+   "checkedOn": "2026-11-15"
+  }
+ },
+ {
+  "id": "fb-005",
+  "prompt": "Which mineral defines hardness 1, the softest point, on the Mohs scale?",
+  "options": [
+   "Gypsum",
+   "Calcite",
+   "Talc",
+   "Quartz"
+  ],
+  "answer": 2,
+  "explanation": "The Mohs scale runs from talc (1) to diamond (10). Gypsum is 2, calcite is 3 and quartz is 7.",
+  "sources": [
+   {
+    "title": "Mohs scale",
+    "publisher": "Wikipedia",
+    "url": "https://en.wikipedia.org/wiki/Mohs_scale"
+   }
+  ],
+  "world": "final-bet",
+  "difficulty": 3,
+  "review": {
+   "status": "approved",
+   "checkedOn": "2026-11-15"
+  }
+ },
+ {
+  "id": "fb-006",
+  "prompt": "What is the sum of the interior angles of a hexagon?",
+  "options": [
+   "540°",
+   "720°",
+   "900°",
+   "1080°"
+  ],
+  "answer": 1,
+  "explanation": "For a polygon with n sides, the interior angles add up to (n − 2) × 180°. For a hexagon that's 4 × 180° = 720°.",
+  "sources": [],
+  "world": "final-bet",
+  "difficulty": 3,
+  "review": {
+   "status": "approved",
+   "checkedOn": "2026-11-15"
+  }
+ },
+ {
+  "id": "fb-007",
+  "prompt": "Who formulated the three laws of planetary motion?",
+  "options": [
+   "Galileo Galilei",
+   "Nicolaus Copernicus",
+   "Tycho Brahe",
+   "Johannes Kepler"
+  ],
+  "answer": 3,
+  "explanation": "Johannes Kepler published his laws between 1609 and 1619, using Tycho Brahe's observations.",
+  "sources": [
+   {
+    "title": "Kepler's laws of planetary motion",
+    "publisher": "Wikipedia",
+    "url": "https://en.wikipedia.org/wiki/Kepler%27s_laws_of_planetary_motion"
+   }
+  ],
+  "world": "final-bet",
+  "difficulty": 3,
+  "review": {
+   "status": "approved",
+   "checkedOn": "2026-11-15"
+  }
+ },
+ {
+  "id": "fb-008",
+  "prompt": "What is the capital city of Australia?",
+  "options": [
+   "Sydney",
+   "Melbourne",
+   "Canberra",
+   "Perth"
+  ],
+  "answer": 2,
+  "explanation": "Canberra was purpose-built as the capital, as a compromise between Sydney and Melbourne.",
+  "sources": [
+   {
+    "title": "Canberra",
+    "publisher": "Wikipedia",
+    "url": "https://en.wikipedia.org/wiki/Canberra"
+   }
+  ],
+  "world": "final-bet",
+  "difficulty": 3,
+  "review": {
+   "status": "approved",
+   "checkedOn": "2026-11-15"
+  }
+ },
+ {
+  "id": "fb-009",
+  "prompt": "What is the largest organ of the human body?",
+  "options": [
+   "Liver",
+   "Skin",
+   "Lungs",
+   "Brain"
+  ],
+  "answer": 1,
+  "explanation": "The skin is the body's largest organ. The liver is the largest internal organ.",
+  "sources": [
+   {
+    "title": "Skin",
+    "publisher": "Wikipedia",
+    "url": "https://en.wikipedia.org/wiki/Skin"
+   }
+  ],
+  "world": "final-bet",
+  "difficulty": 3,
+  "review": {
+   "status": "approved",
+   "checkedOn": "2026-11-15"
+  }
+ },
+ {
+  "id": "fb-010",
+  "prompt": "Which gas makes up the largest share of Earth's atmosphere?",
+  "options": [
+   "Oxygen",
+   "Carbon dioxide",
+   "Nitrogen",
+   "Argon"
+  ],
+  "answer": 2,
+  "explanation": "Dry air is about 78% nitrogen, 21% oxygen and 0.9% argon. Carbon dioxide is only about 0.04%.",
+  "sources": [
+   {
+    "title": "Atmosphere of Earth",
+    "publisher": "Wikipedia",
+    "url": "https://en.wikipedia.org/wiki/Atmosphere_of_Earth"
+   }
+  ],
+  "world": "final-bet",
+  "difficulty": 3,
+  "review": {
+   "status": "approved",
+   "checkedOn": "2026-11-15"
+  }
+ },
+ {
+  "id": "fb-011",
+  "prompt": "How many bits are in one byte?",
+  "options": [
+   "4",
+   "8",
+   "10",
+   "16"
+  ],
+  "answer": 1,
+  "explanation": "In modern computing, one byte is 8 bits.",
+  "sources": [
+   {
+    "title": "Byte",
+    "publisher": "Wikipedia",
+    "url": "https://en.wikipedia.org/wiki/Byte"
+   }
+  ],
+  "world": "final-bet",
+  "difficulty": 3,
+  "review": {
+   "status": "approved",
+   "checkedOn": "2026-11-15"
+  }
+ }
+]
