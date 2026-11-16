@@ -129,7 +129,7 @@ export async function playThrough(page: Page, answer: (i: number) => Promise<voi
     if (i < 4) {
       await page.getByRole("button", { name: `Travel to ${WORLD_ORDER[i + 1]}` }).click();
       const skip = page.getByRole("button", { name: /Skip/ });
-      if (await skip.isVisible().catch(() => false)) await skip.click().catch(() => {});
+      if (await skip.isVisible().catch(() => false)) await skip.click({ timeout: 1500 }).catch(() => {});
     } else {
       await page.getByRole("button", { name: "See results" }).click();
     }

@@ -29,7 +29,7 @@ async function playSolo(page: import("@playwright/test").Page, plans: Plan[], wa
       await page.getByRole("button", { name: `Travel to ${WORLD_NAMES[i + 1]}` }).click();
       // Skip the travel animation to keep the test brisk (also exercises Skip).
       const skip = page.getByRole("button", { name: /Skip/ });
-      if (await skip.isVisible().catch(() => false)) await skip.click().catch(() => {});
+      if (await skip.isVisible().catch(() => false)) await skip.click({ timeout: 1500 }).catch(() => {});
     } else {
       await page.getByRole("button", { name: "See results" }).click();
     }

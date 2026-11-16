@@ -16,7 +16,7 @@ const HOW: Record<WorldDefinition["id"], string> = {
 };
 
 /** Planet arrival card. The clock only starts when the player presses Start. */
-export function WorldIntro({ world, relaxed, onBegin }: { world: WorldDefinition; relaxed: boolean; onBegin: () => void }) {
+export function WorldIntro({ world, relaxed, onBegin, waitingLabel }: { world: WorldDefinition; relaxed: boolean; onBegin?: () => void; waitingLabel?: React.ReactNode }) {
   return (
     <div className="grid items-center gap-6 py-2 sm:grid-cols-[auto_1fr] sm:gap-10 sm:py-6">
       <motion.div
@@ -42,9 +42,13 @@ export function WorldIntro({ world, relaxed, onBegin }: { world: WorldDefinition
           {relaxed ? "Relaxed mode: no timer" : `${world.timeLimitMs / 1000} seconds. Faster correct answers earn more points.`}
         </motion.p>
         <motion.div variants={riseIn} className="mt-6">
-          <Button size="lg" autoFocus onClick={onBegin} className="w-full sm:w-auto" icon={<Play className="h-5 w-5" aria-hidden="true" />}>
-            {world.id === "final-bet" ? "Place your bet" : `Start ${world.name}`}
-          </Button>
+          {onBegin ? (
+            <Button size="lg" autoFocus onClick={onBegin} className="w-full sm:w-auto" icon={<Play className="h-5 w-5" aria-hidden="true" />}>
+              {world.id === "final-bet" ? "Place your bet" : `Start ${world.name}`}
+            </Button>
+          ) : (
+            waitingLabel
+          )}
         </motion.div>
       </motion.div>
     </div>

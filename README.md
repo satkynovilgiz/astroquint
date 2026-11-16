@@ -21,10 +21,9 @@ Modes: **Solo Orbit** (no account), **Daily Orbit** (the same questions for ever
 | 1 | Foundation, design system, motion system, homepage, mode select | ✅ Done |
 | 2 | Full five-world solo game, question bank, planet travel, results | ✅ Done |
 | 3 | Server-side scoring, Daily Orbit, leaderboards, profiles, achievements, share cards | ✅ Done (memory store; Supabase adapter ready) |
-| 4 | Real-time Party Mode | Needs Supabase |
+| 4 | Real-time Party Mode | ✅ Done (SSE locally; Supabase Realtime adapter ready) |
 | 5 | Polish, audio, accessibility review, production readiness | — |
 
-Pages for features that aren't built yet (`/party`) say so plainly and name the milestone that delivers them. Nothing on them is simulated.
 
 ## Question bank
 
@@ -44,6 +43,15 @@ Questions live in `content/questions/*.json`, one file per world. There are 73 a
 - **No double scoring:** concurrent requests are serialised with compare-and-swap versions. Each round's answer is stored once in an audit table keyed by (match, round, player).
 - **Daily questions:** they're chosen deterministically per UTC day and frozen in `daily_challenges` on first use. Everyone gets the same questions in the same order. The ranked match id is deterministic per player and day, so there's exactly one ranked attempt (resumable). Practice runs are separate and never ranked.
 - **No leaks:** solutions are never sent before a round is locked. Public result pages (`/results/[id]`) show only scores and outcomes, not question content, so sharing can't spoil the day's Daily Orbit.
+
+## Party Mode
+
+- **Rooms:** 2–8 players. Codes are 6 characters from an alphabet without look-alikes (no I, O, 0 or 1), generated with a cryptographic RNG, and rooms expire after 2 hours of inactivity. Players join by link or code. The host controls start, skip, kick and rematch, and everyone else marks themselves ready.
+- **Server-authoritative:** the room is a pure, time-driven state machine (`src/features/party/engine.ts`). Every phase boundary comes from the schedule, not from whoever polls first, and any request advances the room identically. So no background timers are needed, even on serverless. Answers are scored with server timestamps and stored once per player per round. Writes use compare-and-swap with jittered retries, sized so a burst of 8 simultaneous answers always lands.
+- **Live updates:** server-sent events (`/api/party/[code]/events`) locally and on single-server hosting. When Supabase is configured, the server publishes Realtime *broadcast* messages and clients subscribe with the anon key. Messages only say "the room changed", so clients always re-fetch the authoritative state. Clients also poll every 2.5 s, which doubles as presence and covers missed pushes.
+- **Presence and reconnecting:** a player counts as offline after 15 s without contact. Rounds don't wait for offline players, and if the host is gone for 30 s the longest-standing connected player becomes host. Reloading or reconnecting keeps your seat, because the seat is tied to the signed session cookie.
+- **Early phases:** a round reveals as soon as everyone connected has answered, and the final question starts as soon as everyone has locked a wager.
+- **Limitations:** SSE plus the memory store need a single server process. For multi-instance production, configure Supabase (database and Realtime). Party games aren't added to profiles or leaderboards.
 
 ## Tech stack
 
