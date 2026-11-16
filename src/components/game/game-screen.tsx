@@ -31,6 +31,7 @@ export interface GameScreenProps {
   view: GameView;
   actions: GameActions;
   resultsTitle: string;
+  resultsSubtitle?: string;
   shareUrl?: string;
   onPlayAgain?: () => void;
   playAgainLabel?: string;
@@ -39,7 +40,7 @@ export interface GameScreenProps {
   badge?: ReactNode;
 }
 
-export function GameScreen({ view, actions, resultsTitle, shareUrl, onPlayAgain, playAgainLabel, resultsExtra, badge }: GameScreenProps) {
+export function GameScreen({ view, actions, resultsTitle, resultsSubtitle, shareUrl, onPlayAgain, playAgainLabel, resultsExtra, badge }: GameScreenProps) {
   const stageRef = useRef<HTMLDivElement>(null);
   const world = getWorld(view.worldId);
   const upcoming = nextWorld(view.worldId);
@@ -144,7 +145,7 @@ export function GameScreen({ view, actions, resultsTitle, shareUrl, onPlayAgain,
 
             {view.phase === "complete" && view.summary && (
               <div className="pt-4">
-                <Results view={view} title={resultsTitle} shareUrl={shareUrl} onPlayAgain={onPlayAgain} playAgainLabel={playAgainLabel} extra={resultsExtra} />
+                <Results view={view} title={resultsTitle} subtitle={resultsSubtitle} shareUrl={shareUrl} onPlayAgain={onPlayAgain} playAgainLabel={playAgainLabel} extra={resultsExtra} />
               </div>
             )}
           </motion.div>

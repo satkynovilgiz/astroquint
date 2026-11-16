@@ -185,6 +185,7 @@ export function WorldMap({ selected, onSelect, locked, correctId, accent }: Worl
   };
 
   return (
+    <div>
     <div className="relative overflow-hidden rounded-2xl border border-line bg-[#0D1A2E]">
       <svg
         ref={svgRef}
@@ -240,26 +241,30 @@ export function WorldMap({ selected, onSelect, locked, correctId, accent }: Worl
         </g>
       </svg>
 
-      <div className="absolute right-2 top-2 flex flex-col gap-1.5">
-        {[
-          { label: "Zoom in", icon: Plus, fn: () => setView((v) => zoomAt(v, 1.6, W / 2, H / 2)) },
-          { label: "Zoom out", icon: Minus, fn: () => setView((v) => zoomAt(v, 1 / 1.6, W / 2, H / 2)) },
-          { label: "Reset view", icon: RotateCcw, fn: () => setView({ k: 1, x: 0, y: 0 }) },
-        ].map(({ label, icon: Icon, fn }) => (
-          <button
-            key={label}
-            type="button"
-            onClick={fn}
-            aria-label={label}
-            className="grid h-10 w-10 place-items-center rounded-xl border border-line-strong bg-space/80 text-fg backdrop-blur transition-colors hover:bg-surface-2"
-          >
-            <Icon className="h-4 w-4" aria-hidden="true" />
-          </button>
-        ))}
-      </div>
       <p className="sr-only" aria-live="polite">
         {announce}
       </p>
+    </div>
+    {/* Controls sit below the map so they never cover countries on small screens. */}
+    <div className="mt-2 flex items-center gap-1.5">
+      {[
+        { label: "Zoom in", icon: Plus, fn: () => setView((v) => zoomAt(v, 1.6, W / 2, H / 2)) },
+        { label: "Zoom out", icon: Minus, fn: () => setView((v) => zoomAt(v, 1 / 1.6, W / 2, H / 2)) },
+        { label: "Reset view", icon: RotateCcw, fn: () => setView({ k: 1, x: 0, y: 0 }) },
+      ].map(({ label, icon: Icon, fn }) => (
+        <button
+          key={label}
+          type="button"
+          onClick={fn}
+          aria-label={label}
+          className="grid h-11 w-11 place-items-center rounded-xl border border-line-strong bg-surface-2/70 text-fg transition-colors hover:bg-surface-2"
+        >
+          <Icon className="h-4 w-4" aria-hidden="true" />
+        </button>
+      ))}
+      <span className="ml-2 hidden text-xs text-fg-muted sm:inline">Scroll or pinch to zoom · drag to pan</span>
+      <span className="ml-2 text-xs text-fg-muted sm:hidden">Pinch to zoom · drag to pan</span>
+    </div>
     </div>
   );
 }

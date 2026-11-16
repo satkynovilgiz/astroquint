@@ -2,7 +2,8 @@
 
 import { animate, motion, useMotionValue, useTransform } from "motion/react";
 import { useEffect, useState } from "react";
-import { Check, ChevronDown, Lock, RotateCcw, Share2, X, LayoutGrid } from "lucide-react";
+import { Check, ChevronDown, Download, Lock, RotateCcw, Share2, X, LayoutGrid } from "lucide-react";
+import { renderShareCard, shareOrDownloadCard } from "@/features/share/share-card";
 import { WORLDS } from "@/features/worlds/worlds";
 import { ACHIEVEMENTS } from "@/features/achievements/achievements";
 import { shareText, type GameSummary } from "@/features/gameplay/summary";
@@ -47,6 +48,7 @@ function Sparkles() {
 export function Results({
   view,
   title,
+  subtitle,
   shareUrl,
   onPlayAgain,
   playAgainLabel = "Play again",
@@ -54,6 +56,7 @@ export function Results({
 }: {
   view: GameView;
   title: string;
+  subtitle?: string;
   shareUrl?: string;
   onPlayAgain?: () => void;
   playAgainLabel?: string;
@@ -62,6 +65,19 @@ export function Results({
   const summary = view.summary as GameSummary;
   const [shareState, setShareState] = useState<"idle" | "copied" | "error">("idle");
   const [openReview, setOpenReview] = useState<number | null>(null);
+  const [imageState, setImageState] = useState<"idle" | "working" | "done" | "error">("idle");
+
+  const saveImage = async () => {
+    setImageState("working");
+    try {
+      const blob = await renderShareCard(summary, title, subtitle);
+      await shareOrDownloadCard(blob, "astroquint-result.png");
+      setImageState("done");
+    } catch (err) {
+      setImageState((err as DOMException)?.name === "AbortError" ? "idle" : "error");
+    }
+    setTimeout(() => setImageState("idle"), 2500);
+  };
 
   useEffect(() => {
     const t = setTimeout(() => playSound(summary.correct >= 3 ? "reward" : "select"), 400);
@@ -219,7 +235,7 @@ export function Results({
 
       {extra}
 
-      <div className="flex flex-col gap-3 sm:flex-row">
+      <div className="flex flex-col flex-wrap gap-3 sm:flex-row">
         {onPlayAgain && (
           <Button size="lg" onClick={onPlayAgain} autoFocus icon={<RotateCcw className="h-5 w-5" aria-hidden="true" />}>
             {playAgainLabel}
@@ -227,6 +243,9 @@ export function Results({
         )}
         <Button size="lg" variant="secondary" onClick={share} icon={<Share2 className="h-5 w-5" aria-hidden="true" />}>
           {shareState === "copied" ? "Copied to clipboard!" : shareState === "error" ? "Couldn't copy" : "Share result"}
+        </Button>
+        <Button size="lg" variant="secondary" onClick={saveImage} disabled={imageState === "working"} icon={<Download className="h-5 w-5" aria-hidden="true" />}>
+          {imageState === "working" ? "Rendering…" : imageState === "done" ? "Image ready!" : imageState === "error" ? "Couldn't create image" : "Save image"}
         </Button>
         <ButtonLink href="/play" transitionTypes={["nav-back"]} size="lg" variant="ghost" icon={<LayoutGrid className="h-5 w-5" aria-hidden="true" />}>
           Other modes

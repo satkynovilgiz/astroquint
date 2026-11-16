@@ -17,6 +17,8 @@ export default defineConfig({
     command: `npx next start -p ${PORT}`,
     url: `http://localhost:${PORT}`,
     reuseExistingServer: !process.env.CI,
+    // Test-only secret so the production server can sign guest sessions.
+    env: { SESSION_SECRET: process.env.SESSION_SECRET ?? "e2e-only-secret-not-for-production-use-0123456789" },
     timeout: 60_000,
   },
 });

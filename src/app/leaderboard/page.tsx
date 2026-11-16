@@ -1,23 +1,19 @@
 import type { Metadata } from "next";
 import { PageTransition } from "@/components/layout/page-transition";
-import { OrbitStatus } from "@/components/layout/orbit-status";
-import { getWorld } from "@/features/worlds/worlds";
+import { PageHeader } from "@/components/layout/page-header";
+import { LeaderboardView } from "@/components/leaderboard/leaderboard-view";
 
-export const metadata: Metadata = { title: "Leaderboard" };
+export const metadata: Metadata = { title: "Leaderboard", description: "Daily Orbit rankings, verified on the server." };
 
 export default function LeaderboardPage() {
-  const w = getWorld("truth-trap");
   return (
     <PageTransition>
-      <OrbitStatus
-        kicker="Leaderboard"
-        title="No rankings yet, and none made up"
-        milestone="Milestone 3"
-        description="Rankings will only show real, server-verified results. Until scoring is stored on the server, there's nothing honest to rank."
-        upcoming={["Daily Orbit rankings by UTC day", "Your personal best and recent placements"]}
-        palette={w.palette}
-        surface={w.surface}
-      />
+      <div className="mx-auto max-w-2xl px-4 pt-4 sm:px-6 sm:pt-8">
+        <PageHeader kicker="Rankings" title="Daily leaderboard">
+          The day&apos;s best ranked Daily Orbit scores. Step back through previous days with the arrows.
+        </PageHeader>
+        <LeaderboardView />
+      </div>
     </PageTransition>
   );
 }

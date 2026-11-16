@@ -87,3 +87,51 @@ export function question(id: string): Question {
   if (!q) throw new Error(`unknown question ${id}`);
   return q;
 }
+
+const WORLD_ORDER = ["Pattern Break", "Truth Trap", "Timeline", "GeoTap", "Final Bet"] as const;
+
+/** Answer whatever round is on screen without knowing the solution (server-scored modes). */
+export async function answerBlind(page: Page, worldIndex: number) {
+  switch (worldIndex) {
+    case 0:
+    case 4:
+      await page.getByRole("list", { name: "Answer options" }).getByRole("button").first().click();
+      return;
+    case 1:
+      await page.getByRole("button", { name: /^1\b|.+/ }).filter({ has: page.locator("span", { hasText: /^1$/ }) }).first().click();
+      return;
+    case 2:
+      await page.getByRole("button", { name: "Lock in order" }).click();
+      return;
+    case 3:
+      await page.locator("[data-country]").first().waitFor();
+      await clickCountry(page, "076");
+      await page.getByRole("button", { name: "Lock in this country" }).click();
+      return;
+  }
+}
+
+/** Drive a full five-world game through intros, wager, answers and travel. */
+export async function playThrough(page: Page, answer: (i: number) => Promise<void>) {
+  for (let i = 0; i < 5; i++) {
+    const name = WORLD_ORDER[i];
+    await expect(page.getByRole("heading", { name, level: 2 })).toBeVisible({ timeout: 10_000 });
+    if (i === 4) {
+      await page.getByRole("button", { name: "Place your bet" }).click();
+      await page.getByRole("button", { name: "Nothing", exact: true }).click();
+      await page.getByRole("button", { name: /^Bet \d+ points$/ }).click();
+      await page.getByRole("button", { name: /Lock wager/ }).click();
+    } else {
+      await page.getByRole("button", { name: `Start ${name}` }).click();
+    }
+    await answer(i);
+    await expect(page.getByRole("heading", { level: 3, name: /Correct!|Not quite|Time's up/ })).toBeVisible({ timeout: 10_000 });
+    if (i < 4) {
+      await page.getByRole("button", { name: `Travel to ${WORLD_ORDER[i + 1]}` }).click();
+      const skip = page.getByRole("button", { name: /Skip/ });
+      if (await skip.isVisible().catch(() => false)) await skip.click().catch(() => {});
+    } else {
+      await page.getByRole("button", { name: "See results" }).click();
+    }
+  }
+}

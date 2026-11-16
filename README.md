@@ -20,11 +20,11 @@ Modes: **Solo Orbit** (no account), **Daily Orbit** (the same questions for ever
 |-----------|-------|-------|
 | 1 | Foundation, design system, motion system, homepage, mode select | ✅ Done |
 | 2 | Full five-world solo game, question bank, planet travel, results | ✅ Done |
-| 3 | Supabase, server-side scoring, Daily Orbit, leaderboards, profiles | Needs Supabase credentials |
+| 3 | Server-side scoring, Daily Orbit, leaderboards, profiles, achievements, share cards | ✅ Done (memory store; Supabase adapter ready) |
 | 4 | Real-time Party Mode | Needs Supabase |
 | 5 | Polish, audio, accessibility review, production readiness | — |
 
-Pages for features that aren't built yet (`/daily`, `/party`, `/leaderboard`, `/profile`) say so plainly and name the milestone that delivers them. Nothing on them is simulated.
+Pages for features that aren't built yet (`/party`) say so plainly and name the milestone that delivers them. Nothing on them is simulated.
 
 ## Question bank
 
@@ -36,6 +36,14 @@ Questions live in `content/questions/*.json`, one file per world. There are 73 a
 - **What "approved" means:** the facts were chosen to be well established and checked editorially against the cited reference. They have **not** been through a separate human fact-check. That's recommended before a public launch.
 - **No answer leaks:** the public question shown to a player never contains the answer (enforced by a test). Option and event order is shuffled deterministically per game seed.
 - **Map data:** GeoTap uses Natural Earth 1:110m country boundaries, which are public domain (via `world-atlas`). They are projected at build time into `src/features/geo/world-map.json` with `npm run build:map`.
+
+## Server-authoritative play (Daily Orbit)
+
+- **Identity:** guests get a random id in a signed, HttpOnly cookie. No account is needed. Clearing cookies creates a new guest, so anonymous play can't be made fully abuse-proof. The one-attempt rule is enforced per guest identity, and starting a game is rate-limited per IP.
+- **Server-run rules:** the server runs the same pure engine as Solo and records start times, deadlines and answers with its own clock. Clients only send intents (begin / lock wager / submit / timeout / continue). Speed bonuses come from server timestamps, with a 400 ms grace for network delay.
+- **No double scoring:** concurrent requests are serialised with compare-and-swap versions. Each round's answer is stored once in an audit table keyed by (match, round, player).
+- **Daily questions:** they're chosen deterministically per UTC day and frozen in `daily_challenges` on first use. Everyone gets the same questions in the same order. The ranked match id is deterministic per player and day, so there's exactly one ranked attempt (resumable). Practice runs are separate and never ranked.
+- **No leaks:** solutions are never sent before a round is locked. Public result pages (`/results/[id]`) show only scores and outcomes, not question content, so sharing can't spoil the day's Daily Orbit.
 
 ## Tech stack
 
@@ -50,9 +58,20 @@ Questions live in `content/questions/*.json`, one file per world. There are 73 a
 
 ```bash
 npm install
-cp .env.example .env.local   # optional for now: no secrets needed until Milestone 3
+cp .env.example .env.local   # then set SESSION_SECRET (see below)
 npm run dev                  # http://localhost:3000
 ```
+
+`SESSION_SECRET` (32+ random characters) signs guest-session cookies. It's **required** for `npm start` and in production. `npm run dev` falls back to a random per-process secret. To generate one: `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`.
+
+### Storage: memory by default, Supabase when configured
+
+Ranked play, leaderboards and profiles go through a storage interface (`src/server/store`):
+
+- **No Supabase variables set:** an **in-memory store** is used. Everything works locally, but data resets when the server restarts, and it can't be shared across serverless instances. The Daily page shows a note when this mode is active.
+- **`NEXT_PUBLIC_SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` set:** the **Supabase store** is used. Apply `supabase/migrations/0001_init.sql` first. That migration enables RLS on every table and grants nothing to `anon` or `authenticated`. Browsers never touch the database directly; all access goes through the server API.
+
+⚠️ The Supabase adapter matches the migration's schema, but it hasn't been run against a live project in this repo because no credentials were available. Test it against a staging project before launch.
 
 ### Scripts
 

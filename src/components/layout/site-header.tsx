@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { motion } from "motion/react";
 import { Menu, Sparkles, UserRound, Volume2, Wind } from "lucide-react";
 import { primaryNav } from "@/lib/config/site";
@@ -22,7 +22,6 @@ function isActive(pathname: string, href: string) {
 }
 
 export function SiteHeader() {
-  const pathname = usePathname() ?? "/";
   const [menuOpen, setMenuOpen] = useState(false);
   const [prefs, setPrefs] = usePreferences();
   const scrolled = useScrolled();
@@ -46,32 +45,9 @@ export function SiteHeader() {
           <Logo />
         </Link>
 
-        <nav aria-label="Primary" className="panel hidden items-center gap-1 rounded-pill p-1 md:flex">
-          {primaryNav.map((item) => {
-            const active = isActive(pathname, item.href);
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                transitionTypes={["nav-forward"]}
-                aria-current={active ? "page" : undefined}
-                className={cn(
-                  "relative inline-flex min-h-11 items-center rounded-pill px-4 text-sm font-medium transition-colors",
-                  active ? "text-fg" : "text-fg-muted hover:text-fg",
-                )}
-              >
-                {active && (
-                  <motion.span
-                    layoutId="nav-active"
-                    transition={spring.settle}
-                    className="absolute inset-0 rounded-pill bg-white/10 shadow-[inset_0_0_0_1px_rgb(145_103_244/0.5)]"
-                  />
-                )}
-                <span className="relative">{item.label}</span>
-              </Link>
-            );
-          })}
-        </nav>
+        <Suspense fallback={<DesktopNav pathname="" />}>
+          <DesktopNavWithPath />
+        </Suspense>
 
         <div className="flex items-center gap-2">
           <SoundToggle />
@@ -79,7 +55,6 @@ export function SiteHeader() {
             href="/profile"
             transitionTypes={["nav-forward"]}
             aria-label="Profile"
-            aria-current={isActive(pathname, "/profile") ? "page" : undefined}
             className="hidden h-11 w-11 place-items-center rounded-full border border-line text-fg-muted transition-colors hover:border-line-strong hover:text-fg md:grid"
           >
             <UserRound className="h-5 w-5" />
@@ -101,30 +76,9 @@ export function SiteHeader() {
       </div>
 
       <Dialog open={menuOpen} onClose={() => setMenuOpen(false)} title="Menu" variant="sheet">
-        <nav aria-label="Mobile">
-          <ul className="space-y-1">
-            {[...primaryNav, { href: "/profile", label: "Profile" }].map((item) => {
-              const active = isActive(pathname, item.href);
-              return (
-                <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    transitionTypes={["nav-forward"]}
-                    onClick={() => setMenuOpen(false)}
-                    aria-current={active ? "page" : undefined}
-                    className={cn(
-                      "flex min-h-12 items-center justify-between rounded-2xl px-4 font-display text-lg font-medium transition-colors",
-                      active ? "bg-white/10 text-fg" : "text-fg-muted hover:bg-white/5 hover:text-fg",
-                    )}
-                  >
-                    {item.label}
-                    {active && <span className="h-2 w-2 rounded-full bg-action" aria-hidden="true" />}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </nav>
+        <Suspense fallback={<MobileNav pathname="" onNavigate={() => setMenuOpen(false)} />}>
+          <MobileNavWithPath onNavigate={() => setMenuOpen(false)} />
+        </Suspense>
         <div className="my-4 h-px bg-line" />
         <p className="hud-label mb-1 px-3 text-fg-muted">Settings</p>
         <Switch
@@ -156,5 +110,73 @@ export function SiteHeader() {
         </ButtonLink>
       </Dialog>
     </header>
+  );
+}
+
+function DesktopNavWithPath() {
+  return <DesktopNav pathname={usePathname() ?? "/"} />;
+}
+
+function DesktopNav({ pathname }: { pathname: string }) {
+  return (
+          <nav aria-label="Primary" className="panel hidden items-center gap-1 rounded-pill p-1 md:flex">
+            {primaryNav.map((item) => {
+              const active = isActive(pathname, item.href);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  transitionTypes={["nav-forward"]}
+                  aria-current={active ? "page" : undefined}
+                  className={cn(
+                    "relative inline-flex min-h-11 items-center rounded-pill px-4 text-sm font-medium transition-colors",
+                    active ? "text-fg" : "text-fg-muted hover:text-fg",
+                  )}
+                >
+                  {active && (
+                    <motion.span
+                      layoutId="nav-active"
+                      transition={spring.settle}
+                      className="absolute inset-0 rounded-pill bg-white/10 shadow-[inset_0_0_0_1px_rgb(145_103_244/0.5)]"
+                    />
+                  )}
+                  <span className="relative">{item.label}</span>
+                </Link>
+              );
+            })}
+          </nav>
+  );
+}
+
+function MobileNavWithPath({ onNavigate }: { onNavigate: () => void }) {
+  return <MobileNav pathname={usePathname() ?? "/"} onNavigate={onNavigate} />;
+}
+
+function MobileNav({ pathname, onNavigate }: { pathname: string; onNavigate: () => void }) {
+  return (
+          <nav aria-label="Mobile">
+            <ul className="space-y-1">
+              {[...primaryNav, { href: "/profile", label: "Profile" }].map((item) => {
+                const active = isActive(pathname, item.href);
+                return (
+                  <li key={item.href}>
+                    <Link
+                      href={item.href}
+                      transitionTypes={["nav-forward"]}
+                      onClick={onNavigate}
+                      aria-current={active ? "page" : undefined}
+                      className={cn(
+                        "flex min-h-12 items-center justify-between rounded-2xl px-4 font-display text-lg font-medium transition-colors",
+                        active ? "bg-white/10 text-fg" : "text-fg-muted hover:bg-white/5 hover:text-fg",
+                      )}
+                    >
+                      {item.label}
+                      {active && <span className="h-2 w-2 rounded-full bg-action" aria-hidden="true" />}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </nav>
   );
 }
