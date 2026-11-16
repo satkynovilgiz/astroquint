@@ -38,6 +38,7 @@ Everything, including ranked Daily Orbit and multiplayer Party Mode, works local
 | `npm run lint` | ESLint (Next.js + React Compiler rules) |
 | `npm run typecheck` | Route typegen + `tsc --noEmit` (strict) |
 | `npm test` | Vitest: 166 unit/component tests |
+| `npm run test:prod` | Live-site checks (Solo full game, Daily ranked/practice/persistence, two-browser Party) against https://astroquint.vercel.app. Creates real data: test players are named "QA Bot …" |
 | `npm run test:e2e` | Playwright: 127 browser tests against the production build (`npm run build` first; first run: `npx playwright install chromium`) |
 | `npm run check` | lint → typecheck → test → build |
 | `npm run build:map` | Regenerate GeoTap map paths from Natural Earth data |
@@ -73,7 +74,7 @@ Every API error includes a `code` and the Vercel request id. The UI shows them a
 3. **Deploy**, then smoke-test: play a Solo run, play a ranked Daily Orbit, check it appears on `/leaderboard`, and run a two-device Party match.
 4. **Before going public:** complete and legally review `/privacy` and `/terms`. Both are clearly marked templates.
 
-> ⚠️ **Not verified against a live Supabase project.** No credentials were available while building, so the Supabase store and the Realtime broadcast adapter (`src/server/store/supabase.ts`, `src/server/realtime.ts`) were written against the migration's schema and the documented APIs, but never run. All automated tests use the memory store. Test against a staging project first.
+> ✅ **Verified on the live site (Nov 2026).** Supabase was connected through the Vercel Marketplace and the migration was applied. `npm run test:prod` then played a ranked Daily run, a practice run and a two-browser Party match on https://astroquint.vercel.app, with no server errors. Local tests always use the in-memory store: `playwright.config.ts` blanks the Supabase variables, so tests never write to the real database.
 >
 > **Without Supabase on Vercel**, Solo still works because its state travels in a signed token. Daily and Party need shared storage: the memory store isn't shared between serverless instances. Use Supabase, or a single long-running Node server (`npm start`).
 
@@ -151,7 +152,6 @@ GeoTap uses public-domain Natural Earth 1:110m boundaries (via `world-atlas`), p
 
 ## Known limitations
 
-- Supabase and Realtime adapters are untested against a live project (see Deploying).
 - Rate limits are per server instance.
 - Party games and Solo runs don't appear on profiles; only Daily games do.
 - Guest identity is device-bound. Accounts with Supabase Auth would be a natural next step.

@@ -23,7 +23,15 @@ export default defineConfig({
     url: `http://localhost:${PORT}`,
     reuseExistingServer: !process.env.CI,
     // Test-only secret so the production server can sign guest sessions.
-    env: { SESSION_SECRET: process.env.SESSION_SECRET ?? "e2e-only-secret-not-for-production-use-0123456789" },
+    env: {
+      SESSION_SECRET: process.env.SESSION_SECRET ?? "e2e-only-secret-not-for-production-use-0123456789",
+      // Never let local tests touch the real database: blank Supabase settings
+      // (process env wins over .env.local) force the in-memory store.
+      NEXT_PUBLIC_SUPABASE_URL: "",
+      SUPABASE_URL: "",
+      SUPABASE_SERVICE_ROLE_KEY: "",
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: "",
+    },
     timeout: 60_000,
   },
 });
